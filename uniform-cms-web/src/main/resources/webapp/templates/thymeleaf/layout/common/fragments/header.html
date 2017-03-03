@@ -1,0 +1,67 @@
+<head xmlns:th="http://www.thymeleaf.org">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title th:text="'GIM Innovation DashBoard' + (${siteName != null} ? ' - ' + ${siteName} : '')">GIM Innovation DashBoard</title>
+    <link th:href="@{/plugins/wulfdist/css/wulf.min.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/wulfdist/css/fuelux.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/wulfdist/css/jqx.base.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/wulfdist/css/wulf.basic.min.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/wulfdist/css/wulf.calendar.min.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/wulfdist/css/wulf.panel.min.css}" rel="stylesheet" />
+    <link th:href="@{/plugins/wulfdist/css/wulf.links.min.css}" rel="stylesheet" />
+	<link th:href="@{/plugins/wulfdist/css/wulf.dialog.min.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/wulfdist/css/wulf.buttons.min.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/wulfdist/css/wulf.dropdowns.min.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/wulfdist/css/wulf.inputfield.min.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/wulfdist/css/wulf.table-jqWidget.min.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/style.css}" rel="stylesheet" />
+    <link th:href="@{/assets/favicon.ico}" rel="shortcut icon" />
+    
+    <script type="text/javascript" th:inline="javascript">
+		/*<![CDATA[*/
+		var ctxPath = [[${#httpServletRequest.contextPath}]];
+		/*]]>*/
+	</script>
+    
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jquery.min.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/bootstrap.js}" />
+    <script th:src="@{/plugins/assets/js/wulf/keyboard/keyboard-core.js}" />
+    <script th:src="@{/plugins/assets/js/wulf/keyboard/keyboard-grid.js}" />
+    <script th:src="@{/plugins/assets/js/wulf/grid.js}" />
+    <script th:src="@{/plugins/assets/js/wulf/inputfield.js}" />
+    <script th:src="@{/plugins/assets/js/wulf/dropdowns.js}" />
+    <script th:src="@{/plugins/assets/js/wulf/scroll.js}" />
+    <script th:src="@{/plugins/assets/js/wulf/resize.js}" />
+    <script th:src="@{/plugins/assets/js/wulf/drag.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/bootstrap.min.js}" />
+    <script th:src="@{/plugins/assets/js/wulf/tabbable.js}" />
+    <script th:src="@{/plugins/assets/js/wulf/calendar.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/fuelux.min.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/fuelux/selectlist.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/fuelux/datepicker.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/fuelux/spinbox.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/fuelux/tree.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/moment-with-locales.min.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxcore.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxdata.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxbuttons.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxmenu.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxcheckbox.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxcombobox.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxdropdownlist.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxgrid.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxgrid.columnsreorder.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxgrid.columnsresize.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxgrid.edit.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxgrid.filter.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxgrid.pager.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxgrid.selection.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxgrid.sort.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxlistbox.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxpanel.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxscrollbar.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxdata.export.js}" />
+    <script th:src="@{/plugins/wulfdist/js/dependencies/jqxgrid.export.js}" />
+	<script th:src="@{/assets/js/app.js}" />
+</head>
