@@ -1,0 +1,30 @@
+/*!
+ * WULF v1.2.10 (http://wulf-demo.dynamic.nsn-net.net/)
+ * Copyright 2016 Nokia Solutions and Networks. All rights Reserved.
+ */
+
+.jqx-chart-axis-text,.jqx-chart-axis-description,.jqx-chart-label-text {
+  font-family: "Nokia Pure",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  font-weight: lighter;
+  color: #404040;
+}.jqx-chart-label-text {
+  font-weight: normal;
+
+  fill: #474747;
+}#svgChart circle {
+  cursor: pointer;
+}.panel-shadow {
+  position: relative;
+  border: 1px solid #b1b1b1;
+}.pie-chart path {
+  cursor: pointer;
+}.pie-chart path[fill="none"] {
+  display: none;
+}.pie-chart .pie-shadow {
+  position: absolute;
+  bottom: 34px;
+  left: 50%;
+  background-image: linear-gradient(to bottom, rgba(110,110,110,.2) 0, transparent 50%);
+  border-radius: 100%;
+}

@@ -1,0 +1,1 @@
+!function(a){"function"==typeof define&&define.amd?define(["jquery","jqxcore","jqxdraw","jqxgauge"],a):"object"==typeof module&&module.exports?module.exports=function(b,c){return void 0===c&&(c="undefined"!=typeof window?require("jquery"):require("jquery")(b)),a(c,require("jqxcore"),require("jqxdraw"),require("jqxgauge")),c}:a(jQuery)}(function(a){"use strict"});

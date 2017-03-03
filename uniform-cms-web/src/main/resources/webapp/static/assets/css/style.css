@@ -1,0 +1,95 @@
+.datagrid-mask 
+{ 
+	position: absolute; 
+	left: 0; 
+	top: 0; 
+	width: 100%; 
+	height: 100%; 
+	opacity: 0.2; 
+	filter: alpha(opacity=30); 
+	display: none; 
+	z-index: 999;
+	background-color: #000;
+}
+
+.datagrid-mask-msg 
+{ 
+	-moz-border-radius: 20px; 
+	-webkit-border-radius: 20px; 
+	position: absolute; 
+	top: 50%; 
+	margin-top: -20px; 
+	width: 180px;
+	height: 56px;
+	line-height: 56px;
+	display: none;
+	background: #113A7D url(../img/loading.gif) no-repeat 10px 50%;
+	color: #fff;
+	padding-left: 55px;
+	border:1px solid #B0B1B5;
+	z-index: 1000;
+}
+
+.mbox {
+	box-shadow: 3px 3px 4px #ddd; 
+	width: 49%; 
+	margin: 0 0px 10px 10px; 
+	float:left; 
+	height: 300px;
+}
+
+.right-submenu {
+	float: right;
+    z-index: 99999;
+    color: #fff;
+    position: relative;
+    line-height: 40px;
+}
+
+.right-submenu a {
+	padding-right: 3px;
+    padding-bottom: 0;
+    padding-left: 3px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    text-shadow: 1px 1px 0 rgba(0,0,0,.45);
+}
+
+/*======== WULF override & extension =========*/
+.panel-heading {
+	padding-bottom: 5px;	
+}
+.pannel-toolbar {
+	margin-bottom: 5px;
+}
+.n-banner-collapse {
+	padding-left: 0px;
+}
+.icon-subnav {
+	top: 1px; 
+	margin-right: 5px;
+}
+.modal-body .form-control-feedback {
+	/*right: 12px;*/
+} 
+.n-dialog-confirm .modal-header .n-dialog-header-fg-filler {
+	width: 330px;
+}
+.n-dialog-confirm .modal-header .n-dialog-header-curve {
+	left: 320px;
+}
+.n-list-group .selected a {
+	color: #fff;
+}
+.n-list-group a {
+	color: #000;
+	font-weight: normal;
+}
+.errorMsg {
+	margin-top: 8px;
+	color: red;
+}

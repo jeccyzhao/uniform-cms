@@ -1,0 +1,210 @@
+/*!
+ * WULF v1.2.11 (http://wulf-demo.dynamic.nsn-net.net/)
+ * Copyright 2016 Nokia Solutions and Networks. All rights Reserved.
+ */
+
+/*
+ * WULF (http://networks.nokia.com/)
+ * Copyright (C) 2016 Nokia Solutions and Networks. All rights Reserved.
+ */
+/*
+ * WULF (http://networks.nokia.com/)
+ * Copyright (C) 2016 Nokia. All rights Reserved.
+ */
+.contextual-group {
+  position: relative;
+  display: table;
+  border-collapse: separate;
+}
+.contextual-group .form-control {
+  position: relative;
+  z-index: 2;
+  display: table-cell;
+  float: left;
+  width: 100%;
+  margin-bottom: 0;
+}
+.contextual-group .contextual-btn {
+  position: relative;
+  display: table-cell;
+  width: 1%;
+  font-size: 0;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.contextual-group .contextual-btn .btn {
+  margin: 0;
+  font-size: 14px;
+}
+.contextual-group .contextual-btn .btn-icon {
+  width: 28px;
+  height: 28px;
+}
+.contextual-group .contextual-btn .btn .icon {
+  font-size: 18px;
+  line-height: 20px;
+}
+.contextual-group .contextual-btn .btn {
+  padding: 0;
+  border: none;
+}
+.contextual-group .contextual-btn .btn .icon {
+  top: 2px;
+}
+.contextual-btn-menu {
+  position: absolute;
+  top: 0;
+  right: 14px;
+  z-index: 3;
+  background-color: #e6e6e6;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+.contextual-btn-menu .btn {
+  margin: 0;
+  font-size: 14px;
+}
+.contextual-btn-menu .btn-icon {
+  width: 28px;
+  height: 28px;
+}
+.contextual-btn-menu .btn .icon {
+  font-size: 18px;
+  line-height: 20px;
+}
+.contextual-btn-menu .contextual-dropdown-toggle[aria-pressed='true'] .icon:before {
+  color: #124191;
+}
+.contextual-btn-menu:not(.open) {
+  display: none;
+}
+.contextual-btn-menu .contextual-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+  display: block;
+  padding: 8px 0;
+  margin: 0;
+  white-space: nowrap;
+  list-style-type: none;
+  background-color: #fafafa;
+  border-radius: 2px 2px;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, .175);
+}
+.contextual-btn-menu .contextual-dropdown-menu:not(.open) {
+  display: none;
+}
+.contextual-btn-menu .contextual-dropdown-menu.contextual-is-grandparent li a,
+.contextual-btn-menu .contextual-dropdown-menu.contextual-is-grandparent .contextual-grouping {
+  padding-right: 48px;
+}
+.contextual-btn-menu .contextual-dropdown-menu .contextual-grouping {
+  height: 24px;
+  padding-right: 24px;
+  padding-left: 24px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, .38);
+}
+.contextual-btn-menu .contextual-dropdown-menu li a {
+  position: relative;
+  display: block;
+  height: 32px;
+  padding-right: 24px;
+  padding-left: 24px;
+  font-size: 13px;
+  line-height: 30px;
+  color: rgba(0, 0, 0, .87);
+}
+.contextual-btn-menu .contextual-dropdown-menu li a:hover,
+.contextual-btn-menu .contextual-dropdown-menu li a:focus {
+  text-decoration: none;
+  background: #e6e6e6;
+  border: none;
+  outline: none;
+}
+.contextual-btn-menu .contextual-dropdown-menu li a .icon {
+  top: 2px;
+  margin-right: 10px;
+  font-size: 18px;
+}
+.contextual-btn-menu .contextual-dropdown-menu li.contextual-has-sub-menu a .icon {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  margin: 0;
+  font-size: 18px;
+}
+.contextual-btn-menu .contextual-dropdown-menu .divider {
+  height: 1px;
+  margin: 8px 0;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, .12);
+}
+.contextual-btn-menu .contextual-dropdown-menu li.contextual-has-sub-menu .contextual-dropdown-sub-menu {
+  position: absolute;
+  top: auto;
+  z-index: 1000;
+  display: block;
+  padding: 8px 0;
+  margin: 0;
+  white-space: nowrap;
+  list-style-type: none;
+  background-color: #fafafa;
+  border-radius: 2px 2px;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, .175);
+}
+.contextual-btn-menu .contextual-dropdown-menu li.contextual-has-sub-menu .contextual-dropdown-sub-menu:not(.open) {
+  display: none;
+}
+.contextual-btn-menu .contextual-dropdown-menu:not(.sub-menu-pull-left) li.contextual-has-sub-menu .contextual-dropdown-sub-menu {
+  left: 100%;
+}
+.contextual-btn-menu .contextual-dropdown-menu.sub-menu-pull-left li.contextual-has-sub-menu .contextual-dropdown-sub-menu {
+  right: 100%;
+}
+.contextual-checked li.checkbox {
+  height: 32px;
+  padding: 0 16px;
+}
+.contextual-checked li.checkbox label {
+  margin: 4px 0 0 0;
+}
+.contextual-checked li.checkbox span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+.contextual-checked li.checkbox label:not(div):before {
+  left: 16px;
+  background: #fafafa;
+  border: none;
+}
+.contextual-checked li.checkbox input[type=checkbox] + label:before {
+  background: transparent;
+  border: none;
+}
+.contextual-checked li.checkbox:hover {
+  text-decoration: none;
+  background: #e6e6e6;
+  border: none;
+  outline: none;
+}
+.contextual-checked li.checkbox:hover label:not(div):before {
+  background: transparent;
+  border: none;
+}
+.contextual-checked li.checkbox input[type=checkbox]:checked + label:before {
+  color: rgba(0, 0, 0, .87);
+}
+.contextual-checked li.checkbox input[type=checkbox]:focus ~ span {
+  background: #e6e6e6;
+}
+.contextual-checked li.checkbox input[type=checkbox]:focus + label:before,
+.contextual-checked li.checkbox input[type=checkbox]:active + label:before {
+  border: none;
+}

@@ -1,0 +1,176 @@
+/*!
+ * WULF v1.2.10 (http://wulf-demo.dynamic.nsn-net.net/)
+ * Copyright 2016 Nokia Solutions and Networks. All rights Reserved.
+ */
+
+.visualizationtablecell {
+  font-size: 14px;
+  color: black;
+  background-color: white;
+  border-radius: 1px;
+}.visualizationtablecell tr td a {
+  color: black;
+  text-decoration: none;
+  border-bottom: 1px solid #124191;
+}.visualizationtablecell tr td a .error {
+  color: #be0006;
+  text-decoration: none;
+  border-bottom: 1px solid #124191;
+}.visualizationtablecell tr td.error {
+  position: relative;
+  width: 50px;
+  padding: 12px 24px;
+  color: #be0006;
+  text-align: center;
+}.visualizationtablecell tr td.error:after {
+  position: absolute;
+  bottom: 0;
+  left: 24px;
+  width: 44px;
+  height: 0;
+  content: "";
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid #be0006;
+  border-left: 3px solid transparent;
+}.visualizationtablecell tr th:focus {
+  color: white;
+}.visualizationtablecell thead th {
+  position: relative;
+  z-index: 2;
+  width: 50px;
+  padding: 12px 24px;
+  text-align: center;
+  border-radius: 5px;
+}.visualizationtablecell thead th:first-child {
+  position: relative;
+  padding: 12px 24px;
+  text-align: center;
+  border-radius: 5px;
+}.visualizationtablecell thead th:not(first-child):hover {
+  padding: 11px 23px;
+  border: 1px solid #00a1cc;
+}.visualizationtablecell tbody td:not(last-child) {
+  position: relative;
+  z-index: 0;
+  width: 50px;
+  padding: 12px 24px;
+  text-align: center;
+}.visualizationtablecell tbody td:last-child {
+  position: relative;
+  z-index: 0;
+  width: 50px;
+  padding: 12px 24px;
+  text-align: center;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}.visualizationtablecell tbody th {
+  position: relative;
+  z-index: 2;
+  float: left;
+  padding: 12px 24px;
+  text-align: center;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}.visualizationtablecell tbody th:hover {
+  padding: 11px 23px;
+  border: 1px solid #00a1cc;
+  border-right: none;
+}.visualizationtablecell tbody th:hover:before {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  z-index: 1;
+  width: 19px;
+  height: 23px;
+  margin: -12px -10px;
+  content: '';
+  border-top: 1px solid #00a1cc;
+  border-right: 1px solid #00a1cc;
+  transform: rotate(30deg) skewY(30deg);
+}.visualizationtablecell tbody tr:nth-child(odd) {
+  background-color: #efefef;
+}.visualizationtablecell tbody tr:nth-child(1) .selected-grey-cell:before {
+  position: absolute;
+  top: -15%;
+  right: 44%;
+  z-index: 1;
+  width: 10px;
+  height: 10px;
+  content: '';
+  background: #092454;
+  border-right: 1px solid #00a1cc;
+  border-bottom: 1px solid #00a1cc;
+  transform: rotate(45deg);
+}.visualizationtablecell tbody tr th:first-child div {
+  position: relative;
+  float: left;
+}.selected-blue td {
+  background-color: #ccf4ff;
+}.selected-blue td:first-of-type:before {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  z-index: 1;
+  width: 19px;
+  height: 23px;
+  margin: -12px -10px;
+  content: '';
+  background: linear-gradient(-49deg, #092454, #2794cc);
+  border-top: 1px solid #00a1cc;
+  border-right: 1px solid #00a1cc;
+  transform: rotate(30deg) skewY(30deg);
+}.selected-blue th {
+  position: relative;
+  float: left;
+  color: #fff;
+  text-shadow: 1px 1px #000;
+  background: linear-gradient(#2794cc, #092454);
+}.selected-grey td {
+  background-color: #b2e3f0;
+}.selected-grey td:first-of-type:before {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  z-index: 1;
+  width: 19px;
+  height: 23px;
+  margin: -12px -10px;
+  content: '';
+  background: linear-gradient(-49.1deg, #092454, #2794cc);
+  border-top: 1px solid #00a1cc;
+  border-right: 1px solid #00a1cc;
+  transform: rotate(30deg) skewY(30deg);
+}.selected-grey th {
+  position: relative;
+  float: left;
+  color: #fff;
+  text-shadow: 1px 1px #000;
+  background: linear-gradient(#2794cc, #092454);
+}.selected-column-header {
+  color: #fff;
+  background: linear-gradient(#2794cc, #092454);
+}.selected-column-header:before {
+  position: absolute;
+  top: 100%;
+  right: 43%;
+  z-index: 1;
+  width: 13px;
+  height: 1px;
+  content: '';
+  background: #092454;
+}.selected-grey-cell {
+  background-color: #b2e3f0;
+}.selected-blue-cell {
+  background-color: #ccf4ff;
+}.circle {
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 9px;
+  height: 9px;
+  margin-top: 2px;
+  margin-right: 12px;
+  background: black;
+  border: 1px solid #fff;
+  border-radius: 50%;
+}
