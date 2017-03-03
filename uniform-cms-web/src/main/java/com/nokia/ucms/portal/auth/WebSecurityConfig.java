@@ -1,4 +1,4 @@
-package com.nokia.ucms.common.auth;
+package com.nokia.ucms.portal.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +18,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception
     {
         http.csrf().disable();
+
+        http
+            .authorizeRequests()
+            .antMatchers("/assets/**", "/plugins/**", "/").permitAll()
+            .anyRequest().authenticated().and()
+            .formLogin()
+            .loginPage("/login").permitAll().and()
+            .logout()
+            .logoutSuccessUrl("/").permitAll();
+
         //http.httpBasic();
         //http.headers().frameOptions().sameOrigin();
     }

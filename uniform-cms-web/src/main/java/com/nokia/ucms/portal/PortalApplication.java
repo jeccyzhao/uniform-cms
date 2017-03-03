@@ -1,14 +1,17 @@
 package com.nokia.ucms.portal;
 
+import com.nokia.ucms.common.CommonConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * Created by x36zhao on 2017/3/3.
  */
 @SpringBootApplication
+@ComponentScan(basePackageClasses = {CommonConfig.class, PortalApplication.class})
 public class PortalApplication extends SpringBootServletInitializer
 {
     @Override
