@@ -11,7 +11,37 @@ import lombok.Setter;
 @Setter
 public class TableColumnDTO extends BaseDTO
 {
-    private String projectName;
+    private String tableName;
     private String columnName;
     private Integer columnLength;
+
+    public String getTableName ()
+    {
+        return tableName;
+    }
+
+    public void setTableName (String tableName)
+    {
+        this.tableName = tableName;
+    }
+
+    public String getColumnName ()
+    {
+        return columnName;
+    }
+
+    public void setColumnName (String columnName)
+    {
+        this.columnName = columnName;
+    }
+
+    public Integer getColumnLength ()
+    {
+        return columnLength;
+    }
+
+    public void setColumnLength (Integer columnLength)
+    {
+        this.columnLength = columnLength;
+    }
 }

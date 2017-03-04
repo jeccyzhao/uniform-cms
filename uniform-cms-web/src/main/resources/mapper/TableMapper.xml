@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.nokia.ucms.biz.repository.TableRepository">
+<mapper namespace="com.nokia.ucms.biz.repository.DatabaseAdminRepository">
 
     <update id="createTableIfNotExist" parameterType="java.lang.String">
-        CREATE TABLE IF NOT EXISTS `t_${tableName}`
+        CREATE TABLE IF NOT EXISTS `_t_${tableName}`
         (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `c_id` int(11) NULL,
@@ -13,12 +13,12 @@
         ENGINE=MyISAM DEFAULT CHARSET=utf8
     </update>
 
-    <update id="addTableColumn" parameterType="com.nokia.ucms.biz.dto.TableColumnDTO">
-        ALTER TABLE `t_#{tableName}` ADD `#{columnName}` VARCHAR(#{columnLength}) NULL
+    <update id="addTableColumn">
+        ALTER TABLE `_t_${tableName}` ADD `${columnName}` VARCHAR(${columnLength}) NULL
     </update>
 
-    <update id="removeTableColumn" parameterType="com.nokia.ucms.biz.dto.TableColumnDTO">
-        ALTER TABLE `t_${tableName}` DROP `${columnName}`
+    <update id="removeTableColumn">
+        ALTER TABLE `_t_${tableName}` DROP `${columnName}`
     </update>
 
 </mapper>

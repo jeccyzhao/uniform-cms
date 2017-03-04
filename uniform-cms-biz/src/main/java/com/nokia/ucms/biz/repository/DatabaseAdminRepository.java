@@ -6,10 +6,13 @@ import org.apache.ibatis.annotations.Param;
 /**
  * Created by x36zhao on 2017/3/4.
  */
-public interface TableRepository
+public interface DatabaseAdminRepository
 {
     Integer createTableIfNotExist(@Param("tableName") String tableName);
-    Integer addTableColumn(TableColumnDTO tableColumn);
+    Integer addTableColumn(
+            @Param("tableName") String tableName,
+            @Param("columnName") String columnName,
+            @Param("columnLength") Integer columnLength);
 
     void removeTableColumn();
 }
