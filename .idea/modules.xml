@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/uniform-cms-biz/uniform-cms-biz.iml" filepath="$PROJECT_DIR$/uniform-cms-biz/uniform-cms-biz.iml" />
       <module fileurl="file://$PROJECT_DIR$/uniform-cms-common/uniform-cms-common.iml" filepath="$PROJECT_DIR$/uniform-cms-common/uniform-cms-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/uniform-cms-core/uniform-cms-core.iml" filepath="$PROJECT_DIR$/uniform-cms-core/uniform-cms-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uniform-cms-openapi/uniform-cms-openapi.iml" filepath="$PROJECT_DIR$/uniform-cms-openapi/uniform-cms-openapi.iml" />
       <module fileurl="file://$PROJECT_DIR$/uniform-cms-web/uniform-cms-web.iml" filepath="$PROJECT_DIR$/uniform-cms-web/uniform-cms-web.iml" />
     </modules>
   </component>

@@ -9,6 +9,7 @@
         <module name="uniform-cms-biz" />
         <module name="uniform-cms-common" />
         <module name="uniform-cms-core" />
+        <module name="uniform-cms-openapi" />
         <module name="uniform-cms-web" />
       </profile>
     </annotationProcessing>
@@ -17,6 +18,7 @@
       <module name="uniform-cms-biz" target="1.5" />
       <module name="uniform-cms-common" target="1.5" />
       <module name="uniform-cms-core" target="1.5" />
+      <module name="uniform-cms-openapi" target="1.5" />
       <module name="uniform-cms-web" target="1.5" />
     </bytecodeTargetLevel>
   </component>

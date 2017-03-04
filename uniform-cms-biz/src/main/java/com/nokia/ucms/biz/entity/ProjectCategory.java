@@ -5,15 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Created by x36zhao on 2017/3/3.
+ * Created by x36zhao on 2017/3/4.
  */
 @Getter
 @Setter
-public class Project extends BaseEntity
+public class ProjectCategory extends BaseEntity
 {
+    private Project project;
     private String name;
     private String description;
-    private String owner;
-    private String tableName;
-    private Integer state;
 }

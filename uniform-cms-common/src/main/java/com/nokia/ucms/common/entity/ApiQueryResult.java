@@ -1,4 +1,4 @@
-package com.nokia.ucms.common.dto;
+package com.nokia.ucms.common.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +13,11 @@ public class ApiQueryResult<T>
     private boolean success;
     private T data;
     private String error;
+
+    public ApiQueryResult(T data)
+    {
+        this.data = data;
+    }
 
     public ApiQueryResult(boolean success, T data)
     {

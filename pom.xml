@@ -20,6 +20,7 @@
         <module>uniform-cms-common</module>
         <module>uniform-cms-core</module>
         <module>uniform-cms-biz</module>
+        <module>uniform-cms-openapi</module>
     </modules>
 
     <dependencyManagement>
@@ -61,6 +62,19 @@
                 <artifactId>uniform-cms-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.nokia.innovation</groupId>
+                <artifactId>uniform-cms-openapi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

@@ -10,7 +10,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>uniform-cms-biz</artifactId>
+    <artifactId>uniform-cms-openapi</artifactId>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -18,11 +19,7 @@
         </dependency>
         <dependency>
             <groupId>com.nokia.innovation</groupId>
-            <artifactId>uniform-cms-common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <artifactId>uniform-cms-biz</artifactId>
         </dependency>
     </dependencies>
 
