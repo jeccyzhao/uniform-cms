@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 public class ProjectColumn extends BaseEntity
 {
-    private Project project;
+    private ProjectInfo project;
     private String name;
     private String fieldId;
     private Integer length;

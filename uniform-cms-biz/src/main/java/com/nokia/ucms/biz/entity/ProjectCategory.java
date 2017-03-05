@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class ProjectCategory extends BaseEntity
 {
-    private Project project;
+    private ProjectInfo project;
     private String name;
     private String description;
 }

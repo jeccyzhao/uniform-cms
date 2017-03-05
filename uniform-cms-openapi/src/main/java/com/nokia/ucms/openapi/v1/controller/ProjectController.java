@@ -1,7 +1,7 @@
 package com.nokia.ucms.openapi.v1.controller;
 
 import com.nokia.ucms.biz.dto.TableColumnDTO;
-import com.nokia.ucms.biz.entity.Project;
+import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.biz.service.ProjectService;
 import com.nokia.ucms.common.entity.ApiQueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,41 +19,65 @@ public class ProjectController
     @Autowired
     private ProjectService projectService;
 
+    @RequestMapping(path="/test", method= RequestMethod.GET)
+    public @ResponseBody ApiQueryResult<ProjectInfo> testApi(@RequestParam String projectName)
+    {
+        System.out.println("Enter testApi: " + projectName);
+
+        // TODO
+        // 1. retrieve project
+
+        ProjectInfo project = null;
+        return new ApiQueryResult<ProjectInfo>(project != null, project);
+    }
+
     @RequestMapping(path="/{projectId}", method= RequestMethod.GET)
-    public @ResponseBody ApiQueryResult<Project> getProject(@PathVariable String projectId)
+    public @ResponseBody ApiQueryResult<ProjectInfo> getProject(@PathVariable String projectId)
     {
         System.out.println("Enter getProject: " + projectId);
 
         // TODO
         // 1. retrieve project
 
-        Project project = null;
-        return new ApiQueryResult<Project>(project != null, project);
+        ProjectInfo project = null;
+        return new ApiQueryResult<ProjectInfo>(project != null, project);
+    }
+
+    @RequestMapping(path="/", method= RequestMethod.GET)
+    public @ResponseBody ApiQueryResult<ProjectInfo> getAllProject()
+    {
+        System.out.println("Enter getProject");
+
+        // TODO
+        // 1. retrieve project
+
+        ProjectInfo project = null;
+        return new ApiQueryResult<ProjectInfo>(project != null, project);
     }
 
     @RequestMapping(path="/{projectId}", method= RequestMethod.PUT)
-    public @ResponseBody ApiQueryResult<Project> updateProject(@RequestBody String projectId)
+    public @ResponseBody ApiQueryResult<ProjectInfo> updateProject(@RequestBody String projectId)
     {
         System.out.println("Enter updateProject: " + projectId);
 
         // TODO
         // 1. update project
 
-        Project project = null;
-        return new ApiQueryResult<Project>(project != null, project);
+        ProjectInfo project = null;
+        return new ApiQueryResult<ProjectInfo>(project != null, project);
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
-    public @ResponseBody ApiQueryResult<Integer> createProject(@RequestParam String projectName, Model model)
+    public @ResponseBody ApiQueryResult<Object> createProject(@RequestBody ProjectInfo projectInfo, Model model)
     {
-        System.out.println("Enter createProject: " + projectName);
+        System.out.println("Enter createProject: " + projectInfo);
 
         // TODO
         // 1. create project entry
         // 2. create project table
 
-        Integer result = projectService.createProject(projectName);
-        return new ApiQueryResult<Integer>(result != null, result);
+        boolean result = projectService.createProject(projectInfo);
+        return new ApiQueryResult<Object>(result, null);
     }
 
     @RequestMapping(path="", method= RequestMethod.DELETE)
