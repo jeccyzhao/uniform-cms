@@ -10,5 +10,7 @@ public interface ProjectInfoRepository
 {
     ProjectInfo getProjectInfoByName(@Param("projectName") String projectName);
 
+    ProjectInfo getProjectInfoById(@Param("projectId") Integer projectId);
+
     Integer addProjectInfo (ProjectInfo projectInfo);
 }
