@@ -19,17 +19,17 @@ public class ApiQueryResult<T>
         this.data = data;
     }
 
+    public ApiQueryResult(boolean success)
+    {
+        this(success, null);
+    }
+
     public ApiQueryResult(boolean success, T data)
     {
-        this(success, null, data);
+        this(success, data, null);
     }
 
-    public ApiQueryResult(boolean success, String error)
-    {
-        this(success, error, null);
-    }
-
-    public ApiQueryResult(boolean success, String error, T data)
+    public ApiQueryResult(boolean success, T data, String error)
     {
         this.success = success;
         this.error = error;

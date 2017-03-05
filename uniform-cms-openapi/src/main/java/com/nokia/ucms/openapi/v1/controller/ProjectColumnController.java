@@ -2,6 +2,7 @@ package com.nokia.ucms.openapi.v1.controller;
 
 import com.nokia.ucms.biz.dto.TableColumnDTO;
 import com.nokia.ucms.biz.service.ProjectService;
+import com.nokia.ucms.common.controller.BaseController;
 import com.nokia.ucms.common.entity.ApiQueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Controller
 @RequestMapping("/openapi/v1/projects/{pid}/columns")
-public class ProjectColumnController
+public class ProjectColumnController extends BaseController
 {
     @Autowired
     private ProjectService projectService;
@@ -24,7 +25,7 @@ public class ProjectColumnController
                                                 @RequestBody TableColumnDTO tableColumn, Model model)
     {
         System.out.println("Enter createProjectColumn");
-        Integer result = projectService.createProjectColumn(tableColumn);
+        Integer result = projectService.createProjectColumn(null);
         return new ApiQueryResult<Integer>(result != null, result);
     }
 

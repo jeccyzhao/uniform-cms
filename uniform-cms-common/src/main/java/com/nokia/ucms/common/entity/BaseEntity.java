@@ -13,9 +13,9 @@ public class BaseEntity implements Serializable
 {
 	private static final long serialVersionUID = -2488885189931569213L;
 	
-	//@Id
-	//@Column(name = "id")
-	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	public void setId(Integer id) 

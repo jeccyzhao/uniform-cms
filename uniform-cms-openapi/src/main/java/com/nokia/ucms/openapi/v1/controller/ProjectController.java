@@ -3,6 +3,7 @@ package com.nokia.ucms.openapi.v1.controller;
 import com.nokia.ucms.biz.dto.TableColumnDTO;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.biz.service.ProjectService;
+import com.nokia.ucms.common.controller.BaseController;
 import com.nokia.ucms.common.entity.ApiQueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Controller
 @RequestMapping("/openapi/v1/projects")
-public class ProjectController
+public class ProjectController extends BaseController
 {
     @Autowired
     private ProjectService projectService;
