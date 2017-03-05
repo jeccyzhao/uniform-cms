@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nokia.ucms.biz.repository.ProjectColumnRepository">
+
+    <resultMap type="ProjectColumn" id="rs_projectColumn">
+        <id property="id" column="id"/>
+        <result property="projectId" column="p_id"/>
+        <result property="columnName" column="col_name"/>
+        <result property="columnDescription" column="col_desc"/>
+        <result property="columnId" column="col_fieldid"/>
+        <result property="columnLength" column="col_len"/>
+        <result property="visible" column="col_visible"/>
+        <result property="seq" column="col_seq"/>
+    </resultMap>
+
+    <select id="getColumnsByProjectId" parameterType="java.lang.Integer" resultMap="rs_projectColumn">
+        SELECT * FROM `t_project_column` WHERE `p_id` = #{projectId}
+    </select>
+
+    <select id="getColumnsByProjectName" parameterType="java.lang.String" resultMap="rs_projectColumn">
+        SELECT * FROM `t_project_column` WHERE `p_id` = (SELECT id FROM `t_project` WHERE `p_name` = #{projectName})
+    </select>
+
+    <insert id="addProjectColumn" parameterType="ProjectColumn" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `t_project_column` (`p_id`, `col_name`, `col_desc`, `col_fieldid`, `col_len`, `col_visible`, `col_seq`)
+            VALUES (#{projectId}, #{columnName}, #{columnDescription}, #{columnId}, #{columnLength}, #{visible}, #{seq})
+    </insert>
+
+</mapper>
