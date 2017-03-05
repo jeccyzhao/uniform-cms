@@ -19,30 +19,6 @@ public class ProjectController
     @Autowired
     private ProjectService projectService;
 
-    @RequestMapping(path="/test", method= RequestMethod.GET)
-    public @ResponseBody ApiQueryResult<ProjectInfo> testApi(@RequestParam String projectName)
-    {
-        System.out.println("Enter testApi: " + projectName);
-
-        // TODO
-        // 1. retrieve project
-
-        ProjectInfo project = null;
-        return new ApiQueryResult<ProjectInfo>(project != null, project);
-    }
-
-    @RequestMapping(path="/{projectId}", method= RequestMethod.GET)
-    public @ResponseBody ApiQueryResult<ProjectInfo> getProject(@PathVariable String projectId)
-    {
-        System.out.println("Enter getProject: " + projectId);
-
-        // TODO
-        // 1. retrieve project
-
-        ProjectInfo project = null;
-        return new ApiQueryResult<ProjectInfo>(project != null, project);
-    }
-
     @RequestMapping(path="/", method= RequestMethod.GET)
     public @ResponseBody ApiQueryResult<ProjectInfo> getAllProject()
     {
@@ -50,18 +26,6 @@ public class ProjectController
 
         // TODO
         // 1. retrieve project
-
-        ProjectInfo project = null;
-        return new ApiQueryResult<ProjectInfo>(project != null, project);
-    }
-
-    @RequestMapping(path="/{projectId}", method= RequestMethod.PUT)
-    public @ResponseBody ApiQueryResult<ProjectInfo> updateProject(@RequestBody String projectId)
-    {
-        System.out.println("Enter updateProject: " + projectId);
-
-        // TODO
-        // 1. update project
 
         ProjectInfo project = null;
         return new ApiQueryResult<ProjectInfo>(project != null, project);
@@ -94,24 +58,28 @@ public class ProjectController
         return new ApiQueryResult<Object>(result != null, result);
     }
 
-    @RequestMapping(path="/columns", method= RequestMethod.POST)
-    public @ResponseBody ApiQueryResult<Integer> createProjectColumn(@RequestBody TableColumnDTO tableColumn, Model model)
+    @RequestMapping(path="/{projectId}", method= RequestMethod.GET)
+    public @ResponseBody ApiQueryResult<ProjectInfo> getProject(@PathVariable Integer projectId)
     {
-        System.out.println("Enter createProjectColumn");
-        Integer result = projectService.addProjectField(tableColumn);
-        return new ApiQueryResult<Integer>(result != null, result);
-    }
-
-    @RequestMapping(path="/columns", method= RequestMethod.DELETE)
-    public @ResponseBody ApiQueryResult<Object> deleteProjectColumn(@RequestBody TableColumnDTO tableColumn, Model model)
-    {
-        System.out.println("Enter removeProjectColumn");
+        System.out.println("Enter getProject: " + projectId);
 
         // TODO
-        // 1. remove project column data from data table
-        // 2. remove project column entry
+        // 1. retrieve project
 
-        Object result = null;
-        return new ApiQueryResult<Object>(result != null, result);
+        ProjectInfo project = null;
+        return new ApiQueryResult<ProjectInfo>(project != null, project);
     }
+
+    @RequestMapping(path="/{projectId}", method= RequestMethod.PUT)
+    public @ResponseBody ApiQueryResult<ProjectInfo> updateProject(@RequestBody Integer projectId)
+    {
+        System.out.println("Enter updateProject: " + projectId);
+
+        // TODO
+        // 1. update project
+
+        ProjectInfo project = null;
+        return new ApiQueryResult<ProjectInfo>(project != null, project);
+    }
+
 }
