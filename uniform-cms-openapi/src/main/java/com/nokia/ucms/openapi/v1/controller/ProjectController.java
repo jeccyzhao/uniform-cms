@@ -1,5 +1,6 @@
 package com.nokia.ucms.openapi.v1.controller;
 
+import com.nokia.ucms.biz.dto.ProjectDataTableDTO;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.biz.service.ProjectService;
 import com.nokia.ucms.common.controller.BaseController;
@@ -23,13 +24,16 @@ public class ProjectController extends BaseController
     private ProjectService projectService;
 
     @RequestMapping(path="/{projectId}", method= RequestMethod.GET)
-    public @ResponseBody ApiQueryResult<ProjectInfo> getProject(
+    public @ResponseBody ApiQueryResult<ProjectDataTableDTO> getProject(
             @PathVariable Integer projectId)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter getProject - [projectId : %d]", projectId));
 
-        return new ApiQueryResult<ProjectInfo>(projectService.getProjectById(projectId));
+        // for testing purpose
+        return new ApiQueryResult<ProjectDataTableDTO>(projectService.getProjectData(projectId, null));
+
+        //return new ApiQueryResult<ProjectInfo>(projectService.getProjectById(projectId));
     }
 
     @RequestMapping(path="/{projectId}", method= RequestMethod.PUT)

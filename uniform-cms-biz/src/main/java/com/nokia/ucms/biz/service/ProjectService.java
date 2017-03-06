@@ -1,11 +1,13 @@
 package com.nokia.ucms.biz.service;
 
+import com.nokia.ucms.biz.dto.ProjectDataTableDTO;
 import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.biz.repository.DatabaseAdminRepository;
 import com.nokia.ucms.biz.repository.ProjectCategoryRepository;
 import com.nokia.ucms.biz.repository.ProjectColumnRepository;
 import com.nokia.ucms.biz.repository.ProjectInfoRepository;
+import com.nokia.ucms.common.entity.KeyValueEntityPair;
 import com.nokia.ucms.common.exception.ServiceException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.nokia.ucms.biz.constants.Constants.*;
+import static com.nokia.ucms.biz.dto.ProjectDataTableDTO.*;
 
 import java.util.*;
 
@@ -146,10 +149,59 @@ public class ProjectService
         throw new ServiceException("Empty project column cannot be created");
     }
 
-    public Map<?, ?> getProjectData(String projectName)
+    public ProjectDataTableDTO getProjectData(Integer projectId, Integer categoryId)
     {
-        return dbAdminRepository.query(projectName);
+        ProjectDataTableDTO projectDataTable = null;
+        ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
+        if (projectInfo != null)
+        {
+            projectDataTable = new ProjectDataTableDTO();
+            projectDataTable.setProjectInfo(projectInfo);
+
+            List<ProjectColumn> projectColumns = projectColumnRepository.getColumnsByProjectId(projectInfo.getId());
+            if (projectColumns != null && projectColumns.size() > 0)
+            {
+                String dataTableName = projectInfo.getTableName();
+                List<Map<String, Object>> dataRows = dbAdminRepository.query(dataTableName, categoryId);
+                for (Map<String, Object> dataRow : dataRows)
+                {
+                    projectDataTable.addRow(constructDataRowDTO(dataRow, projectColumns));
+                }
+            }
+        }
+
+        return projectDataTable;
     }
+
+    private ProjectDataTableRow constructDataRowDTO (
+            final Map<String, Object> row, final List<ProjectColumn> columns)
+    {
+        ProjectDataTableRow dataRowDTO = null;
+        if (row != null && row.size() > 0)
+        {
+            dataRowDTO = new ProjectDataTableRow();
+            dataRowDTO.setRowId(row.containsKey(TEMPLATE_COLUMN_ID) ? Integer.valueOf(row.get(TEMPLATE_COLUMN_ID).toString()) : null);
+            dataRowDTO.setCategoryName(row.containsKey(TEMPLATE_COLUMN_CATEGORY_NAME) ? row.get(TEMPLATE_COLUMN_CATEGORY_NAME).toString() : null);
+            dataRowDTO.setCreationTime(row.containsKey(TEMPLATE_COLUMN_CREATE_TIME) ? (Date) row.get(TEMPLATE_COLUMN_CREATE_TIME) : null);
+            dataRowDTO.setLastUpdateTime(row.containsKey(TEMPLATE_COLUMN_UPDATE_TIME) ? (Date) row.get(TEMPLATE_COLUMN_UPDATE_TIME) : null);
+            dataRowDTO.setData(new ArrayList());
+            for (Map.Entry<String, Object> entry : row.entrySet())
+            {
+                for (ProjectColumn column : columns)
+                {
+                    if (entry.getKey().equals(column.getColumnId()))
+                    {
+                        dataRowDTO.getData().add(new KeyValueEntityPair<String, String>(
+                                column.getColumnName(), entry.getValue().toString()));
+                        break;
+                    }
+                }
+            }
+        }
+
+        return dataRowDTO;
+    }
+
 
     /**
      * Clone project from another

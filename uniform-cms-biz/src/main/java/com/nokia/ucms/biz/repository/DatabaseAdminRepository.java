@@ -3,6 +3,7 @@ package com.nokia.ucms.biz.repository;
 import com.nokia.ucms.biz.dto.TableColumnDTO;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,5 +19,5 @@ public interface DatabaseAdminRepository
 
     void removeTableColumn();
 
-    Map<?, ?> query(@Param("tableName") String tableName);
+    List<Map<String, Object>> query(@Param("tableName") String tableName, @Param("categoryId") Integer categoryId);
 }

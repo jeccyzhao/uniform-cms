@@ -7,6 +7,8 @@
         (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `c_id` int(11) NULL,
+            `creationTime` timestamp NULL DEFAULT NULL,
+            `updateTime` timestamp NULL DEFAULT NULL,
             PRIMARY KEY (`id`),
             KEY `c_id` (`c_id`)
         )
@@ -22,7 +24,14 @@
     </update>
     
     <select id="query" resultType="java.util.Map" statementType="STATEMENT">
-        SELECT * FROM ${tableName}
+        SELECT dt.*, c.c_name FROM ${tableName} dt
+        <where>
+            <if test="categoryId != null and categoryId > 0">
+                `c_id` = #{categoryId}
+            </if>
+        </where>
+        LEFT JOIN `t_project_category` c ON dt.c_id = c.id
+        ORDER BY `updateTime` DESC
     </select>
 
     <update id="removeTable" parameterType="java.lang.String">
