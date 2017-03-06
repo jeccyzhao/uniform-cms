@@ -161,7 +161,6 @@ public class ProjectService
 
     private String makeProjectColumnFieldId(String columnName)
     {
-        return String.format("%s%s", DYNAMIC_COLUMN_NAME_PREFIX,
-                columnName.trim().replaceAll(" ", KEYWORD_SPLITTER).toLowerCase());
+        return String.format("%s%d", DYNAMIC_COLUMN_NAME_PREFIX, columnName.trim().hashCode());
     }
 }
