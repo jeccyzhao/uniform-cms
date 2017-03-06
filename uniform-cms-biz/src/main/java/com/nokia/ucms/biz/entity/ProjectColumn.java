@@ -15,7 +15,8 @@ public class ProjectColumn extends BaseEntity
 {
     private Integer projectId;
     private String columnName;
-    private String columnDescription;
+    private String columnRemark;
+    private String columnDataExample;
     private String columnId;
     private Integer columnLength = DEFAULT_COLUMN_LENGTH;
     private Integer visible;

@@ -6,7 +6,8 @@
         <id property="id" column="id"/>
         <result property="projectId" column="p_id"/>
         <result property="columnName" column="col_name"/>
-        <result property="columnDescription" column="col_desc"/>
+        <result property="columnRemark" column="col_remark"/>
+        <result property="columnDataExample" column="col_example"/>
         <result property="columnId" column="col_fieldid"/>
         <result property="columnLength" column="col_len"/>
         <result property="visible" column="col_visible"/>
@@ -22,8 +23,8 @@
     </select>
 
     <insert id="addProjectColumn" parameterType="ProjectColumn" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_project_column` (`p_id`, `col_name`, `col_desc`, `col_fieldid`, `col_len`, `col_visible`, `col_seq`)
-            VALUES (#{projectId}, #{columnName}, #{columnDescription}, #{columnId}, #{columnLength}, #{visible}, #{seq})
+        INSERT INTO `t_project_column` (`p_id`, `col_name`, `col_desc`, `col_example`, `col_fieldid`, `col_len`, `col_visible`, `col_seq`)
+            VALUES (#{projectId}, #{columnName}, #{columnRemark}, #{columnDataExample}, #{columnId}, #{columnLength}, #{visible}, #{seq})
     </insert>
 
 </mapper>
