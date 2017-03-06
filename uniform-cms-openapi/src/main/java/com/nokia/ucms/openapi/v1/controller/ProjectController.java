@@ -33,7 +33,9 @@ public class ProjectController extends BaseController
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
-    public @ResponseBody ApiQueryResult<Object> createProject(@RequestBody ProjectInfo projectInfo, Model model)
+    public @ResponseBody ApiQueryResult<Object> createProject(
+            @RequestBody ProjectInfo projectInfo,
+            @RequestParam(value = "from", required = false) Integer fromProject)
     {
         System.out.println("Enter createProject: " + projectInfo);
 
@@ -41,12 +43,13 @@ public class ProjectController extends BaseController
         // 1. create project entry
         // 2. create project table
 
-        boolean result = projectService.createProject(projectInfo);
+        boolean result = projectService.createProject(projectInfo, fromProject);
         return new ApiQueryResult<Object>(result, null);
     }
 
     @RequestMapping(path="", method= RequestMethod.DELETE)
-    public @ResponseBody ApiQueryResult<Object> deleteProject(@RequestParam String projectName, Model model)
+    public @ResponseBody ApiQueryResult<Object> deleteProject(
+            @RequestParam String projectName)
     {
         System.out.println("Enter deleteProject: " + projectName);
 
@@ -60,7 +63,8 @@ public class ProjectController extends BaseController
     }
 
     @RequestMapping(path="/{projectId}", method= RequestMethod.GET)
-    public @ResponseBody ApiQueryResult<ProjectInfo> getProject(@PathVariable Integer projectId)
+    public @ResponseBody ApiQueryResult<ProjectInfo> getProject(
+            @PathVariable Integer projectId)
     {
         System.out.println("Enter getProject: " + projectId);
 

@@ -15,7 +15,7 @@
         SELECT * FROM `t_project` WHERE `p_name` = #{projectName}
     </select>
 
-    <select id="getProjectInfoById" parameterType="java.lang.String" resultMap="rs_project">
+    <select id="getProjectInfoById" parameterType="java.lang.Integer" resultMap="rs_project">
         SELECT * FROM `t_project` WHERE `id` = #{projectId}
     </select>
 
