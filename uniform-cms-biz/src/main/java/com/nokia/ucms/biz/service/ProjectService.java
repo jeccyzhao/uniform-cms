@@ -49,6 +49,29 @@ public class ProjectService
         }
     }
 
+    public ProjectInfo getProjectById (Integer projectId) throws ServiceException
+    {
+        ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
+        if (projectInfo != null)
+        {
+            return projectInfo;
+        }
+
+        throw new ServiceException(String.format("Project '%d' does not exist", projectId));
+    }
+
+    public boolean updateProject (ProjectInfo projectInfo) throws ServiceException
+    {
+        ProjectInfo entity = projectInfoRepository.getProjectInfoById(projectInfo.getId());
+        if (entity != null)
+        {
+            Integer result = projectInfoRepository.updateProjectInfo(projectInfo);
+            return result > 0;
+        }
+
+        throw new ServiceException(String.format("Project '%s' does not exist", projectInfo));
+    }
+
     @Transactional
     public Integer createProject (ProjectInfo projectInfo, Integer fromProject) throws ServiceException
     {

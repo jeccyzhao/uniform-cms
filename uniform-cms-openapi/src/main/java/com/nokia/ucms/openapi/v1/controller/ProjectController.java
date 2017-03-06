@@ -22,7 +22,34 @@ public class ProjectController extends BaseController
     @Autowired
     private ProjectService projectService;
 
-    @RequestMapping(path="", method= RequestMethod.GET)
+    @RequestMapping(path="/{projectId}", method= RequestMethod.GET)
+    public @ResponseBody ApiQueryResult<ProjectInfo> getProject(
+            @PathVariable Integer projectId)
+    {
+        if (LOGGER.isDebugEnabled())
+            LOGGER.debug(String.format("Enter getProject - [projectId : %d]", projectId));
+
+        return new ApiQueryResult<ProjectInfo>(projectService.getProjectById(projectId));
+    }
+
+    @RequestMapping(path="/{projectId}", method= RequestMethod.PUT)
+    public @ResponseBody ApiQueryResult<ProjectInfo> updateProject(
+            @PathVariable Integer projectId,
+            @RequestBody ProjectInfo projectInfo)
+    {
+        if (LOGGER.isDebugEnabled())
+            LOGGER.debug(String.format("Enter updateProject - [projectId: %d, projectInfo: %s]", projectId, projectInfo));
+
+        // TODO Validation must be added before update
+
+        // set id with path variable
+        projectInfo.setId(projectId);
+
+        boolean result = projectService.updateProject(projectInfo);
+        return new ApiQueryResult<ProjectInfo>(result);
+    }
+
+    @RequestMapping(path="/", method= RequestMethod.GET)
     public @ResponseBody ApiQueryResult<List<ProjectInfo>> getProject(
             @RequestParam(required = false) String projectName)
     {
@@ -55,30 +82,6 @@ public class ProjectController extends BaseController
         // 1. remove project data
         // 2. remove project columns
         // 3. remove project entry
-        return createEmptyQueryResult();
-    }
-
-    @RequestMapping(path="/{projectId}", method= RequestMethod.GET)
-    public @ResponseBody ApiQueryResult<ProjectInfo> getProject(
-            @PathVariable Integer projectId)
-    {
-        if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter getProject - [projectId: %d]", projectId));
-
-        // TODO
-        // 1. retrieve project
-        return createEmptyQueryResult();
-    }
-
-    @RequestMapping(path="/{projectId}", method= RequestMethod.PUT)
-    public @ResponseBody ApiQueryResult<ProjectInfo> updateProject(
-            @RequestBody Integer projectId)
-    {
-        if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter updateProject - [projectId: %d]", projectId));
-
-        // TODO
-        // 1. update project
         return createEmptyQueryResult();
     }
 
