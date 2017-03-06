@@ -17,7 +17,11 @@ public class ProjectInfo extends BaseEntity
     private String name;
     private String description;
     private String owner;
+
+    // table name is generated dynamically and update by operator not allowed
     private String tableName;
+
+    // default state would be used
     private Integer state = STAT_ACTIVATED;
 
     /*

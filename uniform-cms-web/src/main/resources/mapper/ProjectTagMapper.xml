@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nokia.ucms.biz.repository.ProjectTagRepository">
+
+    <resultMap type="ProjectTag" id="rs_projectTag">
+        <id property="id" column="id"/>
+        <result property="projectId" column="p_id"/>
+        <result property="tagName" column="tag_name"/>
+        <result property="tagDesc" column="tag_desc"/>
+    </resultMap>
+
+    <select id="getTagByName" parameterType="java.lang.String" resultMap="rs_projectTag">
+        SELECT * FROM `t_project_tag` WHERE `tag_name` = #{name}
+    </select>
+
+    <select id="getTagById" parameterType="java.lang.Integer" resultMap="rs_projectTag">
+        SELECT * FROM `t_project_tag` WHERE `id` = #{id}
+    </select>
+
+    <insert id="addTag" parameterType="ProjectTag" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `t_project_tag` (`p_id`, `tag_name`, `tag_desc`)
+            VALUES (#{projectId}, #{tagName}, #{tagDesc})
+    </insert>
+
+    <delete id="removeTagById" parameterType="java.lang.Integer">
+        DELETE FROM `t_project_tag` WHERE `id` = #{id}
+    </delete>
+
+</mapper>

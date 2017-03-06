@@ -1,13 +1,12 @@
 package com.nokia.ucms.openapi.v1.controller;
 
-import com.nokia.ucms.biz.dto.TableColumnDTO;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.biz.service.ProjectService;
 import com.nokia.ucms.common.controller.BaseController;
 import com.nokia.ucms.common.entity.ApiQueryResult;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -17,13 +16,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/openapi/v1/projects")
 public class ProjectController extends BaseController
 {
+    private static Logger LOGGER = Logger.getLogger(ProjectController.class);
+
     @Autowired
     private ProjectService projectService;
 
     @RequestMapping(path="/", method= RequestMethod.GET)
-    public @ResponseBody ApiQueryResult<ProjectInfo> getAllProject()
+    public @ResponseBody ApiQueryResult<ProjectInfo> getProject(
+            @RequestParam(required = false) String projectName)
     {
-        System.out.println("Enter getProject");
+        if (LOGGER.isDebugEnabled())
+            LOGGER.debug("Enter getAllProject");
 
         // TODO
         // 1. retrieve project
@@ -37,7 +40,8 @@ public class ProjectController extends BaseController
             @RequestBody ProjectInfo projectInfo,
             @RequestParam(value = "from", required = false) Integer fromProject)
     {
-        System.out.println("Enter createProject: " + projectInfo);
+        if (LOGGER.isDebugEnabled())
+            LOGGER.debug(String.format("Enter createProject - [projectInfo: %s, from: %d]", projectInfo, fromProject));
 
         // TODO
         // 1. create project entry
@@ -51,40 +55,38 @@ public class ProjectController extends BaseController
     public @ResponseBody ApiQueryResult<Object> deleteProject(
             @RequestParam String projectName)
     {
-        System.out.println("Enter deleteProject: " + projectName);
+        if (LOGGER.isDebugEnabled())
+            LOGGER.debug(String.format("Enter deleteProject - [projectName: %s]", projectName));
 
         // TODO
         // 1. remove project data
         // 2. remove project columns
         // 3. remove project entry
-
-        Object result = null;
-        return new ApiQueryResult<Object>(result != null, result);
+        return createEmptyQueryResult();
     }
 
     @RequestMapping(path="/{projectId}", method= RequestMethod.GET)
     public @ResponseBody ApiQueryResult<ProjectInfo> getProject(
             @PathVariable Integer projectId)
     {
-        System.out.println("Enter getProject: " + projectId);
+        if (LOGGER.isDebugEnabled())
+            LOGGER.debug(String.format("Enter getProject - [projectId: %d]", projectId));
 
         // TODO
         // 1. retrieve project
-
-        ProjectInfo project = null;
-        return new ApiQueryResult<ProjectInfo>(project != null, project);
+        return createEmptyQueryResult();
     }
 
     @RequestMapping(path="/{projectId}", method= RequestMethod.PUT)
-    public @ResponseBody ApiQueryResult<ProjectInfo> updateProject(@RequestBody Integer projectId)
+    public @ResponseBody ApiQueryResult<ProjectInfo> updateProject(
+            @RequestBody Integer projectId)
     {
-        System.out.println("Enter updateProject: " + projectId);
+        if (LOGGER.isDebugEnabled())
+            LOGGER.debug(String.format("Enter updateProject - [projectId: %d]", projectId));
 
         // TODO
         // 1. update project
-
-        ProjectInfo project = null;
-        return new ApiQueryResult<ProjectInfo>(project != null, project);
+        return createEmptyQueryResult();
     }
 
 }

@@ -12,8 +12,8 @@ public class BaseController
      *
      * @return
      */
-    protected ApiQueryResult<Object> createEmptyQueryResult()
+    protected <T> ApiQueryResult<T> createEmptyQueryResult()
     {
-        return new ApiQueryResult<Object>(false, null);
+        return new ApiQueryResult<T>(false, null);
     }
 }
