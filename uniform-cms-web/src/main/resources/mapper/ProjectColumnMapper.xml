@@ -22,8 +22,12 @@
         SELECT * FROM `t_project_column` WHERE `p_id` = (SELECT id FROM `t_project` WHERE `p_name` = #{projectName})
     </select>
 
+    <select id="getColumnByName" resultMap="rs_projectColumn">
+        SELECT * FROM `t_project_column` WHERE `col_name` = #{name} AND `p_id` = #{projectId}
+    </select>
+
     <insert id="addProjectColumn" parameterType="ProjectColumn" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_project_column` (`p_id`, `col_name`, `col_desc`, `col_example`, `col_fieldid`, `col_len`, `col_visible`, `col_seq`)
+        INSERT INTO `t_project_column` (`p_id`, `col_name`, `col_remark`, `col_example`, `col_fieldid`, `col_len`, `col_visible`, `col_seq`)
             VALUES (#{projectId}, #{columnName}, #{columnRemark}, #{columnDataExample}, #{columnId}, #{columnLength}, #{visible}, #{seq})
     </insert>
 

@@ -3,7 +3,7 @@
 <mapper namespace="com.nokia.ucms.biz.repository.DatabaseAdminRepository">
 
     <update id="createTableIfNotExist" parameterType="java.lang.String">
-        CREATE TABLE IF NOT EXISTS `dt_${tableName}`
+        CREATE TABLE IF NOT EXISTS `${tableName}`
         (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `c_id` int(11) NULL,
@@ -14,15 +14,19 @@
     </update>
 
     <update id="addTableColumn">
-        ALTER TABLE `dt_${tableName}` ADD `${columnName}` VARCHAR(${columnLength}) NULL
+        ALTER TABLE `${tableName}` ADD `${columnName}` VARCHAR(${columnLength}) NULL
     </update>
 
     <update id="removeTableColumn">
-        ALTER TABLE `dt_${tableName}` DROP `${columnName}`
+        ALTER TABLE `${tableName}` DROP `${columnName}`
     </update>
     
     <select id="query" resultType="java.util.Map" statementType="STATEMENT">
         SELECT * FROM ${tableName}
     </select>
+
+    <update id="removeTable" parameterType="java.lang.String">
+        DROP TABLE `${tableName}`
+    </update>
 
 </mapper>

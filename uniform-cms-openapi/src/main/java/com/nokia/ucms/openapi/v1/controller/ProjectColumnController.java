@@ -7,15 +7,13 @@ import com.nokia.ucms.common.controller.BaseController;
 import com.nokia.ucms.common.entity.ApiQueryResult;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by x36zhao on 2017/3/6.
  */
-@Controller
-@RequestMapping("/openapi/v1/projects/{pid}/columns")
+@RestController
+@RequestMapping("/openapi/v1/projects/{projectId}/columns")
 public class ProjectColumnController extends BaseController
 {
     private static Logger LOGGER = Logger.getLogger(ProjectColumnController.class);
@@ -50,12 +48,12 @@ public class ProjectColumnController extends BaseController
     @RequestMapping(path="", method= RequestMethod.POST)
     public @ResponseBody ApiQueryResult<Integer> createProjectColumn(
             @PathVariable Integer projectId,
-            @RequestBody TableColumnDTO tableColumn)
+            @RequestBody ProjectColumn projectColumn)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter createProjectColumn - [projectId: %d, tableColumn: %s]", projectId, tableColumn));
+            LOGGER.debug(String.format("Enter createProjectColumn - [projectId: %d, projectColumn: %s]", projectId, projectColumn));
 
-        Integer result = projectService.createProjectColumn(null);
+        Integer result = projectService.createProjectColumn(projectId, projectColumn);
         return new ApiQueryResult<Integer>(result != null, result);
     }
 

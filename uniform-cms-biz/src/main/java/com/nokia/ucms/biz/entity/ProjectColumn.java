@@ -13,12 +13,20 @@ import static com.nokia.ucms.biz.constants.Constants.*;
 @ToString(exclude = "id")
 public class ProjectColumn extends BaseEntity
 {
+    public static Integer STAT_VISIBLE = 1;
+    public static Integer STAT_INVISIBLE = 0;
+
     private Integer projectId;
     private String columnName;
     private String columnRemark;
     private String columnDataExample;
     private String columnId;
+
+    // default column length would be used if not set
     private Integer columnLength = DEFAULT_COLUMN_LENGTH;
-    private Integer visible;
+
+    // default as visibility if not set
+    private Integer visible = STAT_VISIBLE;
+
     private Integer seq;
 }
