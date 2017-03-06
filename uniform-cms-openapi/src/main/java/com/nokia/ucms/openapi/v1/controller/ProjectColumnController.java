@@ -53,8 +53,11 @@ public class ProjectColumnController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter createProjectColumn - [projectId: %d, projectColumn: %s]", projectId, projectColumn));
 
-        Integer result = projectService.createProjectColumn(projectId, projectColumn);
-        return new ApiQueryResult<Integer>(result != null, result);
+        // use path variable as property
+        projectColumn.setProjectId(projectId);
+
+        Integer result = projectService.createProjectColumn(projectColumn);
+        return new ApiQueryResult<Integer>(result > 0, result);
     }
 
     @RequestMapping(path="", method= RequestMethod.DELETE)

@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Created by x36zhao on 2017/3/5.
  */
@@ -20,18 +22,14 @@ public class ProjectController extends BaseController
     @Autowired
     private ProjectService projectService;
 
-    @RequestMapping(path="/", method= RequestMethod.GET)
-    public @ResponseBody ApiQueryResult<ProjectInfo> getProject(
+    @RequestMapping(path="", method= RequestMethod.GET)
+    public @ResponseBody ApiQueryResult<List<ProjectInfo>> getProject(
             @RequestParam(required = false) String projectName)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter getAllProject");
 
-        // TODO
-        // 1. retrieve project
-
-        ProjectInfo project = null;
-        return new ApiQueryResult<ProjectInfo>(project != null, project);
+        return new ApiQueryResult<List<ProjectInfo>>(projectService.getProject(projectName));
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
@@ -42,12 +40,8 @@ public class ProjectController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter createProject - [projectInfo: %s, from: %d]", projectInfo, fromProject));
 
-        // TODO
-        // 1. create project entry
-        // 2. create project table
-
-        boolean result = projectService.createProject(projectInfo, fromProject);
-        return new ApiQueryResult<Object>(result, null);
+        Integer result = projectService.createProject(projectInfo, fromProject);
+        return new ApiQueryResult<Object>(result > 0, result);
     }
 
     @RequestMapping(path="", method= RequestMethod.DELETE)

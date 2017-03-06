@@ -1,13 +1,11 @@
 package com.nokia.ucms.common.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * Created by x36zhao on 2017/3/3.
  */
-@Getter
-@Setter
+@Data
 public class ApiQueryResult<T>
 {
     private boolean success;
@@ -16,7 +14,7 @@ public class ApiQueryResult<T>
 
     public ApiQueryResult(T data)
     {
-        this.data = data;
+        this(true, data);
     }
 
     public ApiQueryResult(boolean success)

@@ -3,6 +3,7 @@ package com.nokia.ucms.biz.service;
 import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.biz.repository.DatabaseAdminRepository;
+import com.nokia.ucms.biz.repository.ProjectCategoryRepository;
 import com.nokia.ucms.biz.repository.ProjectColumnRepository;
 import com.nokia.ucms.biz.repository.ProjectInfoRepository;
 import com.nokia.ucms.common.exception.ServiceException;
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.nokia.ucms.biz.constants.Constants.*;
 
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by x36zhao on 2017/3/5.
@@ -32,8 +33,24 @@ public class ProjectService
     @Autowired
     private ProjectColumnRepository projectColumnRepository;
 
+    @Autowired
+    private ProjectCategoryRepository projectCategoryRepository;
+
+    public List<ProjectInfo> getProject(String projectName) throws ServiceException
+    {
+        if (projectName != null && !"".equals(projectName))
+        {
+            ProjectInfo projectInfo = projectInfoRepository.getProjectInfoByName(projectName);
+            return Arrays.asList(projectInfo);
+        }
+        else
+        {
+            return projectInfoRepository.getAllProject();
+        }
+    }
+
     @Transactional
-    public boolean createProject (ProjectInfo projectInfo, Integer fromProject) throws ServiceException
+    public Integer createProject (ProjectInfo projectInfo, Integer fromProject) throws ServiceException
     {
         // Steps
         // 1. add project info --> generate unique table name for project
@@ -49,6 +66,7 @@ public class ProjectService
             }
 
             projectInfo.setTableName(makeProjectDataTableName(projectName));
+            projectInfo.setCreationTime(new Date());
             Integer result = projectInfoRepository.addProjectInfo(projectInfo);
             if (result > 0)
             {
@@ -56,16 +74,58 @@ public class ProjectService
 
                 if (fromProject != null)
                 {
-                    return cloneProject(fromProject, projectInfo);
+                    cloneProject(fromProject, projectInfo);
                 }
 
-                return true;
+                return projectInfo.getId();
             }
 
-            return false;
+            return null;
         }
 
         throw new ServiceException("Empty project cannot be created");
+    }
+
+
+    @Transactional
+    public Integer createProjectColumn (ProjectColumn projectColumn) throws ServiceException
+    {
+        if (projectColumn != null)
+        {
+            // Steps
+            // 1. generate column field id
+            // 2. insert column entry in `t_project_column`
+            // 3. create column filed in the data table of project
+            ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectColumn.getProjectId());
+            if (projectInfo != null)
+            {
+                String columnName = projectColumn.getColumnName();
+                ProjectColumn entity = projectColumnRepository.getColumnByName(columnName, projectInfo.getId());
+                if (entity == null)
+                {
+                    projectColumn.setColumnId(makeProjectColumnFieldId(columnName));
+                    Integer result = projectColumnRepository.addProjectColumn(projectColumn);
+                    if (result > 0)
+                    {
+                        dbAdminRepository.addTableColumn(projectInfo.getTableName(),
+                                projectColumn.getColumnId(), projectColumn.getColumnLength());
+
+                        return projectColumn.getId();
+                    }
+                }
+                else
+                {
+                    throw new ServiceException(String.format("Project column '%s' already exists", entity.getColumnName()));
+                }
+            }
+        }
+
+        throw new ServiceException("Empty project column cannot be created");
+    }
+
+    public Map<?, ?> getProjectData(String projectName)
+    {
+        return dbAdminRepository.query(projectName);
     }
 
     /**
@@ -109,48 +169,6 @@ public class ProjectService
         }
 
         throw new ServiceException("Failed to clone cause of missing source or target project");
-    }
-
-    @Transactional
-    public Integer createProjectColumn (Integer projectId, ProjectColumn projectColumn)
-    {
-        if (projectColumn != null)
-        {
-            // Steps
-            // 1. generate column field id
-            // 2. insert column entry in `t_project_column`
-            // 3. create column filed in the data table of project
-            ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
-            if (projectInfo != null)
-            {
-                String columnName = projectColumn.getColumnName();
-                ProjectColumn entity = projectColumnRepository.getColumnByName(columnName, projectInfo.getId());
-                if (entity == null)
-                {
-                    projectColumn.setProjectId(projectId);
-                    projectColumn.setColumnId(makeProjectColumnFieldId(columnName));
-                    Integer result = projectColumnRepository.addProjectColumn(projectColumn);
-                    if (result > 0)
-                    {
-                        dbAdminRepository.addTableColumn(projectInfo.getTableName(),
-                                projectColumn.getColumnId(), projectColumn.getColumnLength());
-
-                        return projectColumn.getId();
-                    }
-                }
-                else
-                {
-                    throw new ServiceException(String.format("Project column '%s' already exists", entity.getColumnName()));
-                }
-            }
-        }
-
-        throw new ServiceException("Empty project column cannot be created");
-    }
-
-    public Map<?, ?> getProjectData(String projectName)
-    {
-        return dbAdminRepository.query(projectName);
     }
 
     private String makeProjectDataTableName(String projectName)
