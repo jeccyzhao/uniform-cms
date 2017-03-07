@@ -22,19 +22,24 @@
             </dd>
         </a>
         <dt class="n-list-group-item">Settings</dt>
-        <a href="#" th:href="@{'/site/' + ${siteName} + '/activity/poll'}">
+        <a href="#" th:href="@{'/projects/' + ${project.name} + '/columns'}">
             <dd class="n-list-group-item" th:classappend="${menu == 'voting'} ? selected : ''" style="border-radius:0px">
-                <span class="icon icon-expand icon-subnav"></span><span>Columns</span>
+                <span class="icon icon-calendar icon-subnav"></span><span>Columns</span>
             </dd>
         </a>
-        <a href="#" th:href="@{'/site/' + ${siteName} + '/tags'}">
+        <a href="#" th:href="@{'/projects/' + ${project.name} + '/tags'}">
             <dd class="n-list-group-item" th:classappend="${menu == 'tags'} ? selected : ''" style="border-top-left-radius:0px; border-top-right-radius:0px;">
-                <span class="icon icon-indicator icon-subnav"></span><span>Tags</span>
+                <span class="icon icon-bubble icon-subnav"></span><span>Tags</span>
             </dd>
         </a>
-        <a href="#" th:href="@{'/site/' + ${siteName} + '/tags'}">
+        <a href="#" th:href="@{'/projects/' + ${project.name} + '/authorization'}">
             <dd class="n-list-group-item" th:classappend="${menu == 'tags'} ? selected : ''" style="border-top-left-radius:0px; border-top-right-radius:0px;">
                 <span class="icon icon-license-info icon-subnav"></span><span>Authorization</span>
+            </dd>
+        </a>
+        <a href="#" th:href="@{'/projects/' + ${project.name} + '/tracelog'}">
+            <dd class="n-list-group-item" th:classappend="${menu == 'tags'} ? selected : ''" style="border-top-left-radius:0px; border-top-right-radius:0px;">
+                <span class="icon icon-manage icon-subnav"></span><span>Tracelog</span>
             </dd>
         </a>
     </dl>

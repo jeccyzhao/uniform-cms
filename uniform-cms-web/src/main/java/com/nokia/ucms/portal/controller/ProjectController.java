@@ -21,8 +21,7 @@ public class ProjectController extends BaseController
     @Autowired
     private ProjectService projectService;
 
-    @RequestMapping("/{projectName}")
-    public String showProject(@PathVariable String projectName, Model model)
+    private void setBasicInfoInModel (String projectName, Model model)
     {
         List<ProjectInfo> projectInfoList = projectService.getProject(projectName);
         if (projectInfoList != null)
@@ -30,7 +29,40 @@ public class ProjectController extends BaseController
             ProjectInfo projectInfo = projectInfoList.get(0);
             model.addAttribute("project", projectInfo);
         }
+    }
 
+    @RequestMapping("/{projectName}")
+    public String showProject(@PathVariable String projectName, Model model)
+    {
+        setBasicInfoInModel(projectName, model);
         return "modules/projects/projectPage";
+    }
+
+    @RequestMapping("/{projectName}/tracelog")
+    public String showProjectTrace(@PathVariable String projectName, Model model)
+    {
+        setBasicInfoInModel(projectName, model);
+        return "modules/projects/projectTrace";
+    }
+
+    @RequestMapping("/{projectName}/columns")
+    public String showProjectColumns(@PathVariable String projectName, Model model)
+    {
+        setBasicInfoInModel(projectName, model);
+        return "modules/projects/projectColumn";
+    }
+
+    @RequestMapping("/{projectName}/tags")
+    public String showProjectTags(@PathVariable String projectName, Model model)
+    {
+        setBasicInfoInModel(projectName, model);
+        return "modules/projects/projectTag";
+    }
+
+    @RequestMapping("/{projectName}/authorization")
+    public String showProjectAuthorization(@PathVariable String projectName, Model model)
+    {
+        setBasicInfoInModel(projectName, model);
+        return "modules/projects/projectAuthorization";
     }
 }

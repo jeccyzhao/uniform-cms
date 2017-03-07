@@ -9,8 +9,7 @@
     <div class="col-md-10">
         <div class="panel panel-shadow panel-blue-cap">
             <div class="panel-heading panel-heading-transparent" style="height: 66px">
-                <h1 th:text="${'Project - ' + project.name}" style="line-height: 30px"></h1>
-                <div style="color: #C8C9D1; padding: 3px 0;" th:text="${'Owner - ' + project.owner}">Owner</div>
+                <h1 th:text="${'Project Tags - ' + project.name}" style="line-height: 30px"></h1>
             </div>
             <div class="panel-body" style="padding: 0 10px 20px 10px;">
                 <div id="table-filter" class="grid-alternating-rows n-table-hover n-jqxgrid-table n-grid-paging "></div>
@@ -21,7 +20,7 @@
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
         $(function () {
-            loadData("table-filter");
+            // oadData("table-filter");
         });
 
         function loadData(container_id) {
