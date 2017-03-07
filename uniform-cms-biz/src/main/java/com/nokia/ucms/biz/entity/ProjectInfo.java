@@ -20,6 +20,9 @@ public class ProjectInfo extends BaseEntity
     public static final Integer STAT_ACTIVATED = 1;
     public static final Integer STAT_DEACTIVIATED = 0;
 
+    public static final Integer P_PUBLIC = 1;
+    public static final Integer P_PRIVATE = 0;
+
     @NotEmpty
     private String name;
     private String description;
@@ -30,8 +33,11 @@ public class ProjectInfo extends BaseEntity
     // table name is generated dynamically and update by operator not allowed
     private String tableName;
 
-    // default state would be used
+    // marked as activated as default state
     private Integer state = STAT_ACTIVATED;
+
+    // marked as public as default
+    private Integer publicity = P_PUBLIC;
 
     private Date creationTime;
 
