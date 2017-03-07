@@ -43,7 +43,7 @@ Date.prototype.Format = function(fmt)
   return fmt;   
 }
 
-function initJqxTable (container_id, columns, data, width, height)
+function initJqxTable (container_id, columns, data, editable, width, height)
 {
     var source = { localdata: data, datatype: "array"};
     var dataAdapter = new $.jqx.dataAdapter(source);
@@ -55,7 +55,8 @@ function initJqxTable (container_id, columns, data, width, height)
         columnsResize: true,
         columnsreorder: true,
         pageable: true,
-        selectionmode: 'singleRow',
+        //selectionmode: 'multiplerowsadvanced',
+        editmode: 'click',
         columns: columns,
         filterable: true,
         showfilterrow: true,
@@ -69,6 +70,7 @@ function initJqxTable (container_id, columns, data, width, height)
         pagesize: 20,
         rowsheight: 26,
         columnsheight: 26,
+        editable: editable ? editable : false,
         pagerrenderer: $.grid.pagerrenderer.bind(null, "#" + container_id, true),
         handlekeyboardnavigation: function (e)
         {
@@ -91,4 +93,14 @@ function showErrorDialog(errorMessage, dialog_id)
     var dialog_id = dialog_id ? dialog_id : "ErrorDialog";
     $("#" + dialog_id).find("#errorMessage").html(errorMessage);
     $("#" + dialog_id).modal('show');
+}
+
+function getCurrentGridRowData (grid_id)
+{
+    var rowIndex = $('#' + grid_id).jqxGrid('getselectedrowindex');
+    if (rowIndex > -1) {
+        return $('#' + grid_id).jqxGrid('getrowdata', rowIndex);
+    }
+
+    return {}
 }

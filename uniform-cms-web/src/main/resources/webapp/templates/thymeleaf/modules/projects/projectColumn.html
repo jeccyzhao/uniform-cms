@@ -45,7 +45,7 @@
                     success: function(rsp) {
                     var ret = eval(rsp);
                     if (ret.data != null) {
-                        initJqxTable(container_id, constructColumns(), rebuildColumnData(ret.data));
+                        initJqxTable(container_id, constructColumns(), rebuildColumnData(ret.data), true);
                     }
 
                     disableAjaxLoading();
@@ -62,6 +62,8 @@
         function constructColumns () {
             var columns = [
                 {text: 'ID', datafield: 'id', hidden: true},
+                {text: '', columntype: 'textbox', datafield: 'edit',
+                    filtertype: 'input', width: 24, filterable: false, editable: false},
                 {text: 'Visible', datafield: 'visible', cellsalign:'center', align: 'center', width: 60},
                 {text: 'Column Name', datafield: 'columnName', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Column Remark', datafield: 'columnRemark', cellsalign: 'left', align: 'center', filterable: true},
@@ -80,9 +82,18 @@
                             (data[i].visible == 0 ? "Invisible" : "Visible") + "' class='icon icon-fault-" +
                             (data[i].visible == 0 ? "unknown" : "cleared") + "'></span></div>";
                     }
+
+                    data[i].edit = '<div class="n-row-indicated" onclick="showColumnUpdate();"><span class="icon icon-edit"></span></div>';
                 }
             }
             return data;
+        }
+
+        function showColumnUpdate() {
+            var rowData = getCurrentGridRowData("table-filter");
+            if (rowData != null) {
+
+            }
         }
 
         /*]]>*/
