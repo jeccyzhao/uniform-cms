@@ -10,6 +10,8 @@
         <result property="tableName" column="p_tablename"/>
         <result property="state" column="p_state"/>
         <result property="creationTime" column="p_creationTime" />
+        <result property="lastUpdateTime" column="p_updateTime" />
+        <result property="publicity" column="p_public" />
     </resultMap>
 
     <select id="getProjectInfoByName" parameterType="java.lang.String" resultMap="rs_project">
@@ -21,7 +23,7 @@
     </select>
 
     <select id="getAllProject" resultMap="rs_project">
-        SELECT * FROM `t_project`
+        SELECT * FROM `t_project` ORDER BY `p_creationTime` DESC
     </select>
 
     <select id="getProjectInfoByTableName" resultMap="rs_project">
@@ -29,8 +31,8 @@
     </select>
 
     <insert id="addProjectInfo" parameterType="ProjectInfo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_project` (`p_name`, `p_description`, `p_owner`, `p_tablename`, `p_state`, `p_creationTime`)
-            VALUES (#{name}, #{description}, #{owner}, #{tableName}, #{state}, #{creationTime})
+        INSERT INTO `t_project` (`p_name`, `p_description`, `p_owner`, `p_tablename`, `p_public`, `p_state`, `p_creationTime`)
+            VALUES (#{name}, #{description}, #{owner}, #{tableName}, #{publicity}, #{state}, #{creationTime})
     </insert>
 
     <update id="updateProjectInfo">
@@ -39,13 +41,14 @@
             <if test="name != null and name != ''">`p_name` = #{name},</if>
             <if test="description != null and description !=''">`p_description` = #{description},</if>
             <if test="state != null and state > -1">`p_state` = #{state},</if>
+            <if test="lastUpdateTime != null">`p_updateTime` = #{lastUpdateTime},</if>
             `id` = `id`
         </set>
         WHERE `id` = #{id}
     </update>
 
     <delete id="removeProjectInfo">
-        DELETE FROM `t_project` WHERE `id` = #{projectId} ORDER BY `p_creationTime` DESC
+        DELETE FROM `t_project` WHERE `id` = #{projectId} ORDER BY `p_updateTime` DESC
     </delete>
 
 </mapper>

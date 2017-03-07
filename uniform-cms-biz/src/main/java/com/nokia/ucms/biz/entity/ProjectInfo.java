@@ -40,6 +40,7 @@ public class ProjectInfo extends BaseEntity
     private Integer publicity = P_PUBLIC;
 
     private Date creationTime;
+    private Date lastUpdateTime;
 
     /*
     public String toString()

@@ -1,27 +1,17 @@
-<div>
-	<dl class="n-list-group">
-		<!--
-		<dt class="n-list-group-item">Projects</dt>
-			<a href="#" th:href="@{/}">
-				<dd class="n-list-group-item" th:classappend="${menu == 'site'} ? selected : ''" style="border-radius:0px">
-					<span class="icon icon-regions icon-subnav"></span>
-					<span>Site</span>
-				</dd>
-			</a>-->
-		<div>
-			<dt class="n-list-group-item">Global Configuration</dt>
-				<a href="#" th:href="@{/admin/user}">
-					<dd class="n-list-group-item" th:classappend="${menu == 'user'} ? selected : ''" style="border-radius:0px">
-						<span class="icon icon-subnav icon-profile"></span>
-						<span>User Management</span>
-					</dd>
-				</a>
-				<a href="#" th:href="@{/admin/settings}">
-					<dd class="n-list-group-item" th:classappend="${menu == 'settings'} ? selected : ''" style="border-top-left-radius:0px; border-top-right-radius:0px;">
-						<span class="icon icon-regions icon-settings"></span>
-						<span>System Management</span>
-					</dd>
-				</a>
-		</div>
-	</dl>
+<div class="row n-banner-2nd">
+	<ul class="nav n-banner-nav n-banner-tabs">
+		<li class="n-banner-3Link active" id="nav_download">
+			<a href="" target="main-content" data-item="item2"><span>Explore</span></a>
+		</li>
+		<li class="n-banner-3Link" id="nav_get_started">
+			<a href="/uid/projects" target="main-content" data-item="item3"><span>My Projects</span></a>
+		</li>
+	</ul>
+
+	<div class="n-banner-2nd-gray-to-blue hidden-xs hidden-on-blue-detached">
+		<div class="gray-mask"></div>
+		<div class="blue-mask"></div>
+		<div class="gray-corner"></div>
+		<div class="blue-corner"></div>
+	</div>
 </div>

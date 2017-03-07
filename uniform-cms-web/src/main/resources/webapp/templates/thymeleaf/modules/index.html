@@ -3,5 +3,133 @@
       layout:decorator="layout/default/layout" th:with="menu='site'">
 	
 <th:block layout:fragment="content">
+
+    <!-- Styles must be moved to css file -->
+    <style>
+        ul { list-style-type: none; margin: 0; padding: 0}
+        .filter-list li { position: relative; }
+        .filter-list li span.item { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 70%; display: block }
+        .filter-list li span.star { position: absolute; top: 2px; right: 0; bottom: 2px; z-index: -1; display: inline-block; background: #C8C9D1;}
+    </style>
+
+    <div class="col-md-2">
+        <div>
+            <div style="margin-bottom: 10px">
+                <svg aria-hidden="true" style="vertical-align: middle" class="octicon octicon-flame" height="32" width="22" version="1.1" viewBox="0 0 12 16"><path fill-rule="evenodd" d="M5.05.31c.81 2.17.41 3.38-.52 4.31C3.55 5.67 1.98 6.45.9 7.98c-1.45 2.05-1.7 6.53 3.53 7.7-2.2-1.16-2.67-4.52-.3-6.61-.61 2.03.53 3.33 1.94 2.86 1.39-.47 2.3.53 2.27 1.67-.02.78-.31 1.44-1.13 1.81 3.42-.59 4.78-3.42 4.78-5.56 0-2.84-2.53-3.22-1.25-5.61-1.52.13-2.03 1.13-1.89 2.75.09 1.08-1.02 1.8-1.86 1.33-.67-.41-.66-1.19-.06-1.78C8.18 5.31 8.68 2.45 5.05.32L5.03.3l.02.01z"></path></svg>
+                <span style="line-height: 30px">Popular Projects</span>
+            </div>
+            <div>
+                <ul class="filter-list">
+                    <li>
+                        <span class="item">NetAct Component Directory Component DIrectory</span>
+                        <span class="star" style="width: 23%">
+                            <!--<svg aria-hidden="true" class="octicon octicon-star" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74z"></path></svg>-->
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="panel panel-shadow panel-blue-cap">
+            <div class="panel-heading panel-heading-transparent"><h1>Project showcases</h1></div>
+            <div class="panel-body" style="padding: 0 10px 20px 10px;">
+                <div id="table-filter" class="grid-alternating-rows n-table-hover n-jqxgrid-table n-grid-paging "></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" th:inline="javascript">
+		/*<![CDATA[*/
+		$(function () {
+		    loadData();
+		});
+
+        function loadData() {
+            $.ajax(openApiContextPath + "/projects/", {
+				data: {},
+				type: 'GET',
+				success: function(rsp) {
+					var ret = eval(rsp);
+					if (ret.data != null) {
+						polishTable(rebuildData(ret.data));
+					}
+
+					disableAjaxLoading();
+				},
+				beforeSend: function(){
+					enableAjaxLoading("Loading Data...");
+				},
+				error: function(rsp) {
+					disableAjaxLoading();
+				}
+			});
+        }
+
+        function rebuildData (data) {
+			if (data != null) {
+				for (var i = 0; i < data.length; i++) {
+					if (data[i].creationTime != null) {
+						var date = new Date();
+						date.setTime(data[i].creationTime);
+						data[i].creationTime = date.Format('yyyy-MM-dd hh:mm:ss');
+
+						// updateTime must be replaced with valid property
+						data[i].updateTime = data[i].creationTime;
+					} else {
+						data[i].creationTime = "---";
+						data[i].updateTime = "---";
+					}
+				}
+			}
+			return data;
+		}
+
+        function polishTable(data) {
+            var columns = [
+                {text: 'ID', datafield: 'id', hidden: true},
+                {text: 'Project Name', datafield: 'name', align: 'left', filterable: true},
+                {text: 'Project Description', datafield: 'description', align: 'left'},
+                {text: 'Project Owner', datafield: 'owner', align: 'left'},
+                {text: 'Creation Time', datafield: 'creationTime', width: 180, cellsalign:'center', align: 'center'},
+                {text: 'Last Update Time', datafield: 'updateTime', width: 180, cellsalign:'center', align: 'center'}
+            ];
+
+            var source = { localdata: data, datatype: "array"};
+            var dataAdapter = new $.jqx.dataAdapter(source);
+
+            $("#table-filter").jqxGrid({
+               width: '100%',
+               height: 480,
+               source: dataAdapter,
+               columnsResize: true,
+               columnsreorder: true,
+               pageable: true,
+               selectionmode: 'singleRow',
+               columns: columns,
+               filterable: true,
+               showfilterrow: true,
+               sortable: true,
+               altRows: true,
+               enableBrowserSelection: true,
+               autoshowcolumnsmenubutton: true,
+               altRows: true,
+               scrollBarSize: 8,
+               pagerheight: 40,
+               rowsheight: 26,
+               columnsheight: 26,
+               pagerrenderer: $.grid.pagerrenderer.bind(null, "#table-filter", true),
+               handlekeyboardnavigation: function (e)
+               {
+                   return $.grid.handlekeyboardnavigation(e);
+               },
+               ready: function()
+               {
+                    disableAjaxLoading();
+               }
+           });
+        }
+		/*]]>*/
+    </script>
 </th:block>
 </html>

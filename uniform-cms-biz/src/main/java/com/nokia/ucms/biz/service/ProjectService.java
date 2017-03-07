@@ -93,6 +93,7 @@ public class ProjectService
 
             projectInfo.setTableName(makeProjectDataTableName(projectName));
             projectInfo.setCreationTime(new Date());
+            projectInfo.setLastUpdateTime(projectInfo.getCreationTime());
             Integer result = projectInfoRepository.addProjectInfo(projectInfo);
             if (result > 0)
             {
