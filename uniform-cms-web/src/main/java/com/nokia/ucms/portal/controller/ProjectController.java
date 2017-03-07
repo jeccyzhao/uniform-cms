@@ -35,34 +35,39 @@ public class ProjectController extends BaseController
     public String showProject(@PathVariable String projectName, Model model)
     {
         setBasicInfoInModel(projectName, model);
-        return "modules/projects/projectPage";
+        return getModulePage("projectPage");
     }
 
     @RequestMapping("/{projectName}/tracelog")
     public String showProjectTrace(@PathVariable String projectName, Model model)
     {
         setBasicInfoInModel(projectName, model);
-        return "modules/projects/projectTrace";
+        return getModulePage("projectTrace");
     }
 
     @RequestMapping("/{projectName}/columns")
     public String showProjectColumns(@PathVariable String projectName, Model model)
     {
         setBasicInfoInModel(projectName, model);
-        return "modules/projects/projectColumn";
+        return getModulePage("projectColumn");
     }
 
     @RequestMapping("/{projectName}/tags")
     public String showProjectTags(@PathVariable String projectName, Model model)
     {
         setBasicInfoInModel(projectName, model);
-        return "modules/projects/projectTag";
+        return getModulePage("projectTag");
     }
 
     @RequestMapping("/{projectName}/authorization")
     public String showProjectAuthorization(@PathVariable String projectName, Model model)
     {
         setBasicInfoInModel(projectName, model);
-        return "modules/projects/projectAuthorization";
+        return getModulePage("projectAuthorization");
+    }
+
+    protected String getModulePath ()
+    {
+        return "modules/projects";
     }
 }

@@ -81,4 +81,9 @@ public class ProjectColumnApiController extends BaseController
         // 2. remove project column entry
         return createEmptyQueryResult();
     }
+
+    protected String getModulePath ()
+    {
+        return null;
+    }
 }

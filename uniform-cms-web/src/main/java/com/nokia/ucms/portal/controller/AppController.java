@@ -13,7 +13,11 @@ public class AppController extends BaseController
     @RequestMapping("/")
     public String home()
     {
-        return "modules/index";
+        return getModulePage("index");
     }
 
+    protected String getModulePath ()
+    {
+        return "modules";
+    }
 }

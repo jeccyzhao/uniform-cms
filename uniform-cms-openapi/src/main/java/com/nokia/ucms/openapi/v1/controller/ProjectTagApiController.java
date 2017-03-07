@@ -56,4 +56,9 @@ public class ProjectTagApiController extends BaseController
         // TODO
         return createEmptyQueryResult();
     }
+
+    protected String getModulePath ()
+    {
+        return null;
+    }
 }

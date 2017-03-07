@@ -89,4 +89,8 @@ public class ProjectApiController extends BaseController
         return createEmptyQueryResult();
     }
 
+    protected String getModulePath ()
+    {
+        return null;
+    }
 }

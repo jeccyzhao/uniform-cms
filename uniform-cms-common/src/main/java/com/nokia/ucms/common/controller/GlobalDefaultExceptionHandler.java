@@ -21,4 +21,9 @@ public class GlobalDefaultExceptionHandler extends BaseController
     {
         return createErrorQueryResult(ex);
     }
+
+    protected String getModulePath ()
+    {
+        return null;
+    }
 }

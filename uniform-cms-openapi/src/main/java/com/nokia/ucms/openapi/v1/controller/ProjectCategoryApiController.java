@@ -53,4 +53,9 @@ public class ProjectCategoryApiController extends BaseController
         // TODO
         return createEmptyQueryResult();
     }
+
+    protected String getModulePath ()
+    {
+        return null;
+    }
 }
