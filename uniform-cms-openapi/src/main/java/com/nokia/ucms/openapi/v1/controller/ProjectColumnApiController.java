@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Created by x36zhao on 2017/3/6.
  */
@@ -22,15 +24,21 @@ public class ProjectColumnApiController extends BaseController
     private ProjectService projectService;
 
     @RequestMapping(path="", method= RequestMethod.GET)
-    public @ResponseBody ApiQueryResult<ProjectColumn> getProjectColumn(
+    public @ResponseBody ApiQueryResult<List<ProjectColumn>> getProjectColumn(
             @PathVariable Integer projectId,
             @RequestParam(required = false) String columnName)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter getProjectColumn - [projectId: %d, columnName: %s]", projectId, columnName));
 
-        // TODO
-        return createEmptyQueryResult();
+        if (columnName != null && !"".equals(columnName))
+        {
+            return new ApiQueryResult<List<ProjectColumn>>(
+                    projectService.getProjectColumnsByName(columnName));
+        }
+
+        return new ApiQueryResult<List<ProjectColumn>>(
+                projectService.getProjectColumnsByProjectId(projectId));
     }
 
     @RequestMapping(path="", method= RequestMethod.PUT)

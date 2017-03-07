@@ -52,6 +52,48 @@ public class ProjectService
         }
     }
 
+    public List<ProjectColumn> getProjectColumnsByProjectName (String projectName) throws ServiceException
+    {
+        if (projectName != null && !"".equals(projectName))
+        {
+            ProjectInfo projectInfo = projectInfoRepository.getProjectInfoByName(projectName);
+            if (projectInfo != null)
+            {
+                return projectColumnRepository.getColumnsByProjectName(projectName);
+            }
+            else
+            {
+                throw new ServiceException(String.format("Project '%s' does not exist", projectName));
+            }
+        }
+
+        throw new ServiceException("Project name cannot be empty");
+    }
+
+    public List<ProjectColumn> getProjectColumnsByName (String columnName) throws ServiceException
+    {
+
+        return null;
+    }
+
+    public List<ProjectColumn> getProjectColumnsByProjectId (Integer projectId) throws ServiceException
+    {
+        if (projectId != null && projectId > 0)
+        {
+            ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
+            if (projectInfo != null)
+            {
+                return projectColumnRepository.getColumnsByProjectId(projectId);
+            }
+            else
+            {
+                throw new ServiceException(String.format("Project '%d' does not exist", projectId));
+            }
+        }
+
+        throw new ServiceException("Project id cannot be empty");
+    }
+
     public ProjectInfo getProjectById (Integer projectId) throws ServiceException
     {
         ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
@@ -127,8 +169,8 @@ public class ProjectService
             if (projectInfo != null)
             {
                 String columnName = projectColumn.getColumnName();
-                ProjectColumn entity = projectColumnRepository.getColumnByName(columnName, projectInfo.getId());
-                if (entity == null)
+                List<ProjectColumn> entity = projectColumnRepository.getColumnsByColumnName(columnName, projectInfo.getId());
+                if (entity == null || entity.size() == 0)
                 {
                     projectColumn.setColumnId(makeProjectColumnFieldId(columnName));
                     Integer result = projectColumnRepository.addProjectColumn(projectColumn);
@@ -142,7 +184,7 @@ public class ProjectService
                 }
                 else
                 {
-                    throw new ServiceException(String.format("Project column '%s' already exists", entity.getColumnName()));
+                    throw new ServiceException(String.format("Project column '%s' already exists", columnName));
                 }
             }
         }

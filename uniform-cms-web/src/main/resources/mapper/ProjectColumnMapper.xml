@@ -15,15 +15,15 @@
     </resultMap>
 
     <select id="getColumnsByProjectId" parameterType="java.lang.Integer" resultMap="rs_projectColumn">
-        SELECT * FROM `t_project_column` WHERE `p_id` = #{projectId}
+        SELECT * FROM `t_project_column` WHERE `p_id` = #{projectId} ORDER BY `col_seq` ASC
     </select>
 
     <select id="getColumnsByProjectName" parameterType="java.lang.String" resultMap="rs_projectColumn">
-        SELECT * FROM `t_project_column` WHERE `p_id` = (SELECT id FROM `t_project` WHERE `p_name` = #{projectName})
+        SELECT * FROM `t_project_column` WHERE `p_id` = (SELECT id FROM `t_project` WHERE `p_name` = #{projectName}) ORDER BY `col_seq` ASC
     </select>
 
-    <select id="getColumnByName" resultMap="rs_projectColumn">
-        SELECT * FROM `t_project_column` WHERE `col_name` = #{name} AND `p_id` = #{projectId}
+    <select id="getColumnsByColumnName" resultMap="rs_projectColumn">
+        SELECT * FROM `t_project_column` WHERE `col_name` = #{name} AND `p_id` = #{projectId} ORDER BY `col_seq` ASC
     </select>
 
     <insert id="addProjectColumn" parameterType="ProjectColumn" useGeneratedKeys="true" keyProperty="id">

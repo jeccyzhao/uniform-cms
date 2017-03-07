@@ -1,6 +1,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout/default/layout" th:with="subTitle=${' - ' + project.name},subTitle=${' - ' + project.name}">
+      layout:decorator="layout/default/layout" th:with="subTitle=${project.name}, menu='columns'">
 	
 <th:block layout:fragment="content">
     <div class="col-md-2">
@@ -8,31 +8,44 @@
     </div>
     <div class="col-md-10">
         <div class="panel panel-shadow panel-blue-cap">
-            <div class="panel-heading panel-heading-transparent" style="height: 66px">
-                <h1 th:text="${'Project Columns - ' + project.name}" style="line-height: 30px"></h1>
+            <div class="panel-heading panel-heading-transparent">
+                <h1 th:text="'\'' + ${project.name} + '\' Columns'" style="line-height: 30px"></h1>
             </div>
             <div class="panel-body" style="padding: 0 10px 20px 10px;">
+                <div class="pannel-toolbar" style="overflow: hidden">
+                    <div style="float: left;">
+                        <a href="#" class="btn btn-icon-button"
+                           data-backdrop="true" data-toggle="modal" id="op_add">
+                            <span class="icon icon-add"></span><span>Create</span>
+                        </a>
+                        <a href="javascript:void(0);" class="btn btn-icon-button" disabled="true" id="btnUpdate">
+                            <span class="icon icon-edit"></span><span>Update</span>
+                        </a>
+                    </div>
+                </div>
                 <div id="table-filter" class="grid-alternating-rows n-table-hover n-jqxgrid-table n-grid-paging "></div>
             </div>
         </div>
     </div>
 
+    <div th:include="modules/projects/popup/popupProjectColumn"></div>
+
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
         $(function () {
-            // oadData("table-filter");
+            loadData("table-filter");
+            $("#op_add").click(function() { showPopupDialog('m_projectColumn'); });
         });
 
         function loadData(container_id) {
             var projectId = /*[[${project.id}]]*/;
-            $.ajax(openApiContextPath + "/projects/" + projectId, {
+            $.ajax(openApiContextPath + "/projects/" + projectId + "/columns", {
                     data: {},
                     type: 'GET',
                     success: function(rsp) {
                     var ret = eval(rsp);
                     if (ret.data != null) {
-                        var dataAndColumns = constructDataAndColumns(ret.data.rows);
-                        initJqxTable(container_id, dataAndColumns.columns, rebuildData(dataAndColumns.data));
+                        initJqxTable(container_id, constructColumns(), ret.data);
                     }
 
                     disableAjaxLoading();
@@ -46,49 +59,17 @@
             });
         }
 
-        function rebuildData (data) {
-            if (data != null) {
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].creationTime != null) {
-                        var date = new Date();
-                        date.setTime(data[i].creationTime);
-                        data[i].creationTime = date.Format('yyyy-MM-dd hh:mm:ss');
-
-                        // updateTime must be replaced with valid property
-                        data[i].updateTime = data[i].creationTime;
-                    } else {
-                        data[i].creationTime = "---";
-                        data[i].updateTime = "---";
-                    }
-                }
-            }
-            return data;
-        }
-
-        function constructDataAndColumns (rows) {
-            var cellColumnInitialized = false;
-            var result = { data: [], columns: [] };
+        function constructColumns () {
             var columns = [
                 {text: 'ID', datafield: 'id', hidden: true},
-                {text: 'Category Name', datafield: 'categoryName', align: 'left', filterable: true}
+                {text: 'Column Name', datafield: 'columnName', cellsalign: 'left', align: 'center', filterable: true},
+                {text: 'Column Remark', datafield: 'columnRemark', cellsalign: 'left', align: 'center', filterable: true},
+                {text: 'Column Length', datafield: 'columnLength', cellsalign:'center', align: 'center'},
+                {text: 'Example', datafield: 'columnDataExample', cellsalign: 'left', align: 'center'},
+                {text: 'Visibility', datafield: 'visible', cellsalign:'center', align: 'center'},
+                {text: 'Order', datafield: 'seq', cellsalign:'center', align: 'center'}
             ];
-            for (var rowIndex in rows) {
-                var row = rows[rowIndex];
-                result.data.push( { id: row.id, categoryName: row.categoryName, creationTime: row.creationTime, updateTime: row.lastUpdateTime} );
-                if (!cellColumnInitialized) {
-                    var cells = row.cells;
-                    for (var cellIndex in cells) {
-                        var cell = cells[cellIndex];
-                        result.columns.push( { text: cell.name, datafield: cell.id } );
-                        result.data[rowIndex][cell.id] = cell.value;
-                    }
-                }
-                cellColumnInitialized = true;
-            }
-
-            result.columns.push({text: 'Creation Time', datafield: 'creationTime', align: 'center', filterable: true});
-            result.columns.push({text: 'Last Update Time', datafield: 'updateTime', align: 'center', filterable: true});
-            return result;
+            return columns;
         }
 
         /*]]>*/

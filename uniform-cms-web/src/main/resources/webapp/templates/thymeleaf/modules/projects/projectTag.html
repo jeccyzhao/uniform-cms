@@ -1,6 +1,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout/default/layout" th:with="subTitle=${' - ' + project.name},subTitle=${' - ' + project.name}">
+      layout:decorator="layout/default/layout" th:with="subTitle=${project.name}, menu='tags'">
 	
 <th:block layout:fragment="content">
     <div class="col-md-2">

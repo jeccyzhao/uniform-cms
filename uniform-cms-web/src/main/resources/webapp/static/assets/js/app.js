@@ -79,3 +79,8 @@ function initJqxTable (container_id, columns, data, width, height)
         }
     });
 }
+
+function showPopupDialog(dialog_id)
+{
+    $("#" + dialog_id).modal('show');
+}
