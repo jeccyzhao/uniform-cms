@@ -62,14 +62,15 @@
         function constructColumns () {
             var columns = [
                 {text: 'ID', datafield: 'id', hidden: true},
-                {text: '', columntype: 'textbox', datafield: 'edit',
-                    filtertype: 'input', width: 24, filterable: false, editable: false},
                 {text: 'Visible', datafield: 'visible', cellsalign:'center', align: 'center', width: 60},
                 {text: 'Column Name', datafield: 'columnName', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Column Remark', datafield: 'columnRemark', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Example', datafield: 'columnDataExample', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Column Length', datafield: 'columnLength', cellsalign:'center', align: 'center', width: 130, filterable: true},
-                {text: 'Order', datafield: 'seq', cellsalign:'center', align: 'center', width: 80}
+                {text: 'Order', datafield: 'seq', cellsalign:'center', align: 'center', width: 80},
+                {text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false},
+                {text: 'U', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false},
+                {text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false}
             ];
             return columns;
         }
@@ -83,7 +84,9 @@
                             (data[i].visible == 0 ? "unknown" : "cleared") + "'></span></div>";
                     }
 
-                    data[i].edit = '<div class="n-row-indicated" onclick="showColumnUpdate();"><span class="icon icon-edit"></span></div>';
+                    data[i].undo = '<div class="n-row-indicated" onclick="showColumnUpdate();" title="Undo"><span class="icon icon-undo"></span></div>';
+                    data[i].edit = '<div class="n-row-indicated" onclick="showColumnUpdate();" title="Save"><span class="icon icon-save-as"></span></div>';
+                    data[i].delete = '<div class="n-row-indicated" onclick="showColumnUpdate();" title="Delete"><span class="icon icon-delete"></span></div>';
                 }
             }
             return data;
