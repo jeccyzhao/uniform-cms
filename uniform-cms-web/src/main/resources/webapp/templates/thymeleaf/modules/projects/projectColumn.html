@@ -45,7 +45,7 @@
                     success: function(rsp) {
                     var ret = eval(rsp);
                     if (ret.data != null) {
-                        initJqxTable(container_id, constructColumns(), ret.data);
+                        initJqxTable(container_id, constructColumns(), rebuildColumnData(ret.data));
                     }
 
                     disableAjaxLoading();
@@ -62,14 +62,27 @@
         function constructColumns () {
             var columns = [
                 {text: 'ID', datafield: 'id', hidden: true},
+                {text: 'Visible', datafield: 'visible', cellsalign:'center', align: 'center', width: 60},
                 {text: 'Column Name', datafield: 'columnName', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Column Remark', datafield: 'columnRemark', cellsalign: 'left', align: 'center', filterable: true},
-                {text: 'Column Length', datafield: 'columnLength', cellsalign:'center', align: 'center'},
-                {text: 'Example', datafield: 'columnDataExample', cellsalign: 'left', align: 'center'},
-                {text: 'Visibility', datafield: 'visible', cellsalign:'center', align: 'center'},
-                {text: 'Order', datafield: 'seq', cellsalign:'center', align: 'center'}
+                {text: 'Example', datafield: 'columnDataExample', cellsalign: 'left', align: 'center', filterable: true},
+                {text: 'Column Length', datafield: 'columnLength', cellsalign:'center', align: 'center', width: 130, filterable: true},
+                {text: 'Order', datafield: 'seq', cellsalign:'center', align: 'center', width: 80}
             ];
             return columns;
+        }
+
+        function rebuildColumnData(data) {
+            if (data != null) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].visible != null) {
+                        data[i].visible = "<div class='n-cell-icon'><span title='" +
+                            (data[i].visible == 0 ? "Invisible" : "Visible") + "' class='icon icon-fault-" +
+                            (data[i].visible == 0 ? "unknown" : "cleared") + "'></span></div>";
+                    }
+                }
+            }
+            return data;
         }
 
         /*]]>*/

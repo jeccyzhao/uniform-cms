@@ -50,7 +50,7 @@ function initJqxTable (container_id, columns, data, width, height)
 
     $("#" + container_id).jqxGrid({
         width: width != undefined ? width : '100%',
-        height: height != undefined ? height : 480,
+        height: height != undefined ? height : 550,
         source: dataAdapter,
         columnsResize: true,
         columnsreorder: true,
@@ -66,6 +66,7 @@ function initJqxTable (container_id, columns, data, width, height)
         altRows: true,
         scrollBarSize: 8,
         pagerheight: 40,
+        pagesize: 20,
         rowsheight: 26,
         columnsheight: 26,
         pagerrenderer: $.grid.pagerrenderer.bind(null, "#" + container_id, true),
@@ -82,5 +83,12 @@ function initJqxTable (container_id, columns, data, width, height)
 
 function showPopupDialog(dialog_id)
 {
+    $("#" + dialog_id).modal('show');
+}
+
+function showErrorDialog(errorMessage, dialog_id)
+{
+    var dialog_id = dialog_id ? dialog_id : "ErrorDialog";
+    $("#" + dialog_id).find("#errorMessage").html(errorMessage);
     $("#" + dialog_id).modal('show');
 }

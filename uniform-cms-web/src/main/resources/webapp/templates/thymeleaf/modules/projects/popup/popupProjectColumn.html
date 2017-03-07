@@ -27,7 +27,7 @@
                     <div class="form-group n-login-textfields">
                         <label class="col-sm-3 control-label">Column Length:</label>
                         <div class="col-sm-9  has-feedback">
-                            <input type="text" class="form-control n-inputfield" id="exInputColLength" placeholder="60" />
+                            <input type="text" class="form-control n-inputfield" id="exInputColLength" value="60" />
                             <a class="form-control-feedback"><span class="icon "></span></a>
                         </div>
                     </div>
@@ -83,6 +83,7 @@
                         loadData("table-filter");
                         $('#m_projectColumn').modal('hide');
                     } else {
+                        showErrorDialog(ret.error);
                     }
 
                     disableAjaxLoading();

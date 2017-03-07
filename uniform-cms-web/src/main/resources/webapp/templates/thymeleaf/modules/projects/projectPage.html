@@ -31,9 +31,11 @@
                     type: 'GET',
                     success: function(rsp) {
                     var ret = eval(rsp);
-                    if (ret.data != null) {
+                    if (ret.success) {
                         var dataAndColumns = constructDataAndColumns(ret.data.rows);
                         initJqxTable(container_id, dataAndColumns.columns, rebuildData(dataAndColumns.data));
+                    } else {
+                        showErrorDialog(ret.error);
                     }
 
                     disableAjaxLoading();

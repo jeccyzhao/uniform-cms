@@ -33,5 +33,5 @@ public class ProjectColumn extends BaseEntity
     // default as visibility if not set
     private Integer visible = STAT_VISIBLE;
 
-    private Integer seq;
+    private Integer seq = 0;
 }
