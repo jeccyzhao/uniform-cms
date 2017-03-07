@@ -15,9 +15,9 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/openapi/v1/projects/{pid}/tags")
-public class ProjectTagController extends BaseController
+public class ProjectTagApiController extends BaseController
 {
-    private static Logger LOGGER = Logger.getLogger(ProjectTagController.class);
+    private static Logger LOGGER = Logger.getLogger(ProjectTagApiController.class);
 
     @Autowired
     private ProjectService projectService;

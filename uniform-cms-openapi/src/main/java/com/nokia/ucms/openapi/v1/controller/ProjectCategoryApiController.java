@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/openapi/v1/projects/{pid}/categories")
-public class ProjectCategoryController extends BaseController
+public class ProjectCategoryApiController extends BaseController
 {
-    private static Logger LOGGER = Logger.getLogger(ProjectCategoryController.class);
+    private static Logger LOGGER = Logger.getLogger(ProjectCategoryApiController.class);
 
     @Autowired
     private ProjectService projectService;

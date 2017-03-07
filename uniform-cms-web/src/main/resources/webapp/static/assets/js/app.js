@@ -42,3 +42,40 @@ Date.prototype.Format = function(fmt)
   fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
   return fmt;   
 }
+
+function initJqxTable (container_id, columns, data, width, height)
+{
+    var source = { localdata: data, datatype: "array"};
+    var dataAdapter = new $.jqx.dataAdapter(source);
+
+    $("#" + container_id).jqxGrid({
+        width: width != undefined ? width : '100%',
+        height: height != undefined ? height : 480,
+        source: dataAdapter,
+        columnsResize: true,
+        columnsreorder: true,
+        pageable: true,
+        selectionmode: 'singleRow',
+        columns: columns,
+        filterable: true,
+        showfilterrow: true,
+        sortable: true,
+        altRows: true,
+        enableBrowserSelection: true,
+        autoshowcolumnsmenubutton: true,
+        altRows: true,
+        scrollBarSize: 8,
+        pagerheight: 40,
+        rowsheight: 26,
+        columnsheight: 26,
+        pagerrenderer: $.grid.pagerrenderer.bind(null, "#" + container_id, true),
+        handlekeyboardnavigation: function (e)
+        {
+           return $.grid.handlekeyboardnavigation(e);
+        },
+        ready: function()
+        {
+            disableAjaxLoading();
+        }
+    });
+}

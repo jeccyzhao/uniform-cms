@@ -3,15 +3,6 @@
       layout:decorator="layout/default/layout" th:with="menu='site'">
 	
 <th:block layout:fragment="content">
-
-    <!-- Styles must be moved to css file -->
-    <style>
-        ul { list-style-type: none; margin: 0; padding: 0}
-        .filter-list li { position: relative; }
-        .filter-list li span.item { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 70%; display: block }
-        .filter-list li span.star { position: absolute; top: 2px; right: 0; bottom: 2px; z-index: -1; display: inline-block; background: #C8C9D1;}
-    </style>
-
     <div class="col-md-2">
         <div>
             <div style="margin-bottom: 10px">
@@ -35,6 +26,7 @@
             <div class="panel-heading panel-heading-transparent"><h1>Project showcases</h1></div>
             <div class="panel-body" style="padding: 0 10px 20px 10px;">
                 <div id="table-filter" class="grid-alternating-rows n-table-hover n-jqxgrid-table n-grid-paging "></div>
+                <div id="table-filter1" class="grid-alternating-rows n-table-hover n-jqxgrid-table n-grid-paging "></div>
             </div>
         </div>
     </div>
@@ -42,17 +34,17 @@
     <script type="text/javascript" th:inline="javascript">
 		/*<![CDATA[*/
 		$(function () {
-		    loadData();
+		    loadData("table-filter");
 		});
 
-        function loadData() {
+        function loadData(container_id) {
             $.ajax(openApiContextPath + "/projects/", {
 				data: {},
 				type: 'GET',
 				success: function(rsp) {
 					var ret = eval(rsp);
 					if (ret.data != null) {
-						polishTable(rebuildData(ret.data));
+						polishTable(container_id, rebuildData(ret.data));
 					}
 
 					disableAjaxLoading();
@@ -67,25 +59,27 @@
         }
 
         function rebuildData (data) {
-			if (data != null) {
-				for (var i = 0; i < data.length; i++) {
-					if (data[i].creationTime != null) {
-						var date = new Date();
-						date.setTime(data[i].creationTime);
-						data[i].creationTime = date.Format('yyyy-MM-dd hh:mm:ss');
+            if (data != null) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].creationTime != null) {
+                        var date = new Date();
+                        date.setTime(data[i].creationTime);
+                        data[i].creationTime = date.Format('yyyy-MM-dd hh:mm:ss');
 
-						// updateTime must be replaced with valid property
-						data[i].updateTime = data[i].creationTime;
-					} else {
-						data[i].creationTime = "---";
-						data[i].updateTime = "---";
-					}
-				}
-			}
-			return data;
-		}
+                        // updateTime must be replaced with valid property
+                        data[i].updateTime = data[i].creationTime;
 
-        function polishTable(data) {
+                    } else {
+                        data[i].creationTime = "---";
+                        data[i].updateTime = "---";
+                    }
+                    data[i].name = "<a target='_blank' href='" + ctxPath + "/projects/" + data[i].name + "'>" + data[i].name + "</a>";
+                }
+            }
+            return data;
+        }
+
+        function polishTable (container_id, data) {
             var columns = [
                 {text: 'ID', datafield: 'id', hidden: true},
                 {text: 'Project Name', datafield: 'name', align: 'left', filterable: true},
@@ -94,40 +88,7 @@
                 {text: 'Creation Time', datafield: 'creationTime', width: 180, cellsalign:'center', align: 'center'},
                 {text: 'Last Update Time', datafield: 'updateTime', width: 180, cellsalign:'center', align: 'center'}
             ];
-
-            var source = { localdata: data, datatype: "array"};
-            var dataAdapter = new $.jqx.dataAdapter(source);
-
-            $("#table-filter").jqxGrid({
-               width: '100%',
-               height: 480,
-               source: dataAdapter,
-               columnsResize: true,
-               columnsreorder: true,
-               pageable: true,
-               selectionmode: 'singleRow',
-               columns: columns,
-               filterable: true,
-               showfilterrow: true,
-               sortable: true,
-               altRows: true,
-               enableBrowserSelection: true,
-               autoshowcolumnsmenubutton: true,
-               altRows: true,
-               scrollBarSize: 8,
-               pagerheight: 40,
-               rowsheight: 26,
-               columnsheight: 26,
-               pagerrenderer: $.grid.pagerrenderer.bind(null, "#table-filter", true),
-               handlekeyboardnavigation: function (e)
-               {
-                   return $.grid.handlekeyboardnavigation(e);
-               },
-               ready: function()
-               {
-                    disableAjaxLoading();
-               }
-           });
+            initJqxTable(container_id, columns, data);
         }
 		/*]]>*/
     </script>

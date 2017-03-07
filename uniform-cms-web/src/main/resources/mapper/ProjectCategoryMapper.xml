@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nokia.ucms.biz.repository.ProjectCategoryRepository">
+
+    <resultMap type="ProjectCategory" id="rs_projectCategory">
+        <id property="id" column="id"/>
+        <result property="projectId" column="p_id"/>
+        <result property="name" column="c_name"/>
+        <result property="description" column="c_desc"/>
+    </resultMap>
+
+    <select id="getCategoryByName" parameterType="java.lang.String" resultMap="rs_projectCategory">
+        SELECT * FROM `t_project_category` WHERE `c_name` = #{name}
+    </select>
+
+    <select id="getCategoryByProjectId" parameterType="java.lang.Integer" resultMap="rs_projectCategory">
+        SELECT * FROM `t_project_category` WHERE `p_id` = #{projectId}
+    </select>
+
+    <select id="getCategoryById" parameterType="java.lang.Integer" resultMap="rs_projectCategory">
+        SELECT * FROM `t_project_category` WHERE `id` = #{id}
+    </select>
+
+    <insert id="addCategory" parameterType="ProjectCategory" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `t_project_category` (`p_id`, `c_name`, `c_desc`)
+            VALUES (#{projectId}, #{name}, #{description})
+    </insert>
+
+    <delete id="removeCategoryById" parameterType="java.lang.Integer">
+        DELETE FROM `t_project_category` WHERE `id` = #{id}
+    </delete>
+
+</mapper>

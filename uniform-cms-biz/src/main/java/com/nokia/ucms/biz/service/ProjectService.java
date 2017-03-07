@@ -157,7 +157,7 @@ public class ProjectService
         if (projectInfo != null)
         {
             projectDataTable = new ProjectDataTableDTO();
-            projectDataTable.setProjectInfo(projectInfo);
+            projectDataTable.setProject(projectInfo);
 
             List<ProjectColumn> projectColumns = projectColumnRepository.getColumnsByProjectId(projectInfo.getId());
             if (projectColumns != null && projectColumns.size() > 0)
@@ -181,19 +181,19 @@ public class ProjectService
         if (row != null && row.size() > 0)
         {
             dataRowDTO = new ProjectDataTableRow();
-            dataRowDTO.setRowId(row.containsKey(TEMPLATE_COLUMN_ID) ? Integer.valueOf(row.get(TEMPLATE_COLUMN_ID).toString()) : null);
+            dataRowDTO.setId(row.containsKey(TEMPLATE_COLUMN_ID) ? Integer.valueOf(row.get(TEMPLATE_COLUMN_ID).toString()) : null);
             dataRowDTO.setCategoryName(row.containsKey(TEMPLATE_COLUMN_CATEGORY_NAME) ? row.get(TEMPLATE_COLUMN_CATEGORY_NAME).toString() : null);
             dataRowDTO.setCreationTime(row.containsKey(TEMPLATE_COLUMN_CREATE_TIME) ? (Date) row.get(TEMPLATE_COLUMN_CREATE_TIME) : null);
             dataRowDTO.setLastUpdateTime(row.containsKey(TEMPLATE_COLUMN_UPDATE_TIME) ? (Date) row.get(TEMPLATE_COLUMN_UPDATE_TIME) : null);
-            dataRowDTO.setData(new ArrayList());
+            dataRowDTO.setCells(new ArrayList());
             for (Map.Entry<String, Object> entry : row.entrySet())
             {
                 for (ProjectColumn column : columns)
                 {
                     if (entry.getKey().equals(column.getColumnId()))
                     {
-                        dataRowDTO.getData().add(new KeyValueEntityPair<String, String>(
-                                column.getColumnName(), entry.getValue().toString()));
+                        dataRowDTO.getCells().add(new ProjectColumnProperty(
+                                column.getColumnId(), column.getColumnName(), entry.getValue().toString()));
                         break;
                     }
                 }

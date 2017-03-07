@@ -16,9 +16,9 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/openapi/v1/projects")
-public class ProjectController extends BaseController
+public class ProjectApiController extends BaseController
 {
-    private static Logger LOGGER = Logger.getLogger(ProjectController.class);
+    private static Logger LOGGER = Logger.getLogger(ProjectApiController.class);
 
     @Autowired
     private ProjectService projectService;

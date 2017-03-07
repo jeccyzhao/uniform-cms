@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/openapi/v1/projects/{projectId}/columns")
-public class ProjectColumnController extends BaseController
+public class ProjectColumnApiController extends BaseController
 {
-    private static Logger LOGGER = Logger.getLogger(ProjectColumnController.class);
+    private static Logger LOGGER = Logger.getLogger(ProjectColumnApiController.class);
 
     @Autowired
     private ProjectService projectService;
