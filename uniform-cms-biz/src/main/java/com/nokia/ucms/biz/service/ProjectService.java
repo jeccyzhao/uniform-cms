@@ -159,7 +159,7 @@ public class ProjectService
     @Transactional
     public Integer createProjectColumn (ProjectColumn projectColumn) throws ServiceException
     {
-        if (projectColumn != null)
+        if (projectColumn != null && projectColumn.getColumnName() != null && !"".equals(projectColumn.getColumnName().trim()))
         {
             // Steps
             // 1. generate column field id
@@ -189,7 +189,7 @@ public class ProjectService
             }
         }
 
-        throw new ServiceException("Empty project column cannot be created");
+        throw new ServiceException("Project column cannot be created due to missing properties, e.g. column name, length and etc.");
     }
 
     public ProjectDataTableDTO getProjectData(Integer projectId, Integer categoryId)
