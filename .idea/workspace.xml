@@ -1,28 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f8ed1091-f518-4ba5-b752-7df1e9153e79" name="Default" comment="some base classes added">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectInfo.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectInfoRepository.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/ProjectInfoMapper.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/Project.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectRepository.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+    <list default="true" id="f8ed1091-f518-4ba5-b752-7df1e9153e79" name="Default" comment="keep some properties not exposed to user in the returned json string">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectTrace.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectTraceRepository.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/uniform-cms-biz/pom.xml" afterPath="$PROJECT_DIR$/uniform-cms-biz/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/constants/Constants.java" afterPath="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/constants/Constants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectCategory.java" afterPath="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectCategory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectColumn.java" afterPath="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectColumn.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/DatabaseAdminRepository.java" afterPath="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/DatabaseAdminRepository.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/service/ProjectService.java" afterPath="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/service/ProjectService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/uniform-cms-common/pom.xml" afterPath="$PROJECT_DIR$/uniform-cms-common/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/entity/BaseEntity.java" afterPath="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/entity/BaseEntity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectController.java" afterPath="$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/uniform-cms-web/pom.xml" afterPath="$PROJECT_DIR$/uniform-cms-web/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/uniform-cms-web/src/main/resources/application.properties" afterPath="$PROJECT_DIR$/uniform-cms-web/src/main/resources/application.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/uniform-cms-web/src/main/resources/log4j.properties" afterPath="$PROJECT_DIR$/uniform-cms-web/src/main/resources/log4j.properties" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/TableMapper.xml" afterPath="$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/DatabaseAdminMapper.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -47,87 +29,112 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ProjectService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/service/ProjectService.java">
+      <file leaf-file-name="projectPage.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/modules/projects/projectPage.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="43" column="13" lean-forward="true" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="13" />
+            <state relative-caret-position="34">
+              <caret line="2" column="75" lean-forward="false" selection-start-line="2" selection-start-column="75" selection-end-line="2" selection-end-column="75" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#div#1;n#th:block#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#th:block#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#div#0;n#div#1;n#th:block#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Constants.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/constants/Constants.java">
+      <file leaf-file-name="ProjectApiController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectApiController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+            <state relative-caret-position="425">
+              <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DatabaseAdminMapper.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/DatabaseAdminMapper.xml">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/modules/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="22" column="4" lean-forward="true" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
-              <folding />
+            <state relative-caret-position="289">
+              <caret line="75" column="0" lean-forward="false" selection-start-line="75" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#th:block#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#svg#0;n#div#0;n#div#0;n#div#0;n#th:block#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#div#0;n#th:block#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#1;n#li#0;n#ul#0;n#div#1;n#div#0;n#div#0;n#th:block#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProjectController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="75" column="34" lean-forward="true" selection-start-line="75" selection-start-column="34" selection-end-line="75" selection-end-column="34" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ProjectInfoMapper.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/ProjectInfoMapper.xml">
+      <file leaf-file-name="ProjectTrace.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectTrace.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="323">
-              <caret line="19" column="61" lean-forward="false" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="61" />
+              <caret line="19" column="27" lean-forward="false" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProjectTraceRepository.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectTraceRepository.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProjectInfoRepository.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectInfoRepository.java">
+      <file leaf-file-name="User.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/User.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="153">
+              <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DatabaseAdminRepository.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/DatabaseAdminRepository.java">
+      <file leaf-file-name="navigation.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/layout/default/fragments/navigation.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="29" lean-forward="true" selection-start-line="18" selection-start-column="29" selection-end-line="18" selection-end-column="29" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="102">
+              <caret line="6" column="55" lean-forward="false" selection-start-line="6" selection-start-column="55" selection-end-line="6" selection-end-column="55" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProjectColumnRepository.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectColumnRepository.java">
+      <file leaf-file-name="header.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/layout/common/fragments/header.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="17" lean-forward="false" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+            <state relative-caret-position="323">
+              <caret line="19" column="4" lean-forward="true" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProjectTagRepository.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectTagRepository.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="banner.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/layout/default/fragments/banner.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="9" column="125" lean-forward="false" selection-start-line="9" selection-start-column="117" selection-end-line="9" selection-end-column="125" />
               <folding />
             </state>
           </provider>
@@ -158,6 +165,11 @@
       <find>lombok</find>
       <find>mybatis</find>
       <find>logging.level</find>
+      <find>clone</find>
+      <find>eturn</find>
+      <find>getProjectInfoById</find>
+      <find>ctxPath</find>
+      <find>dataAdapter</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -176,57 +188,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/entity/EntityPair.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/dto/RichResponseEntity.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/dto/ApiResponseResult.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/dto/UCmsApiResult.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/dto/ApiResult.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/dto/QueryResult.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/CommonConfig.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/config/WebSecurityConfig.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/auth/WebSecurityConfig.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/BizConfig.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/service/TableService.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/java/com/nokia/ucms/portal/auth/WebSecurityConfig.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectCategory.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectColumn.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectColumnRepository.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectCategoryRepository.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/java/com/nokia/ucms/portal/controller/AdminController.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/dto/ApiQueryResult.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/dto/TableColumn.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/java/com/nokia/ucms/portal/controller/ProjectController.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/java/com/nokia/ucms/portal/controller/AppController.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/ApiConfig.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/entity/ApiQueryResult.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-openapi/pom.xml" />
-        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/java/com/nokia/ucms/portal/PortalApplication.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/OpenApiConfig.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/TableRepository.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/service/DatabaseService.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/dto/TableColumnDTO.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectGrants.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/Role.java" />
         <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/User.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/TableMapper.xml" />
-        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/application.properties" />
-        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/log4j.properties" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/Project.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/ProjectMapper.xml" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/DatabaseAdminRepository.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectRepository.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/ProjectInfoMapper.xml" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectInfoRepository.java" />
         <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/entity/BaseEntity.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-common/pom.xml" />
-        <option value="$PROJECT_DIR$/uniform-cms-web/pom.xml" />
-        <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/pom.xml" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectInfo.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectController.java" />
-        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/constants/Constants.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/dto/ProjectInfoDTO.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/ProjectTagMapper.xml" />
+        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectTagRepository.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectTagController.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectCategoryController.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectColumnRepository.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/ProjectColumnMapper.xml" />
+        <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/controller/BaseController.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/controller/GlobalDefaultExceptionHandler.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectTag.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectColumnController.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectCategory.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/ProjectCategoryMapper.xml" />
+        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectCategoryRepository.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectColumn.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/entity/ApiQueryResult.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectInfoRepository.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/dto/ProjectDataRow.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/DatabaseAdminRepository.java" />
         <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/DatabaseAdminMapper.xml" />
+        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/constants/Constants.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/entity/EntityPair.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/dto/ProjectDataTableRowDTO.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/dto/ProjectDataRowDTO.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectController.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/entity/KeyValueEntityPair.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/layout/common/fragments/banner_logo.html" />
+        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/layout/default/layout.html" />
+        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectInfo.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/ProjectInfoMapper.xml" />
+        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/dto/ProjectDataTableDTO.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/static/assets/js/app.js" />
+        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/java/com/nokia/ucms/portal/controller/AppController.java" />
         <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/service/ProjectService.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectApiController.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectApiCategoryController.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectColumnApiController.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectCategoryApiController.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectTagApiController.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/java/com/nokia/ucms/portal/controller/ProjectController.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/static/assets/css/style.css" />
+        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/modules/projects/menu/projectMenu.html" />
+        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/layout/common/fragments/header.html" />
+        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/layout/default/fragments/banner.html" />
+        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/modules/projects/projectPage.html" />
+        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/layout/default/fragments/navigation.html" />
+        <option value="$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/modules/index.html" />
+        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectTrace.java" />
+        <option value="$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectTraceRepository.java" />
       </list>
     </option>
   </component>
@@ -246,7 +258,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1612" />
+    <option name="width" value="1616" />
     <option name="height" value="876" />
   </component>
   <component name="ProjectLevelVcsManager">
@@ -267,8 +279,315 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-web">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-web">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-web">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-web">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src/main">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="resources">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-web">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-web">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src/main">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="resources">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="webapp">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-web">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-web">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src/main">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="resources">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="mapper">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-web">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-web">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src/main">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="java">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="com/nokia/ucms/portal">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-web">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-web">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src/main">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="java">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="com/nokia/ucms/portal">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="controller">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-openapi">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-openapi">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-openapi">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-openapi">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src/main/java">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="com/nokia/ucms/openapi">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-openapi">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-openapi">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src/main/java">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="com/nokia/ucms/openapi">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="v1/controller">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-common">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-common">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-common">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-common">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src/main/java">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="com/nokia/ucms/common">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-common">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-common">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src/main/java">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="com/nokia/ucms/common">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="controller">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-biz">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-biz">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-biz">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="uniform-cms-biz">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src/main/java">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="com/nokia/ucms/biz">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -283,60 +602,30 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope">
-        <subPane subId="Project Files">
+      <pane id="PackagesPane">
+        <subPane>
           <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
+            <PATH_ELEMENT>
+              <option name="myItemId" value="uniform-cms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="uniform-cms-common">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="uniform-cms-common">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
+            <PATH_ELEMENT>
+              <option name="myItemId" value="uniform-cms-common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
+            <PATH_ELEMENT>
+              <option name="myItemId" value="uniform-cms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="uniform-cms-common">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
+            <PATH_ELEMENT>
+              <option name="myItemId" value="uniform-cms-common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="uniform-cms-common">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="src/main/java">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="uniform-cms-common">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="uniform-cms-common">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="src/main/java">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="com/nokia/ucms/common/entity">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com.nokia.ucms.common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -350,7 +639,7 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../temp1/biz-framework/biz-framework/pom.xml" />
-    <property name="SearchEverywhereHistoryKey" value="ProjectCon&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectController.java&#10;ProjectInfoM&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-web/src/main/resources/mapper/ProjectInfoMapper.xml&#10;Project&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/Project.java&#10;CommonC&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-common/src/main/java/com/nokia/ucms/common/CommonConfig.java" />
+    <property name="SearchEverywhereHistoryKey" value="style.&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-web/src/main/resources/webapp/static/assets/css/style.css&#10;index&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/modules/index.html&#10;Header&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/layout/common/fragments/header.html&#10;ProjectSer&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/service/ProjectService.java&#10;Project&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-web/src/main/resources/mapper/ProjectInfoMapper.xml&#10;ProjectInfo&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectInfo.java&#10;ProjectInfoM&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-web/src/main/resources/mapper/ProjectInfoMapper.xml&#10;Project*Map&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-web/src/main/resources/mapper/ProjectColumnMapper.xml&#10;EntityP&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-common/src/main/java/com/nokia/ucms/common/entity/EntityPair.java&#10;Controller&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectController.java&#10;admin&#9;PSI&#9;JAVA://com.nokia.ucms.biz.repository.DatabaseAdminRepository&#10;Project*Mapp&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-web/src/main/resources/mapper/ProjectInfoMapper.xml&#10;ProjectCategory&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectCategory.java&#10;Project*Column&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-web/src/main/resources/mapper/ProjectColumnMapper.xml&#10;ProjectCon&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectController.java&#10;Da*ma&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-web/src/main/resources/mapper/DatabaseAdminMapper.xml&#10;AppCon&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-web/src/main/java/com/nokia/ucms/portal/controller/AppController.java&#10;ProjectTagCo&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectTagController.java&#10;Databas&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-web/src/main/resources/mapper/DatabaseAdminMapper.xml&#10;ProjectInfoMap&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-web/src/main/resources/mapper/ProjectInfoMapper.xml&#10;ProjectColumn&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectColumn.java&#10;Object&#9;PSI&#9;JAVA://java.lang.Object&#10;CommonC&#9;FILE&#9;file://D:/Workspace/SVN/tools/uniform-cms/uniform-cms-common/src/main/java/com/nokia/ucms/common/CommonConfig.java" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -360,11 +649,11 @@
       <recent name="com.nokia.ucms.common.entity" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Workspace\SVN\tools\uniform-cms\uniform-cms-web\src\main\resources\webapp\templates\thymeleaf\modules\projects\menu" />
+      <recent name="D:\Workspace\SVN\tools\uniform-cms\uniform-cms-web\src\main\resources\webapp\templates\thymeleaf\modules\projects" />
       <recent name="D:\Workspace\SVN\tools\uniform-cms\uniform-cms-web\src\main\resources\mapper" />
       <recent name="D:\Workspace\SVN\tools\uniform-cms\uniform-cms-web\src\main\resources\webapp\templates\thymeleaf\modules" />
       <recent name="D:\Workspace\SVN\tools\uniform-cms\uniform-cms-web\src\main\resources\webapp\templates\thymeleaf\layout" />
-      <recent name="D:\Workspace\SVN\tools\uniform-cms\uniform-cms-web\src\main\resources\webapp\templates\thymeleaf\layout\default" />
-      <recent name="D:\Workspace\SVN\tools\uniform-cms\uniform-cms-web\src\main\resources" />
     </key>
   </component>
   <component name="RunManager" selected="Application.PortalApplication">
@@ -625,41 +914,153 @@
       <option name="project" value="LOCAL" />
       <updated>1488533142194</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add project column controller">
+      <created>1488730222582</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1488730222582</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add mapper for project column">
+      <created>1488730266357</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1488730266357</updated>
+    </task>
+    <task id="LOCAL-00004" summary="ToString (within lombok) annotation added for all entities">
+      <created>1488731560986</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1488731560986</updated>
+    </task>
+    <task id="LOCAL-00005" summary="all controllers inherit from base controller">
+      <created>1488732051805</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1488732051805</updated>
+    </task>
+    <task id="LOCAL-00006" summary="clone method added in project service">
+      <created>1488776321490</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1488776321490</updated>
+    </task>
+    <task id="LOCAL-00007" summary="logger added for openapi controllers">
+      <created>1488783432780</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1488783432780</updated>
+    </task>
+    <task id="LOCAL-00008" summary="columnDesc renamed to columnRemark and one more property added">
+      <created>1488783796269</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1488783796269</updated>
+    </task>
+    <task id="LOCAL-00009" summary="1. @Controller replaced by @RestController for openapi controllers&#10;2. Global exception handler added">
+      <created>1488807176830</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1488807176830</updated>
+    </task>
+    <task id="LOCAL-00010" summary="hashCode used for dynamic column">
+      <created>1488808364822</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1488808364822</updated>
+    </task>
+    <task id="LOCAL-00011" summary="keep some properties not exposed to user from the returned json string">
+      <created>1488813761505</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1488813761505</updated>
+    </task>
+    <task id="LOCAL-00012" summary="project update added">
+      <created>1488815809695</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1488815809695</updated>
+    </task>
+    <task id="LOCAL-00013" summary="first version of retrieve project data added">
+      <created>1488820511365</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1488820511365</updated>
+    </task>
+    <task id="LOCAL-00014" summary="new filed &quot;publicity&quot; added">
+      <created>1488852024866</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1488852024866</updated>
+    </task>
+    <task id="LOCAL-00015" summary="explore web page added">
+      <created>1488864848252</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1488864848252</updated>
+    </task>
+    <task id="LOCAL-00016" summary="project data re-construction and some simple pages added">
+      <created>1488874383502</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1488874383502</updated>
+    </task>
+    <task id="LOCAL-00017" summary="title in project page updated based on variable">
+      <created>1488875414874</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1488875414874</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1612" height="876" extended-state="0" />
+    <frame x="-8" y="-8" width="1616" height="876" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28133705" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1977716" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25487465" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30501392" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32729805" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22873712" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19537275" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30012855" sideWeight="0.86736476" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20194986" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24485861" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3844011" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22144847" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18316196" sideWeight="0.13263525" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286908" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -667,11 +1068,27 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="some base classes added" />
-    <option name="LAST_COMMIT_MESSAGE" value="some base classes added" />
+    <MESSAGE value="add project column controller" />
+    <MESSAGE value="add mapper for project column" />
+    <MESSAGE value="ToString (within lombok) annotation added for all entities" />
+    <MESSAGE value="all controllers inherit from base controller" />
+    <MESSAGE value="clone method added in project service" />
+    <MESSAGE value="logger added for openapi controllers" />
+    <MESSAGE value="columnDesc renamed to columnRemark and one more property added" />
+    <MESSAGE value="1. @Controller replaced by @RestController for openapi controllers&#10;2. Global exception handler added" />
+    <MESSAGE value="hashCode used for dynamic column" />
+    <MESSAGE value="keep some properties not exposed to user from the returned json string" />
+    <MESSAGE value="project update added" />
+    <MESSAGE value="first version of retrieve project data added" />
+    <MESSAGE value="new filed &quot;publicity&quot; added" />
+    <MESSAGE value="explore web page added" />
+    <MESSAGE value="project data re-construction and some simple pages added" />
+    <MESSAGE value="title in project page updated based on variable" />
+    <option name="LAST_COMMIT_MESSAGE" value="title in project page updated based on variable" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="8" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -680,394 +1097,434 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/exception/ServiceException.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.3.3.RELEASE/spring-web-4.3.3.RELEASE-sources.jar!/org/springframework/web/bind/annotation/PathVariable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="45" column="18" lean-forward="false" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#2393#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.3.3.RELEASE/spring-web-4.3.3.RELEASE-sources.jar!/org/springframework/web/bind/annotation/RequestParam.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-autoconfigure/1.4.1.RELEASE/spring-boot-autoconfigure-1.4.1.RELEASE.pom">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="31" lean-forward="false" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-parent/1.4.1.RELEASE/spring-boot-parent-1.4.1.RELEASE.pom">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="13" lean-forward="true" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.3.3.RELEASE/spring-context-4.3.3.RELEASE-sources.jar!/org/springframework/context/annotation/Configuration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
-          <caret line="383" column="18" lean-forward="false" selection-start-line="383" selection-start-column="18" selection-end-line="383" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-security/1.4.1.RELEASE/spring-boot-starter-security-1.4.1.RELEASE.pom">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="51" lean-forward="true" selection-start-line="4" selection-start-column="51" selection-end-line="4" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/entity/EntityPair.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="3" lean-forward="false" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-common/uniform-cms-common.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/config/RefreshableConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="1" lean-forward="true" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/auth/WebSecurityConfig.java" />
-    <entry file="file://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-dependencies/1.4.1.RELEASE/spring-boot-dependencies-1.4.1.RELEASE.pom">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="78" column="45" lean-forward="false" selection-start-line="78" selection-start-column="45" selection-end-line="78" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$MAVEN_REPOSITORY$/org/mybatis/spring/boot/mybatis-spring-boot-starter/1.0.0/mybatis-spring-boot-starter-1.0.0.pom">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="16" lean-forward="true" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectColumn.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="7" lean-forward="true" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectCategoryRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="1" lean-forward="true" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectCategory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="13" column="28" lean-forward="true" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/CommonConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller.java" />
-    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/java/com/nokia/ucms/portal/controller/ProjectController.java" />
-    <entry file="file://$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/dto/BaseDTO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="1" lean-forward="false" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.3.3.RELEASE/spring-context-4.3.3.RELEASE-sources.jar!/org/springframework/context/annotation/ComponentScan.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="85" column="15" lean-forward="false" selection-start-line="85" selection-start-column="15" selection-end-line="85" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/java/com/nokia/ucms/portal/auth/WebSecurityConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="19" column="30" lean-forward="true" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-autoconfigure/1.4.1.RELEASE/spring-boot-autoconfigure-1.4.1.RELEASE-sources.jar!/org/springframework/boot/autoconfigure/SpringBootApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="75" column="29" lean-forward="false" selection-start-line="75" selection-start-column="13" selection-end-line="75" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/java/com/nokia/ucms/portal/controller/AppController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="3" lean-forward="true" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/java/com/nokia/ucms/portal/PortalApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="1" lean-forward="true" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/entity/ApiQueryResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding>
-            <element signature="e#290#291#0" expanded="false" />
-            <element signature="e#322#323#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-webmvc/4.3.3.RELEASE/spring-webmvc-4.3.3.RELEASE-sources.jar!/org/springframework/web/servlet/mvc/method/AbstractHandlerMethodAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="84" column="0" lean-forward="false" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/mybatis/mybatis/3.3.0/mybatis-3.3.0-sources.jar!/org/apache/ibatis/annotations/Param.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="27" column="18" lean-forward="false" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/dto/TableColumnDTO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="5" lean-forward="false" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#391#392#0" expanded="false" />
-            <element signature="e#446#447#0" expanded="false" />
-            <element signature="e#488#489#0" expanded="false" />
-            <element signature="e#530#531#0" expanded="false" />
-            <element signature="e#563#564#0" expanded="false" />
-            <element signature="e#620#621#0" expanded="false" />
-            <element signature="e#664#665#0" expanded="false" />
-            <element signature="e#709#710#0" expanded="false" />
-            <element signature="e#744#745#0" expanded="false" />
-            <element signature="e#806#807#0" expanded="false" />
-            <element signature="e#854#855#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/service/DatabaseService.java" />
-    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="23" lean-forward="true" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/Role.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="36" lean-forward="false" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="36" />
+          <caret line="62" column="0" lean-forward="true" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/application.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="16" column="11" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="23" selection-end-column="31" />
+        <state relative-caret-position="201">
+          <caret line="43" column="8" lean-forward="true" selection-start-line="43" selection-start-column="8" selection-end-line="43" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/log4j.properties">
+    <entry file="file://$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/controller/BaseController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="32" column="30" lean-forward="true" selection-start-line="32" selection-start-column="30" selection-end-line="32" selection-end-column="30" />
+        <state relative-caret-position="238">
+          <caret line="14" column="6" lean-forward="true" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/BizConfig.java">
+    <entry file="file://$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/controller/GlobalDefaultExceptionHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="13" column="1" lean-forward="true" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
+        <state relative-caret-position="340">
+          <caret line="20" column="5" lean-forward="true" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/OpenApiConfig.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_20/src.zip!/java/lang/String.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="1" lean-forward="false" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.16.10/lombok-1.16.10.jar!/lombok/Getter.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="5" column="14" lean-forward="false" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="14" />
+        <state relative-caret-position="204">
+          <caret line="1453" column="12" lean-forward="true" selection-start-line="1453" selection-start-column="12" selection-end-line="1453" selection-end-column="12" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/entity/BaseEntity.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.3.3.RELEASE/spring-tx-4.3.3.RELEASE-sources.jar!/org/springframework/transaction/annotation/Transactional.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="15" column="6" lean-forward="false" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#507#508#0" expanded="false" />
-            <element signature="e#559#560#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectGrants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-openapi/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="20" lean-forward="false" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-common/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="21" lean-forward="false" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-web/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1921">
-          <caret line="113" column="0" lean-forward="false" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1666">
-          <caret line="98" column="12" lean-forward="false" selection-start-line="80" selection-start-column="4" selection-end-line="98" selection-end-column="12" />
-          <folding />
+        <state relative-caret-position="17">
+          <caret line="56" column="18" lean-forward="false" selection-start-line="56" selection-start-column="18" selection-end-line="56" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uniform-cms-biz/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="782">
-          <caret line="46" column="25" lean-forward="false" selection-start-line="46" selection-start-column="25" selection-end-line="46" selection-end-column="25" />
+        <state relative-caret-position="374">
+          <caret line="22" column="20" lean-forward="true" selection-start-line="22" selection-start-column="20" selection-end-line="22" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectInfo.java">
+    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectCategoryRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" column="0" lean-forward="true" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        <state relative-caret-position="289">
+          <caret line="17" column="1" lean-forward="true" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectColumnRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="17" lean-forward="false" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+        <state relative-caret-position="119">
+          <caret line="10" column="17" lean-forward="false" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/DatabaseAdminRepository.java">
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/ProjectTagMapper.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="29" lean-forward="true" selection-start-line="18" selection-start-column="29" selection-end-line="18" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/DatabaseAdminMapper.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="4" lean-forward="true" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
+        <state relative-caret-position="425">
+          <caret line="25" column="54" lean-forward="true" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/ProjectInfoMapper.xml">
+    <entry file="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.8.3/jackson-annotations-2.8.3-sources.jar!/com/fasterxml/jackson/annotation/JsonIgnoreProperties.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="61" lean-forward="false" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="61" />
+        <state relative-caret-position="235">
+          <caret line="32" column="18" lean-forward="false" selection-start-line="32" selection-start-column="18" selection-end-line="32" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectController.java">
+    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectTag.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
-          <caret line="75" column="34" lean-forward="true" selection-start-line="75" selection-start-column="34" selection-end-line="75" selection-end-column="34" />
+          <caret line="17" column="27" lean-forward="true" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/service/ProjectService.java">
+    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectColumn.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="43" column="13" lean-forward="true" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="13" />
+        <state relative-caret-position="51">
+          <caret line="15" column="42" lean-forward="false" selection-start-line="15" selection-start-column="42" selection-end-line="15" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectGrants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/entity/ApiQueryResult.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="12" column="25" lean-forward="true" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#256#257#0" expanded="false" />
+            <element signature="e#288#289#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/constants/Constants.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_20/src.zip!/java/util/Map.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+        <state relative-caret-position="185">
+          <caret line="324" column="11" lean-forward="false" selection-start-line="324" selection-start-column="11" selection-end-line="324" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/ProjectCategoryMapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="28" column="34" lean-forward="false" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectInfoRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+        <state relative-caret-position="255">
+          <caret line="15" column="41" lean-forward="false" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/DatabaseAdminRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="19" column="29" lean-forward="false" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/DatabaseAdminMapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="32" column="58" lean-forward="false" selection-start-line="32" selection-start-column="58" selection-end-line="32" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/constants/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="65" lean-forward="false" selection-start-line="7" selection-start-column="65" selection-end-line="7" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-common/src/main/java/com/nokia/ucms/common/entity/KeyValueEntityPair.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="16" column="5" lean-forward="false" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectCategory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/ProjectColumnMapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="61" lean-forward="true" selection-start-line="8" selection-start-column="61" selection-end-line="8" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="42" column="31" lean-forward="false" selection-start-line="42" selection-start-column="17" selection-end-line="42" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/mapper/ProjectInfoMapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="388">
+          <caret line="52" column="0" lean-forward="true" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/dto/TableColumnDTO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="15" column="33" lean-forward="true" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/static/assets/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="45" column="21" lean-forward="false" selection-start-line="45" selection-start-column="9" selection-end-line="45" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/dto/ProjectDataTableDTO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="30" column="5" lean-forward="true" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/java/com/nokia/ucms/portal/controller/AppController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="16" column="5" lean-forward="true" selection-start-line="12" selection-start-column="4" selection-end-line="16" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/service/ProjectService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="281">
+          <caret line="41" column="39" lean-forward="false" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="39" />
+          <folding>
+            <element signature="method#cloneProject#0;class#ProjectService#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectColumnApiController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="60" column="5" lean-forward="false" selection-start-line="60" selection-start-column="5" selection-end-line="60" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectCategoryApiController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="30" column="15" lean-forward="false" selection-start-line="30" selection-start-column="15" selection-end-line="30" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectTagApiController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/java/com/nokia/ucms/portal/PortalApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/java/com/nokia/ucms/portal/controller/ProjectController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/static/assets/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="419">
+          <caret line="100" column="0" lean-forward="true" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/layout/default/layout.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="10" lean-forward="true" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/layout/common/fragments/banner_logo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/modules/projects/menu/projectMenu.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="20" lean-forward="true" selection-start-line="13" selection-start-column="20" selection-end-line="13" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/layout/common/fragments/header.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="4" lean-forward="true" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/layout/default/fragments/banner.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="125" lean-forward="false" selection-start-line="9" selection-start-column="117" selection-end-line="9" selection-end-column="125" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/modules/projects/projectPage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="75" lean-forward="false" selection-start-line="2" selection-start-column="75" selection-end-line="2" selection-end-column="75" />
+          <folding>
+            <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#div#1;n#th:block#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#th:block#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#0;n#div#1;n#th:block#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/layout/default/fragments/navigation.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="55" lean-forward="false" selection-start-line="6" selection-start-column="55" selection-end-line="6" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-web/src/main/resources/webapp/templates/thymeleaf/modules/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="75" column="0" lean-forward="false" selection-start-line="75" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#th:block#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#svg#0;n#div#0;n#div#0;n#div#0;n#th:block#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#div#0;n#th:block#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#1;n#li#0;n#ul#0;n#div#1;n#div#0;n#div#0;n#th:block#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/ProjectTrace.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="27" lean-forward="false" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectTagRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-openapi/src/main/java/com/nokia/ucms/openapi/v1/controller/ProjectApiController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/repository/ProjectTraceRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uniform-cms-biz/src/main/java/com/nokia/ucms/biz/entity/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1123,7 +1580,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>uniform-cms-core</last-edited>
+          <last-edited>uniform-cms-openapi</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
