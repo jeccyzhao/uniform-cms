@@ -7,7 +7,7 @@
             <div class="n-banner-2nd-filler-gray hidden-xs"></div>
             <div class="container-fluid">
                 <div class="n-banner-header">
-                	<a class="n-banner-brand" href="#" th:href="@{/}">Nokia Content Management System</a>
+                	<a class="n-banner-brand" href="#" th:href="@{/}" th:text="${'Nokia Content Management System' + subTitle}">Nokia Content Management System</a>
                 </div>
                 <div class="collapse n-banner-collapse" id="n-banner-collapse">
                     <div th:replace="layout/common/fragments/banner_logo"/>
