@@ -1,0 +1,100 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/default/layout" th:with="subTitle=${project.name}">
+	
+<th:block layout:fragment="content">
+    <div class="col-md-2">
+        <th:block layout:include="modules/projects/menu/projectMenu"/>
+    </div>
+    <div class="col-md-10">
+        <div class="panel panel-shadow panel-blue-cap">
+            <div class="panel-heading panel-heading-transparent" style="height: 66px">
+                <h1 th:text="${'Project - ' + project.name}" style="line-height: 30px"></h1>
+                <div style="color: #C8C9D1; padding: 3px 0;" th:text="${'Owner - ' + project.owner}">Owner</div>
+            </div>
+            <div class="panel-body" style="padding: 0 10px 20px 10px;">
+                <div id="table-filter" class="grid-alternating-rows n-table-hover n-jqxgrid-table n-grid-paging "></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        $(function () {
+            loadData("table-filter");
+        });
+
+        function loadData(container_id) {
+            var projectId = /*[[${project.id}]]*/;
+            $.ajax(openApiContextPath + "/projects/" + projectId, {
+                    data: {},
+                    type: 'GET',
+                    success: function(rsp) {
+                    var ret = eval(rsp);
+                    if (ret.success) {
+                        var dataAndColumns = constructDataAndColumns(ret.data.rows);
+                        initJqxTable(container_id, dataAndColumns.columns, rebuildData(dataAndColumns.data));
+                    } else {
+                        showErrorDialog(ret.error);
+                    }
+
+                    disableAjaxLoading();
+                },
+                beforeSend: function(){
+                    enableAjaxLoading("Loading Data...");
+                },
+                error: function(rsp) {
+                    disableAjaxLoading();
+                }
+            });
+        }
+
+        function rebuildData (data) {
+            if (data != null) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].creationTime != null) {
+                        var date = new Date();
+                        date.setTime(data[i].creationTime);
+                        data[i].creationTime = date.Format('yyyy-MM-dd hh:mm:ss');
+
+                        // updateTime must be replaced with valid property
+                        data[i].updateTime = data[i].creationTime;
+                    } else {
+                        data[i].creationTime = "---";
+                        data[i].updateTime = "---";
+                    }
+                }
+            }
+            return data;
+        }
+
+        function constructDataAndColumns (rows) {
+            var cellColumnInitialized = false;
+            var result = { data: [], columns: [] };
+            var columns = [
+                {text: 'ID', datafield: 'id', hidden: true},
+                {text: 'Category Name', datafield: 'categoryName', align: 'left', filterable: true}
+            ];
+            for (var rowIndex in rows) {
+                var row = rows[rowIndex];
+                result.data.push( { id: row.id, categoryName: row.categoryName, creationTime: row.creationTime, updateTime: row.lastUpdateTime} );
+                if (!cellColumnInitialized) {
+                    var cells = row.cells;
+                    for (var cellIndex in cells) {
+                        var cell = cells[cellIndex];
+                        result.columns.push( { text: cell.name, datafield: cell.id } );
+                        result.data[rowIndex][cell.id] = cell.value;
+                    }
+                }
+                cellColumnInitialized = true;
+            }
+
+            result.columns.push({text: 'Creation Time', datafield: 'creationTime', align: 'center', filterable: true});
+            result.columns.push({text: 'Last Update Time', datafield: 'updateTime', align: 'center', filterable: true});
+            return result;
+        }
+
+        /*]]>*/
+    </script>
+</th:block>
+</html>
