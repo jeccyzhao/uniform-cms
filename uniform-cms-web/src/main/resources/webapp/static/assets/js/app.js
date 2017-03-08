@@ -95,6 +95,18 @@ function showErrorDialog(errorMessage, dialog_id)
     $("#" + dialog_id).modal('show');
 }
 
+function showConfirmationDialog (title, body_message, callback, dialog_id)
+{
+    var dialog_id = dialog_id ? dialog_id : "ConfirmationDialog";
+    $("#" + dialog_id).find("#confirm_title").html(title);
+    $("#" + dialog_id).find("#confirm_body").html(body_message);
+    $("#" + dialog_id).modal('show');
+
+    $("#dialog-confirmation-buttons-ok").click(function(){
+        callback();
+    });
+}
+
 function getCurrentGridRowData (grid_id)
 {
     var rowIndex = getCurrentGridRowIndex(grid_id);

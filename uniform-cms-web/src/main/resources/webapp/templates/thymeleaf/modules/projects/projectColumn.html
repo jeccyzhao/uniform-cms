@@ -37,9 +37,9 @@
 
         function loadData(container_id) {
             $.ajax(openApiContextPath + "/projects/" + projectId + "/columns", {
-                    data: {},
-                    type: 'GET',
-                    success: function(rsp) {
+                data: {},
+                type: 'GET',
+                success: function(rsp) {
                     var ret = eval(rsp);
                     if (ret.data != null) {
                         initJqxTable(container_id, constructColumns(), rebuildColumnData(ret.data), true);
@@ -72,62 +72,118 @@
             return columns;
         }
 
-        function rebuildColumnData(data) {
-            if (data != null) {
-                for (var i = 0; i < data.length; i++) {
-                    rebuildSingleColumnData(data[i]);
+        function rebuildColumnData(dataList) {
+            if (dataList != null) {
+                for (var i = 0; i < dataList.length; i++) {
+                    rebuildSingleColumnData(dataList[i]);
                 }
             }
-            return data;
+
+            return dataList;
+        }
+
+        function constructElementWithIcon (title, iconClass) {
+            return "<div class='n-cell-icon'><span title='" + title + "' class='icon " + iconClass + "'><span></div>";
         }
 
         function rebuildSingleColumnData (data) {
             if (data != null) {
                 if (data.visible != null) {
-                    data.visible = "<div class='n-cell-icon'><span title='" +
-                        (data.visible == 0 ? "Invisible" : "Visible") + "' class='icon icon-fault-" +
-                        (data.visible == 0 ? "unknown" : "cleared") + "'></span></div>";
+                    var title = (data.visible == 0 ? "Invisible" : "Visible");
+                    var iconClass = "icon-fault-" + (data.visible == 0 ? "unknown" : "cleared");
+                    data.visible = constructElementWithIcon(title, iconClass);
                 }
-                data.undo = '<div class="n-row-indicated" onclick="undo();" title="Undo"><span class="icon icon-undo"></span></div>';
-                data.edit = '<div class="n-row-indicated" onclick="showColumnUpdate();" title="Save"><span class="icon icon-save-as"></span></div>';
-                data.delete = '<div class="n-row-indicated" onclick="showColumnUpdate();" title="Delete"><span class="icon icon-delete"></span></div>';
+                data.undo = '<div class="n-row-indicated" onclick="reviseColumn(\'clean\');" title="Cleanup"><span class="icon icon-undo"></span></div>';
+                data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';
+                data.delete = '<div class="n-row-indicated" onclick="reviseColumn(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';
             }
 
             return data;
         }
 
-        function showColumnUpdate() {
+        function constructColumnInstructions (rowData, join) {
+            var dataInstructions = "";
+            join = join ? join : "<br/>";
+            dataInstructions += join + "- Column Name:    " + rowData.columnName;
+            dataInstructions += join + "- Column Remark:  " + rowData.columnRemark;
+            dataInstructions += join + "- Column Example: " + rowData.columnDataExample;
+            dataInstructions += join + "- Column Length:  " + rowData.columnLength;
+            dataInstructions += join + "- Column Order:   " + rowData.seq;
+            dataInstructions += join + "- Column Visible: " + (rowData.visible == 1 ? "Yes" : "No");
+            return dataInstructions;
+        }
+
+        function reviseColumn (operationType) {
             var rowData = getCurrentGridRowData("table-filter");
             if (rowData != null) {
-
+                switch (operationType) {
+                    case "update":
+                        updateColumn(rowData);
+                        break;
+                    case "delete":
+                        deleteColumn(rowData);
+                        break;
+                    case "clean":
+                        cleanColumn(rowData);
+                        break;
+                    default:
+                        showErrorDialog("Operation (" + operationType + ") is not supported!");
+                }
             }
         }
 
-        function undo () {
-            var data = getCurrentGridRowData("table-filter");
-            if (data != null) {
-                var id = data.id;
-                $.ajax(openApiContextPath + "/projects/" + projectId + "/columns", {
-                    data: {columnId: id},
-                    type: 'GET',
-                    success: function(rsp) {
-                        var ret = eval(rsp);
-                        if (ret.success) {
-                            updateGridRowData("table-filter", rebuildSingleColumnData(ret.data[0]));
-                        } else {
-                            showErrorDialog("Unable to retrieve column data for recovery");
-                        }
+        function updateColumn(rowData) {
+            if (rowData != null) {
+                showConfirmationDialog(
+                    "Do you want to update this column?",
+                    "Column property would be updated to," + constructColumnInstructions(rowData),
+                    function() {
 
-                        disableAjaxLoading();
-                    },
-                    beforeSend: function(){
-                        enableAjaxLoading("Recovery Data...");
-                    },
-                    error: function(rsp) {
-                        disableAjaxLoading();
                     }
-                });
+                );
+            }
+        }
 
+        function deleteColumn (rowData) {
+            if (rowData != null) {
+                showConfirmationDialog(
+                    "Do you want to delete this column?",
+                    "Below column would be removed and including all relevant data in project table: " + constructColumnInstructions(rowData),
+                    function() {
+                    }
+                );
+            }
+        }
+
+        function cleanColumn (rowData) {
+            if (rowData != null) {
+                showConfirmationDialog(
+                    "Do you want to cleanup the column?",
+                    "It would cleanup all the revisions from editor.",
+                    function() {
+                        var id = rowData.id;
+                        $.ajax(openApiContextPath + "/projects/" + projectId + "/columns", {
+                            data: {columnId: id},
+                            type: 'GET',
+                            success: function(rsp) {
+                                var ret = eval(rsp);
+                                if (ret.success) {
+                                    updateGridRowData("table-filter", rebuildSingleColumnData(ret.data[0]));
+                                } else {
+                                    showErrorDialog("Unable to retrieve column data for recovery");
+                                }
+
+                                disableAjaxLoading();
+                            },
+                            beforeSend: function(){
+                                enableAjaxLoading("Cleanup Data...");
+                            },
+                            error: function(rsp) {
+                                disableAjaxLoading();
+                            }
+                        });
+                    }
+                );
             }
         }
 
