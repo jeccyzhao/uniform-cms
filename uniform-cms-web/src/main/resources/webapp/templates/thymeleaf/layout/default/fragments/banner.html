@@ -7,7 +7,7 @@
             <div class="n-banner-2nd-filler-gray hidden-xs"></div>
             <div class="container-fluid">
                 <div class="n-banner-header">
-                	<a class="n-banner-brand" href="#" th:href="@{'/' + ${project.name}}" th:if="${project != null}"
+                	<a class="n-banner-brand" href="#" th:href="@{'/projects/' + ${project.name}}" th:if="${project != null}"
                        th:text="'Nokia Content Management System' + (${subTitle != null} ? ' - ' + ${subTitle} : '')">Nokia Content Management System</a>
                     <a class="n-banner-brand" href="#" th:href="@{/}" th:if="${project == null}"
                        th:text="'Nokia Content Management System' + (${subTitle != null} ? ' - ' + ${subTitle} : '')">Nokia Content Management System</a>
