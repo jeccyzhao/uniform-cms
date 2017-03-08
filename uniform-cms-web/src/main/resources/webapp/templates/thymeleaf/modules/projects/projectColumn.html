@@ -48,9 +48,9 @@
             var columns = [
                 {text: 'ID', datafield: 'id', hidden: true},
                 {text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false},
-                {text: 'U', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false},
+                {text: 'C', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false},
                 {text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false},
-                {text: 'Visible', datafield: 'visible', cellsalign:'center', align: 'center', width: 60, columntype: "checkbox"},
+                {text: 'Visible', datafield: 'visible', cellsalign:'center', align: 'center', width: 70, columntype: "checkbox"},
                 {text: 'Column Name', datafield: 'columnName', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Column Remark', datafield: 'columnRemark', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Example', datafield: 'columnDataExample', cellsalign: 'left', align: 'center', filterable: true},
@@ -88,12 +88,12 @@
         function constructColumnInstructions (rowData, join) {
             var dataInstructions = "";
             join = join ? join : "<br/>";
-            dataInstructions += join + "- Column Name:    " + rowData.columnName;
-            dataInstructions += join + "- Column Remark:  " + rowData.columnRemark;
-            dataInstructions += join + "- Column Example: " + rowData.columnDataExample;
-            dataInstructions += join + "- Column Length:  " + rowData.columnLength;
-            dataInstructions += join + "- Column Order:   " + rowData.seq;
-            dataInstructions += join + "- Column Visible: " + (rowData.visible == 1 ? "Yes" : "No");
+            dataInstructions += join + "- Column Name:    <font color='red'>" + rowData.columnName + "</font>";
+            dataInstructions += join + "- Column Remark:  <font color='red'>" + rowData.columnRemark + "</font>";
+            dataInstructions += join + "- Column Example: <font color='red'>" + rowData.columnDataExample + "</font>";
+            dataInstructions += join + "- Column Length:  <font color='red'>" + rowData.columnLength + "</font>";
+            dataInstructions += join + "- Column Order:   <font color='red'>" + rowData.seq + "</font>";
+            dataInstructions += join + "- Column Visible: <font color='red'>" + (rowData.visible == 1 ? "Yes" : "No") + "</font>";
             return dataInstructions;
         }
 
