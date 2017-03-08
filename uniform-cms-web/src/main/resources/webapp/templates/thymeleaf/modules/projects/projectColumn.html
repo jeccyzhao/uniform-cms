@@ -75,17 +75,24 @@
         function rebuildColumnData(data) {
             if (data != null) {
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].visible != null) {
-                        data[i].visible = "<div class='n-cell-icon'><span title='" +
-                            (data[i].visible == 0 ? "Invisible" : "Visible") + "' class='icon icon-fault-" +
-                            (data[i].visible == 0 ? "unknown" : "cleared") + "'></span></div>";
-                    }
-
-                    data[i].undo = '<div class="n-row-indicated" onclick="undo();" title="Undo"><span class="icon icon-undo"></span></div>';
-                    data[i].edit = '<div class="n-row-indicated" onclick="showColumnUpdate();" title="Save"><span class="icon icon-save-as"></span></div>';
-                    data[i].delete = '<div class="n-row-indicated" onclick="showColumnUpdate();" title="Delete"><span class="icon icon-delete"></span></div>';
+                    rebuildSingleColumnData(data[i]);
                 }
             }
+            return data;
+        }
+
+        function rebuildSingleColumnData (data) {
+            if (data != null) {
+                if (data.visible != null) {
+                    data.visible = "<div class='n-cell-icon'><span title='" +
+                        (data.visible == 0 ? "Invisible" : "Visible") + "' class='icon icon-fault-" +
+                        (data.visible == 0 ? "unknown" : "cleared") + "'></span></div>";
+                }
+                data.undo = '<div class="n-row-indicated" onclick="undo();" title="Undo"><span class="icon icon-undo"></span></div>';
+                data.edit = '<div class="n-row-indicated" onclick="showColumnUpdate();" title="Save"><span class="icon icon-save-as"></span></div>';
+                data.delete = '<div class="n-row-indicated" onclick="showColumnUpdate();" title="Delete"><span class="icon icon-delete"></span></div>';
+            }
+
             return data;
         }
 
@@ -101,12 +108,12 @@
             if (data != null) {
                 var id = data.id;
                 $.ajax(openApiContextPath + "/projects/" + projectId + "/columns", {
-                        data: {columnId: id},
-                        type: 'GET',
-                        success: function(rsp) {
+                    data: {columnId: id},
+                    type: 'GET',
+                    success: function(rsp) {
                         var ret = eval(rsp);
                         if (ret.success) {
-                            updateGridRowData("table-filter", rebuildColumnData(ret.data));
+                            updateGridRowData("table-filter", rebuildSingleColumnData(ret.data[0]));
                         } else {
                             showErrorDialog("Unable to retrieve column data for recovery");
                         }
