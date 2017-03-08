@@ -72,12 +72,10 @@ function initJqxTable (container_id, columns, data, editable, width, height)
         columnsheight: 26,
         editable: editable ? editable : false,
         pagerrenderer: $.grid.pagerrenderer.bind(null, "#" + container_id, true),
-        handlekeyboardnavigation: function (e)
-        {
+        handlekeyboardnavigation: function (e) {
            return $.grid.handlekeyboardnavigation(e);
         },
-        ready: function()
-        {
+        ready: function() {
             disableAjaxLoading();
         }
     });

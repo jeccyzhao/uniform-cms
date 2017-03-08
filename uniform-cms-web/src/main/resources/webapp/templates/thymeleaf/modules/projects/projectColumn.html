@@ -9,7 +9,7 @@
     <div class="col-md-10">
         <div class="panel panel-shadow panel-blue-cap">
             <div class="panel-heading panel-heading-transparent">
-                <h1 th:text="'\'' + ${project.name} + '\' Columns'" style="line-height: 30px"></h1>
+                <h1 th:text="'\'' + ${project.name} + '\' - Columns'" style="line-height: 30px"></h1>
             </div>
             <div class="panel-body" style="padding: 0 10px 20px 10px;">
                 <div class="pannel-toolbar" style="overflow: hidden">
@@ -47,15 +47,15 @@
         function constructTableColumns () {
             var columns = [
                 {text: 'ID', datafield: 'id', hidden: true},
-                {text: 'Visible', datafield: 'visible', cellsalign:'center', align: 'center', width: 60},
+                {text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false},
+                {text: 'U', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false},
+                {text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false},
+                {text: 'Visible', datafield: 'visible', cellsalign:'center', align: 'center', width: 60, columntype: "checkbox"},
                 {text: 'Column Name', datafield: 'columnName', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Column Remark', datafield: 'columnRemark', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Example', datafield: 'columnDataExample', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Column Length', datafield: 'columnLength', cellsalign:'center', align: 'center', width: 130, filterable: true},
-                {text: 'Order', datafield: 'seq', cellsalign:'center', align: 'center', width: 80},
-                {text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false},
-                {text: 'U', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false},
-                {text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false}
+                {text: 'Order', datafield: 'seq', cellsalign:'center', align: 'center', width: 80}
             ];
             return columns;
         }
@@ -75,7 +75,7 @@
                 if (data.visible != null) {
                     var title = (data.visible == 0 ? "Invisible" : "Visible");
                     var iconClass = "icon-fault-" + (data.visible == 0 ? "unknown" : "cleared");
-                    data.visible = makeElementWithIcon(title, iconClass);
+                    //data.visible = makeElementWithIcon(title, iconClass);
                 }
                 data.undo = '<div class="n-row-indicated" onclick="reviseColumn(\'clean\');" title="Cleanup"><span class="icon icon-undo"></span></div>';
                 data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';

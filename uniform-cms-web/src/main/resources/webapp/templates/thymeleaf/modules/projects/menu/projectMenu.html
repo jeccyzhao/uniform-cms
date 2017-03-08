@@ -1,12 +1,12 @@
 <div xmlns:th="http://www.thymeleaf.org">
     <dl class="n-list-group">
         <dt class="n-list-group-item">Project</dt>
-        <a href="#">
-            <dd class="n-list-group-item" th:classappend="${menu == 'all'} ? selected : ''" style="border-radius:0px">
-                <span class="icon icon-data icon-subnav"></span><span>All</span>
+        <a href="#" th:href="@{'/projects/' + ${project.name}}">
+            <dd class="n-list-group-item" th:classappend="${menu == 'data'} ? selected : ''" style="border-radius:0px">
+                <span class="icon icon-data icon-subnav"></span><span>Data</span>
             </dd>
         </a>
-        <a href="#">
+        <a href="#" th:href="@{'/projects/' + ${project.name} + '/categories'}">
             <dd class="n-list-group-item" th:classappend="${menu == 'categories'} ? selected : ''" style="border-radius:0px">
                 <span class="icon icon-list icon-subnav"></span><span>Categories</span>
             </dd>

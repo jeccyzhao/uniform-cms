@@ -1,6 +1,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout/default/layout" th:with="subTitle=${project.name}">
+      layout:decorator="layout/default/layout" th:with="subTitle=${project.name}, menu='authorization'">
 	
 <th:block layout:fragment="content">
     <div class="col-md-2">
@@ -9,7 +9,7 @@
     <div class="col-md-10">
         <div class="panel panel-shadow panel-blue-cap">
             <div class="panel-heading panel-heading-transparent" style="height: 66px">
-                <h1 th:text="${'Project Authorization - ' + project.name}" style="line-height: 30px"></h1>
+                <h1 th:text="'\'' + ${project.name} + '\' - Authorization'" style="line-height: 30px"></h1>
             </div>
             <div class="panel-body" style="padding: 0 10px 20px 10px;">
                 <div id="table-filter" class="grid-alternating-rows n-table-hover n-jqxgrid-table n-grid-paging "></div>
