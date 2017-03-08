@@ -1,24 +1,14 @@
-<div>
+<div xmlns:th="http://www.thymeleaf.org">
     <dl class="n-list-group">
-        <dt class="n-list-group-item">Profiles</dt>
+        <dt class="n-list-group-item">Project</dt>
         <a href="#">
-            <dd class="n-list-group-item" th:classappend="${menu == 'ideas'} ? selected : ''" style="border-radius:0px">
-                <span class="icon icon-list icon-subnav"></span><span>NetAct17.8</span>
+            <dd class="n-list-group-item" th:classappend="${menu == 'all'} ? selected : ''" style="border-radius:0px">
+                <span class="icon icon-data icon-subnav"></span><span>All</span>
             </dd>
         </a>
         <a href="#">
-            <dd class="n-list-group-item" th:classappend="${menu == 'ideas'} ? selected : ''" style="border-radius:0px">
-                <span class="icon icon-list icon-subnav"></span><span>NetAct17.2</span>
-            </dd>
-        </a>
-        <a href="#">
-            <dd class="n-list-group-item" th:classappend="${menu == 'ideas'} ? selected : ''" style="border-radius:0px">
-                <span class="icon icon-list icon-subnav"></span><span>NetAct16.8</span>
-            </dd>
-        </a>
-        <a href="#">
-            <dd class="n-list-group-item" th:classappend="${menu == 'ideas'} ? selected : ''" style="border-radius:0px">
-                <span class="icon icon-list icon-subnav"></span><span>NetAct16.5</span>
+            <dd class="n-list-group-item" th:classappend="${menu == 'categories'} ? selected : ''" style="border-radius:0px">
+                <span class="icon icon-list icon-subnav"></span><span>Categories</span>
             </dd>
         </a>
         <dt class="n-list-group-item">Settings</dt>

@@ -1,6 +1,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout/default/layout" th:with="subTitle=${project.name}, menu='all'">
+      layout:decorator="layout/default/layout" th:with="subTitle=${project.name}, menu='categories'">
 	
 <th:block layout:fragment="content">
     <div class="col-md-2">
@@ -21,15 +21,15 @@
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
         $(function () {
-            loadData("table-filter");
+            // loadData("table-filter");
         });
 
         function loadData(container_id) {
             var projectId = /*[[${project.id}]]*/;
             sendAjaxRequest("projects/" + projectId, 'GET', {}, function(data) {
                 if (data.rows) {
-                    var tableDataAndColumns = constructTableColumnsAndData(data.rows);
-                    initJqxTable(container_id, tableDataAndColumns.columns, rebuildData(tableDataAndColumns.data));
+                    var dataAndColumns = constructDataAndColumns(data.rows);
+                    initJqxTable(container_id, dataAndColumns.columns, rebuildData(dataAndColumns.data));
                 }
             });
         }
@@ -48,26 +48,18 @@
                         data[i].creationTime = "---";
                         data[i].updateTime = "---";
                     }
-
-                    data[i].undo = '<div class="n-row-indicated" onclick="reviseColumn(\'clean\');" title="Cleanup"><span class="icon icon-undo"></span></div>';
-                    data[i].edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';
-                    data[i].delete = '<div class="n-row-indicated" onclick="reviseColumn(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';
                 }
             }
-
             return data;
         }
 
-        function constructTableColumnsAndData (rows) {
+        function constructDataAndColumns (rows) {
             var cellColumnInitialized = false;
             var result = { data: [], columns: [] };
-
-            result.columns.push({text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false});
-            result.columns.push({text: 'U', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false});
-            result.columns.push({text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false});
-            result.columns.push({text: 'No.', datafield: 'id', hidden: false, width: 40, editable: false, align: 'center', cellsalign: 'center'});
-            result.columns.push({text: 'Category', datafield: 'categoryName', align: 'center', cellsalign: 'left', filterable: true, width: 160});
-
+            var columns = [
+                {text: 'ID', datafield: 'id', hidden: true},
+                {text: 'Category Name', datafield: 'categoryName', align: 'left', filterable: true}
+            ];
             for (var rowIndex in rows) {
                 var row = rows[rowIndex];
                 result.data.push( { id: row.id, categoryName: row.categoryName, creationTime: row.creationTime, updateTime: row.lastUpdateTime} );
@@ -75,16 +67,15 @@
                 for (var cellIndex in cells) {
                     var cell = cells[cellIndex];
                     if (!cellColumnInitialized) {
-                        result.columns.push( { text: cell.name, datafield: cell.id, cellsalign: 'left', align: 'left'} );
+                        result.columns.push( { text: cell.name, datafield: cell.id } );
                     }
                     result.data[rowIndex][cell.id] = cell.value;
                 }
                 cellColumnInitialized = true;
             }
 
-            result.columns.push({text: 'Creation Time', datafield: 'creationTime', align: 'center', filterable: true, width: 160});
-            result.columns.push({text: 'Last Update Time', datafield: 'updateTime', align: 'center', filterable: true,  width: 160});
-
+            result.columns.push({text: 'Creation Time', datafield: 'creationTime', align: 'center', filterable: true});
+            result.columns.push({text: 'Last Update Time', datafield: 'updateTime', align: 'center', filterable: true});
             return result;
         }
 
