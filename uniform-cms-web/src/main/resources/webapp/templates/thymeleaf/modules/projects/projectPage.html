@@ -26,25 +26,10 @@
 
         function loadData(container_id) {
             var projectId = /*[[${project.id}]]*/;
-            $.ajax(openApiContextPath + "/projects/" + projectId, {
-                    data: {},
-                    type: 'GET',
-                    success: function(rsp) {
-                    var ret = eval(rsp);
-                    if (ret.success) {
-                        var dataAndColumns = constructDataAndColumns(ret.data.rows);
-                        initJqxTable(container_id, dataAndColumns.columns, rebuildData(dataAndColumns.data));
-                    } else {
-                        showErrorDialog(ret.error);
-                    }
-
-                    disableAjaxLoading();
-                },
-                beforeSend: function(){
-                    enableAjaxLoading("Loading Data...");
-                },
-                error: function(rsp) {
-                    disableAjaxLoading();
+            sendAjaxRequest("projects/" + projectId, 'GET', {}, function(data) {
+                if (data.rows) {
+                    var dataAndColumns = constructDataAndColumns(data.rows);
+                    initJqxTable(container_id, dataAndColumns.columns, rebuildData(dataAndColumns.data));
                 }
             });
         }

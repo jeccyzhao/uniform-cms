@@ -30,33 +30,21 @@
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
         var projectId = /*[[${project.id}]]*/;
+        var tableColumns = constructTableColumns();
         $(function () {
             loadData("table-filter");
-            $("#op_add").click(function() { showPopupDialog('m_projectColumn'); });
+            $("#op_add").click(function() {
+                showPopupDialog('m_projectColumn');
+            });
         });
 
         function loadData(container_id) {
-            $.ajax(openApiContextPath + "/projects/" + projectId + "/columns", {
-                data: {},
-                type: 'GET',
-                success: function(rsp) {
-                    var ret = eval(rsp);
-                    if (ret.data != null) {
-                        initJqxTable(container_id, constructColumns(), rebuildColumnData(ret.data), true);
-                    }
-
-                    disableAjaxLoading();
-                },
-                beforeSend: function(){
-                    enableAjaxLoading("Loading Data...");
-                },
-                error: function(rsp) {
-                    disableAjaxLoading();
-                }
+            sendAjaxRequest("projects/" + projectId + "/columns", 'GET', {}, function(data) {
+                initJqxTable(container_id, tableColumns, rebuildColumnData(data), true);
             });
         }
 
-        function constructColumns () {
+        function constructTableColumns () {
             var columns = [
                 {text: 'ID', datafield: 'id', hidden: true},
                 {text: 'Visible', datafield: 'visible', cellsalign:'center', align: 'center', width: 60},
@@ -82,16 +70,12 @@
             return dataList;
         }
 
-        function constructElementWithIcon (title, iconClass) {
-            return "<div class='n-cell-icon'><span title='" + title + "' class='icon " + iconClass + "'><span></div>";
-        }
-
         function rebuildSingleColumnData (data) {
             if (data != null) {
                 if (data.visible != null) {
                     var title = (data.visible == 0 ? "Invisible" : "Visible");
                     var iconClass = "icon-fault-" + (data.visible == 0 ? "unknown" : "cleared");
-                    data.visible = constructElementWithIcon(title, iconClass);
+                    data.visible = makeElementWithIcon(title, iconClass);
                 }
                 data.undo = '<div class="n-row-indicated" onclick="reviseColumn(\'clean\');" title="Cleanup"><span class="icon icon-undo"></span></div>';
                 data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';
@@ -162,24 +146,9 @@
                     "It would cleanup all the revisions from editor.",
                     function() {
                         var id = rowData.id;
-                        $.ajax(openApiContextPath + "/projects/" + projectId + "/columns", {
-                            data: {columnId: id},
-                            type: 'GET',
-                            success: function(rsp) {
-                                var ret = eval(rsp);
-                                if (ret.success) {
-                                    updateGridRowData("table-filter", rebuildSingleColumnData(ret.data[0]));
-                                } else {
-                                    showErrorDialog("Unable to retrieve column data for recovery");
-                                }
-
-                                disableAjaxLoading();
-                            },
-                            beforeSend: function(){
-                                enableAjaxLoading("Cleanup Data...");
-                            },
-                            error: function(rsp) {
-                                disableAjaxLoading();
+                        sendAjaxRequest("projects/" + projectId + "/columns", 'GET', {columnId: id}, function(data) {
+                            if (data.length > 0) {
+                                updateGridRowData("table-filter", rebuildSingleColumnData(data[0]));
                             }
                         });
                     }

@@ -72,35 +72,16 @@
     $(function() {
         $("#dialogSubmit").click(function(){
             var projectId = $("#projectId").val();
-            $.ajax(openApiContextPath + "/projects/" + projectId + "/columns", {
-                type: 'POST',
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(constructInputs()),
-                success: function(rsp) {
-                    var ret = eval(rsp);
-                    if (ret.success) {
-                        // var dataAndColumns = constructDataAndColumns(ret.data.rows);
-                        loadData("table-filter");
-                        $('#m_projectColumn').modal('hide');
-                    } else {
-                        showErrorDialog(ret.error);
-                    }
-
-                    disableAjaxLoading();
-                },
-                beforeSend: function(){
-                    enableAjaxLoading("Loading Data...");
-                },
-                error: function(rsp) {
-                    disableAjaxLoading();
-                }
-            });
+            sendAjaxRequest("projects/" + projectId + "/columns", 'POST', JSON.stringify(constructFormInputs()), function(data){
+                loadData("table-filter");
+                $('#m_projectColumn').modal('hide');
+                clearFormInputs("dialog-addProjectColumn");
+            }, "application/json; charset=utf-8");
         });
     });
 
-    function constructInputs() {
-        var data =
-        {
+    function constructFormInputs() {
+        var data = {
             "columnName" : $("#exInputColName").val(),
             "columnRemark" : $("#exInputColRemark").val(),
             "columnDataExample" : $("#exInputColExample").val(),
@@ -108,12 +89,7 @@
             "visible": $("#exInputColVisible").is(':checked') ? 1 : 0,
             "seq": $("#exInputColOrder").val() ? $("#exInputColOrder").val() : null
         };
-
         return data;
-    }
-
-    function feedInputs(data) {
-
     }
 
 </script>

@@ -131,3 +131,48 @@ function updateGridRowData (grid_id, newdata, rowIndex)
         $('#' + grid_id).jqxGrid('updaterow', rowIndex, newdata);
     }
 }
+
+function sendAjaxRequest(uri, type, data, callback, contentType, loadingMessage)
+{
+    var msg_loading = loadingMessage ? loadingMessage : "Loading Data...";
+    $.ajax(openApiContextPath + "/" + uri,
+    {
+        data: data,
+        type: type,
+        contentType: contentType ? contentType : "application/x-www-form-urlencoded",
+        success: function(response)
+        {
+            var jsonResult = eval(response);
+            if (jsonResult.success)
+            {
+                callback(jsonResult.data);
+            }
+            else
+            {
+                showErrorDialog(jsonResult.error);
+            }
+            disableAjaxLoading();
+        },
+        beforeSend: function()
+        {
+            enableAjaxLoading(msg_loading);
+        },
+        error: function(response)
+        {
+            showErrorDialog(response);
+            disableAjaxLoading();
+        }
+    });
+}
+
+function clearFormInputs (form_id)
+{
+    $("#" + form_id).find("input[type=text]").val("");
+    $("#" + form_id).find("textarea").val("");
+}
+
+
+function makeElementWithIcon (title, iconClass)
+{
+    return "<div class='n-cell-icon'><span title='" + title + "' class='icon " + iconClass + "'><span></div>";
+}
