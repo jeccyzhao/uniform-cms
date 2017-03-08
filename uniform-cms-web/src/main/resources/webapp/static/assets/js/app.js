@@ -100,7 +100,8 @@ function showConfirmationDialog (title, body_message, callback, dialog_id)
     $("#" + dialog_id).find("#confirm_body").html(body_message);
     $("#" + dialog_id).modal('show');
 
-    $("#dialog-confirmation-buttons-ok").click(function(){
+    $("#dialog-confirmation-buttons-ok").unbind('click');
+    $("#dialog-confirmation-buttons-ok").click(function() {
         callback();
     });
 }

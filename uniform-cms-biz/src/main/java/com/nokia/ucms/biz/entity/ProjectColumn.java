@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.util.Date;
+
 import static com.nokia.ucms.biz.constants.Constants.*;
 
 /**
@@ -26,6 +28,7 @@ public class ProjectColumn extends BaseEntity
     private String columnRemark;
     private String columnDataExample;
     private String columnId;
+    private Date updateTime;
 
     // default column length would be used if not set
     private Integer columnLength = DEFAULT_COLUMN_LENGTH;

@@ -60,15 +60,14 @@ public class ProjectColumnApiController extends BaseController
     }
 
     @RequestMapping(path="", method= RequestMethod.PUT)
-    public @ResponseBody ApiQueryResult<Integer> updateProjectColumn(
+    public @ResponseBody ApiQueryResult<ProjectColumn> updateProjectColumn(
             @PathVariable Integer projectId,
-            @RequestBody TableColumnDTO tableColumn)
+            @RequestBody ProjectColumn projectColumn)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter updateProjectColumn - [projectId: %d, tableColumn: %s]", projectId, tableColumn));
+            LOGGER.debug(String.format("Enter updateProjectColumn - [projectId: %d, projectColumn: %s]", projectId, projectColumn));
 
-        // TODO
-        return createEmptyQueryResult();
+        return new ApiQueryResult<ProjectColumn>(projectService.updateProjectColumn(projectId, projectColumn));
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)

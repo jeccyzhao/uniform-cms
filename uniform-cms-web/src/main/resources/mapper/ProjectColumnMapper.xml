@@ -12,6 +12,7 @@
         <result property="columnLength" column="col_len"/>
         <result property="visible" column="col_visible"/>
         <result property="seq" column="col_seq"/>
+        <result property="updateTime" column="col_updateTime"/>
     </resultMap>
 
     <select id="getColumnsByProjectId" parameterType="java.lang.Integer" resultMap="rs_projectColumn">
@@ -31,8 +32,20 @@
     </select>
 
     <insert id="addProjectColumn" parameterType="ProjectColumn" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_project_column` (`p_id`, `col_name`, `col_remark`, `col_example`, `col_fieldid`, `col_len`, `col_visible`, `col_seq`)
-            VALUES (#{projectId}, #{columnName}, #{columnRemark}, #{columnDataExample}, #{columnId}, #{columnLength}, #{visible}, #{seq})
+        INSERT INTO `t_project_column` (`p_id`, `col_name`, `col_remark`, `col_example`, `col_fieldid`, `col_len`, `col_visible`, `col_seq`, `col_updateTime`)
+            VALUES (#{projectId}, #{columnName}, #{columnRemark}, #{columnDataExample}, #{columnId}, #{columnLength}, #{visible}, #{seq}, #{updateTime})
     </insert>
+
+    <update id="updateProjectColumn" parameterType="ProjectColumn">
+        UPDATE `t_project_column` SET
+            `col_name` = #{columnName},
+            `col_remark` = #{columnRemark},
+            `col_example` = #{columnDataExample},
+            `col_len` = #{columnLength},
+            `col_visible` = #{visible},
+            `col_seq` = #{seq},
+            `col_updateTime` = #{updateTime}
+        WHERE `id` = #{id}
+    </update>
 
 </mapper>

@@ -8,7 +8,7 @@
     </div>
     <div class="col-md-10">
         <div class="panel panel-shadow panel-blue-cap">
-            <div class="panel-heading panel-heading-transparent">
+            <div class="panel-heading panel-heading-transparent" >
                 <h1 th:text="'\'' + ${project.name} + '\' - Columns'" style="line-height: 30px"></h1>
             </div>
             <div class="panel-body" style="padding: 0 10px 20px 10px;">
@@ -55,7 +55,8 @@
                 {text: 'Column Remark', datafield: 'columnRemark', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Example', datafield: 'columnDataExample', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Column Length', datafield: 'columnLength', cellsalign:'center', align: 'center', width: 130, filterable: true},
-                {text: 'Order', datafield: 'seq', cellsalign:'center', align: 'center', width: 80}
+                {text: 'Order', datafield: 'seq', cellsalign:'center', align: 'center', width: 80},
+                {text: 'Last Update Time', datafield: 'updateTime', cellsalign:'center', align: 'center', width: 160}
             ];
             return columns;
         }
@@ -72,14 +73,13 @@
 
         function rebuildSingleColumnData (data) {
             if (data != null) {
-                if (data.visible != null) {
-                    var title = (data.visible == 0 ? "Invisible" : "Visible");
-                    var iconClass = "icon-fault-" + (data.visible == 0 ? "unknown" : "cleared");
-                    //data.visible = makeElementWithIcon(title, iconClass);
-                }
                 data.undo = '<div class="n-row-indicated" onclick="reviseColumn(\'clean\');" title="Cleanup"><span class="icon icon-undo"></span></div>';
                 data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';
                 data.delete = '<div class="n-row-indicated" onclick="reviseColumn(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';
+
+                var date = new Date();
+                date.setTime(data.updateTime);
+                data.updateTime = date.Format('yyyy-MM-dd hh:mm:ss');
             }
 
             return data;
@@ -122,10 +122,21 @@
                     "Do you want to update this column?",
                     "Column property would be updated to," + constructColumnInstructions(rowData),
                     function() {
-
+                        // remove some unnecessary attribute from row data
+                        rowData = removeObjectAttribute(rowData, ['delete', 'edit', 'uid', 'undo', 'uniqueid', 'visibleindex', 'boundindex', 'projectId', 'updateTime']);
+                        sendAjaxRequest("projects/" + projectId + "/columns", 'PUT', JSON.stringify(rowData), function(data) {
+                            updateGridRowData("table-filter", rebuildSingleColumnData(data));
+                        }, "application/json; charset=utf-8");
                     }
                 );
             }
+        }
+
+        function removeObjectAttribute (json_obj, attributes) {
+            for (var i = 0; i < attributes.length; i++) {
+                delete json_obj[attributes[i]];
+            }
+            return json_obj;
         }
 
         function deleteColumn (rowData) {
