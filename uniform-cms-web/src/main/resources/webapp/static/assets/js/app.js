@@ -97,10 +97,25 @@ function showErrorDialog(errorMessage, dialog_id)
 
 function getCurrentGridRowData (grid_id)
 {
-    var rowIndex = $('#' + grid_id).jqxGrid('getselectedrowindex');
-    if (rowIndex > -1) {
+    var rowIndex = getCurrentGridRowIndex(grid_id);
+    if (rowIndex > -1)
+    {
         return $('#' + grid_id).jqxGrid('getrowdata', rowIndex);
     }
 
     return {}
+}
+
+function getCurrentGridRowIndex (grid_id)
+{
+    return $('#' + grid_id).jqxGrid('getselectedrowindex');
+}
+
+function updateGridRowData (grid_id, newdata, rowIndex)
+{
+    rowIndex = rowIndex ? rowIndex : getCurrentGridRowIndex(grid_id);
+    if (rowIndex > -1)
+    {
+        $('#' + grid_id).jqxGrid('updaterow', rowIndex, newdata);
+    }
 }

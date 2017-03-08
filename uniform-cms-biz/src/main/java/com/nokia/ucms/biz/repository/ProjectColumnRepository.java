@@ -13,6 +13,7 @@ public interface ProjectColumnRepository
     Integer addProjectColumn(ProjectColumn projectColumn);
     List<ProjectColumn> getColumnsByProjectId(@Param("projectId") Integer projectId);
     List<ProjectColumn> getColumnsByProjectName(@Param("projectName") String projectName);
+    ProjectColumn getColumnById (@Param("id") Integer projectColumnId);
     //List<ProjectColumn> getColumnsByColumnName(@Param("name") String columnName);
     List<ProjectColumn> getColumnsByColumnName(@Param("name") String columnName, @Param("projectId") Integer projectId);
 }

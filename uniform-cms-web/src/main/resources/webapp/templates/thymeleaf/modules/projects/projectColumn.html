@@ -29,13 +29,13 @@
 
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
+        var projectId = /*[[${project.id}]]*/;
         $(function () {
             loadData("table-filter");
             $("#op_add").click(function() { showPopupDialog('m_projectColumn'); });
         });
 
         function loadData(container_id) {
-            var projectId = /*[[${project.id}]]*/;
             $.ajax(openApiContextPath + "/projects/" + projectId + "/columns", {
                     data: {},
                     type: 'GET',
@@ -81,7 +81,7 @@
                             (data[i].visible == 0 ? "unknown" : "cleared") + "'></span></div>";
                     }
 
-                    data[i].undo = '<div class="n-row-indicated" onclick="showColumnUpdate();" title="Undo"><span class="icon icon-undo"></span></div>';
+                    data[i].undo = '<div class="n-row-indicated" onclick="undo();" title="Undo"><span class="icon icon-undo"></span></div>';
                     data[i].edit = '<div class="n-row-indicated" onclick="showColumnUpdate();" title="Save"><span class="icon icon-save-as"></span></div>';
                     data[i].delete = '<div class="n-row-indicated" onclick="showColumnUpdate();" title="Delete"><span class="icon icon-delete"></span></div>';
                 }
@@ -92,6 +92,34 @@
         function showColumnUpdate() {
             var rowData = getCurrentGridRowData("table-filter");
             if (rowData != null) {
+
+            }
+        }
+
+        function undo () {
+            var data = getCurrentGridRowData("table-filter");
+            if (data != null) {
+                var id = data.id;
+                $.ajax(openApiContextPath + "/projects/" + projectId + "/columns", {
+                        data: {columnId: id},
+                        type: 'GET',
+                        success: function(rsp) {
+                        var ret = eval(rsp);
+                        if (ret.success) {
+                            updateGridRowData("table-filter", rebuildColumnData(ret.data));
+                        } else {
+                            showErrorDialog("Unable to retrieve column data for recovery");
+                        }
+
+                        disableAjaxLoading();
+                    },
+                    beforeSend: function(){
+                        enableAjaxLoading("Recovery Data...");
+                    },
+                    error: function(rsp) {
+                        disableAjaxLoading();
+                    }
+                });
 
             }
         }

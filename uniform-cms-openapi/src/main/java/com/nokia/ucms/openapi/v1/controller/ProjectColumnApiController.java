@@ -5,10 +5,13 @@ import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.service.ProjectService;
 import com.nokia.ucms.common.controller.BaseController;
 import com.nokia.ucms.common.entity.ApiQueryResult;
+import com.nokia.ucms.common.exception.ServiceException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Service;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,19 +29,34 @@ public class ProjectColumnApiController extends BaseController
     @RequestMapping(path="", method= RequestMethod.GET)
     public @ResponseBody ApiQueryResult<List<ProjectColumn>> getProjectColumn(
             @PathVariable Integer projectId,
-            @RequestParam(required = false) String columnName)
+            @RequestParam(required = false) String columnName,
+            @RequestParam(required = false) Integer columnId)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter getProjectColumn - [projectId: %d, columnName: %s]", projectId, columnName));
+            LOGGER.debug(String.format(
+                    "Enter getProjectColumn - [projectId: %d, columnName: %s, columnId: %d]", projectId, columnName, columnId));
 
-        if (columnName != null && !"".equals(columnName))
+        // column id first
+        if (columnId != null && columnId > 0)
         {
-            return new ApiQueryResult<List<ProjectColumn>>(
-                    projectService.getProjectColumnsByName(columnName));
+            ProjectColumn projectColumn = projectService.getProjectColumnById(columnId);
+            if (projectColumn != null)
+            {
+                return new ApiQueryResult<List<ProjectColumn>>(Arrays.asList(projectColumn));
+            }
+            else
+            {
+                throw new ServiceException(String.format("Project column (id = '%d') does not exist", columnId));
+            }
         }
 
-        return new ApiQueryResult<List<ProjectColumn>>(
-                projectService.getProjectColumnsByProjectId(projectId));
+        // column name second
+        if (columnName != null && !"".equals(columnName))
+        {
+            return new ApiQueryResult<List<ProjectColumn>>(projectService.getProjectColumnsByName(columnName));
+        }
+
+        return new ApiQueryResult<List<ProjectColumn>>(projectService.getProjectColumnsByProjectId(projectId));
     }
 
     @RequestMapping(path="", method= RequestMethod.PUT)

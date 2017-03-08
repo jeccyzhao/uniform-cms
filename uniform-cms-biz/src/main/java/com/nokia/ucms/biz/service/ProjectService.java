@@ -76,6 +76,12 @@ public class ProjectService
         return null;
     }
 
+    public ProjectColumn getProjectColumnById (Integer projectColumnId) throws ServiceException
+    {
+        return projectColumnRepository.getColumnById(projectColumnId);
+    }
+
+
     public List<ProjectColumn> getProjectColumnsByProjectId (Integer projectId) throws ServiceException
     {
         if (projectId != null && projectId > 0)
