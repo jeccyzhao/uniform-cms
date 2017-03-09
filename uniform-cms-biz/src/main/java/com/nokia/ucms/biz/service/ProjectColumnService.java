@@ -1,5 +1,6 @@
 package com.nokia.ucms.biz.service;
 
+import com.nokia.ucms.biz.constants.EOperationType;
 import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.biz.repository.DatabaseAdminRepository;
@@ -32,6 +33,9 @@ public class ProjectColumnService extends BaseService
 
     @Autowired
     private ProjectInfoService projectInfoService;
+
+    @Autowired
+    private ProjectTraceService projectTraceService;
 
     public List<ProjectColumn> getProjectColumnsByProjectName (String projectName) throws ServiceException
     {
@@ -87,6 +91,16 @@ public class ProjectColumnService extends BaseService
                 Integer result = projectColumnRepository.deleteProjectColumn(projectColumnId);
                 if (result != null)
                 {
+                    try
+                    {
+                        projectTraceService.addProjectTrace(projectInfo.getId(), EOperationType.OPERATION_DEL,
+                                String.format("Remove project column '%s'", projectColumn.getColumnName()), projectColumn);
+                    }
+                    catch (Exception ex)
+                    {
+                        LOGGER.error("Failed to trace when removing project column: " + ex);
+                    }
+
                     return dbAdminRepository.removeTableColumn(projectInfo.getTableName(), projectColumn.getColumnId());
                 }
             }
@@ -110,6 +124,17 @@ public class ProjectColumnService extends BaseService
                     projectColumn.setUpdateTime(new Date());
                     if (projectColumnRepository.updateProjectColumn(projectColumn) > 0)
                     {
+                        try
+                        {
+                            projectTraceService.addProjectTrace(projectId, EOperationType.OPERATION_UPDATE,
+                                    String.format("Update project column from '%s' to '%s'",
+                                            entityById.getColumnName(), projectColumn.getColumnName()), projectColumn);
+                        }
+                        catch (Exception ex)
+                        {
+                            LOGGER.error("Failed to trace when updating project column: " + ex);
+                        }
+
                         return projectColumn;
                     }
                     else

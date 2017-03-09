@@ -16,6 +16,19 @@
         SELECT * FROM `t_project_trace` WHERE `p_id` = #{projectId} ORDER BY `op_time` DESC
     </select>
 
+    <select id="getTraceById" parameterType="java.lang.Integer" resultMap="rs_projectTrace">
+        SELECT * FROM `t_project_trace` WHERE `id` = #{id}
+    </select>
+
+    <insert id="addProjectTrace" parameterType="ProjectTrace" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `t_project_trace` (`p_id`, `op_user`, `op_time`, `op_type`, `op_message`, `op_data`)
+        VALUES (#{projectId}, #{operator}, #{operationTime}, #{operationType}, #{message}, #{data})
+    </insert>
+
+    <delete id="deleteProjectTraceById" parameterType="java.lang.Integer">
+        DELETE FROM `t_project_trace` WHERE `id` = #{id}
+    </delete>
+
     <delete id="deleteProjectTrace" parameterType="java.lang.Integer">
         DELETE FROM `t_project_trace` WHERE `p_id` = #{projectId}
     </delete>
