@@ -27,10 +27,8 @@
         function loadData(container_id) {
             var projectId = /*[[${project.id}]]*/;
             sendAjaxRequest("projects/" + projectId, 'GET', {}, function(data) {
-                if (data.rows) {
-                    var tableDataAndColumns = constructTableColumnsAndData(data);
-                    initJqxTable(container_id, tableDataAndColumns.columns, rebuildData(tableDataAndColumns.data));
-                }
+                var tableDataAndColumns = constructTableColumnsAndData(data);
+                initJqxTable(container_id, tableDataAndColumns.columns, rebuildData(tableDataAndColumns.data));
             });
         }
 
