@@ -38,7 +38,7 @@ public class ProjectController extends BaseController
         return getModulePage("projectPage");
     }
 
-    @RequestMapping("/{projectName}/tracelog")
+    @RequestMapping("/{projectName}/trace")
     public String showProjectTrace(@PathVariable String projectName, Model model)
     {
         setBasicInfoInModel(projectName, model);

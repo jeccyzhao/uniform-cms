@@ -9,6 +9,8 @@
             `c_id` int(11) NULL,
             `creationTime` timestamp NULL DEFAULT NULL,
             `updateTime` timestamp NULL DEFAULT NULL,
+            `owner` VARCHAR(120) NULL,
+            `lastUpdateUser` VARCHAR(120) NULL,
             PRIMARY KEY (`id`),
             KEY `c_id` (`c_id`)
         )

@@ -15,8 +15,12 @@ public class ProjectTrace extends BaseEntity
 {
     private Integer projectId;
     private String operator;
-    private Date operationTime;
-    private Integer operationType;
+    private String domain;
+    private Date eventTime;
+    private Integer eventType;
+    private String identifier;
+    private String category;
     private String message;
-    private String data;
+    private String oldData;
+    private String newData;
 }

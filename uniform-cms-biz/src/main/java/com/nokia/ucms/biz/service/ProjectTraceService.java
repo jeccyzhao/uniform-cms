@@ -1,5 +1,6 @@
 package com.nokia.ucms.biz.service;
 
+import com.nokia.ucms.biz.constants.EOperationDomain;
 import com.nokia.ucms.biz.constants.EOperationType;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.biz.entity.ProjectTrace;
@@ -39,21 +40,39 @@ public class ProjectTraceService extends BaseService
     }
 
     public ProjectTrace addProjectTrace (
-            Integer projectId, EOperationType operationType, String message, Object data)
+            Integer projectId,
+            EOperationType operationType,
+            EOperationDomain operationDomain,
+            String identifier, String category, String message,
+            Object oldData, Object newData)
     {
         ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
         if (projectInfo != null)
         {
             ProjectTrace projectTrace = new ProjectTrace();
-            projectTrace.setOperationTime(new Date());
+            projectTrace.setEventTime(new Date());
             projectTrace.setProjectId(projectId);
-            projectTrace.setOperator("Change It");
-            projectTrace.setOperationType(operationType.getCode());
-            projectTrace.setMessage(message);
 
-            if (data != null)
+            // TODO replace with logon user
+            projectTrace.setOperator("Change It");
+            projectTrace.setEventType(operationType.getCode());
+            projectTrace.setMessage(message);
+            projectTrace.setCategory(category);
+            projectTrace.setIdentifier(identifier);
+
+            if (operationDomain != null)
             {
-                projectTrace.setData(data.toString());
+                projectTrace.setDomain(operationDomain.getLabel());
+            }
+
+            if (newData != null)
+            {
+                projectTrace.setNewData(newData.toString());
+            }
+
+            if (oldData != null)
+            {
+                projectTrace.setOldData(oldData.toString());
             }
 
             return projectTraceRepository.addProjectTrace(projectTrace);
@@ -82,5 +101,10 @@ public class ProjectTraceService extends BaseService
         }
 
         throw new ServiceException(String.format("Invalid project id (%d) or project does not exist.", projectId));
+    }
+
+    protected String getModuleCategory ()
+    {
+        return "Traces";
     }
 }

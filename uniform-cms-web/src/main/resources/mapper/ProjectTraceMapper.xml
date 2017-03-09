@@ -6,10 +6,14 @@
         <id property="id" column="id"/>
         <result property="projectId" column="p_id"/>
         <result property="operator" column="op_user"/>
-        <result property="operationTime" column="op_time"/>
-        <result property="operationType" column="op_type"/>
+        <result property="eventTime" column="op_time"/>
+        <result property="eventType" column="op_type"/>
+        <result property="domain" column="op_domain" />
+        <result property="category" column="op_category"/>
+        <result property="identifier" column="op_identifier" />
         <result property="message" column="op_message"/>
-        <result property="data" column="op_data"/>
+        <result property="oldData" column="op_oldData"/>
+        <result property="newData" column="op_newData"/>
     </resultMap>
 
     <select id="getTraceByProjectId" parameterType="java.lang.Integer" resultMap="rs_projectTrace">
@@ -21,8 +25,14 @@
     </select>
 
     <insert id="addProjectTrace" parameterType="ProjectTrace" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_project_trace` (`p_id`, `op_user`, `op_time`, `op_type`, `op_message`, `op_data`)
-        VALUES (#{projectId}, #{operator}, #{operationTime}, #{operationType}, #{message}, #{data})
+        INSERT INTO `t_project_trace` (
+            `p_id`, `op_user`, `op_time`, `op_type`, `op_domain`, `op_identifier`,
+            `op_message`, `op_category`, `op_oldData`, `op_newData`
+        )
+        VALUES (
+            #{projectId}, #{operator}, #{eventTime}, #{eventType}, #{domain}, #{identifier},
+            #{message}, #{category}, #{oldData}, #{newData}
+        )
     </insert>
 
     <delete id="deleteProjectTraceById" parameterType="java.lang.Integer">

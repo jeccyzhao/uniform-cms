@@ -19,4 +19,9 @@ public class ProjectCategoryService extends BaseService
 
     @Autowired
     private ProjectInfoService projectInfoService;
+
+    protected String getModuleCategory ()
+    {
+        return "Categories";
+    }
 }

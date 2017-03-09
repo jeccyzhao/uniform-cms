@@ -16,7 +16,7 @@ import java.util.List;
  * Created by x36zhao on 2017/3/6.
  */
 @RestController
-@RequestMapping("/openapi/v1/projects/{pid}/traces")
+@RequestMapping("/openapi/v1/projects/{projectId}/traces")
 public class ProjectTraceApiController extends BaseController
 {
     private static Logger LOGGER = Logger.getLogger(ProjectTraceApiController.class);
@@ -24,7 +24,7 @@ public class ProjectTraceApiController extends BaseController
     @Autowired
     private ProjectTraceService projectTraceService;
 
-    @RequestMapping(path="", method= RequestMethod.POST)
+    @RequestMapping(path="", method= RequestMethod.GET)
     public @ResponseBody ApiQueryResult<List<ProjectTrace>> getProjectTraces(@PathVariable Integer projectId)
     {
         if (LOGGER.isDebugEnabled())

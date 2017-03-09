@@ -30,6 +30,8 @@ public class ProjectDataTableDTO<T> extends BaseDTO
         private List<ProjectColumnProperty> cells;
         private Date creationTime;
         private Date lastUpdateTime;
+        private String owner;
+        private String lastUpdateUser;
     }
 
     @Data

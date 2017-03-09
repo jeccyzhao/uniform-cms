@@ -19,4 +19,9 @@ public class ProjectTagService extends BaseService
 
     @Autowired
     private ProjectInfoService projectInfoService;
+
+    protected String getModuleCategory ()
+    {
+        return "Tags";
+    }
 }

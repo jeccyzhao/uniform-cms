@@ -1,6 +1,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout/default/layout" th:with="subTitle=${project.name}, menu='tracelog'">
+      layout:decorator="layout/default/layout" th:with="subTitle=${project.name}, menu='trace'">
 	
 <th:block layout:fragment="content">
     <div class="col-md-2">
@@ -19,76 +19,63 @@
 
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
+        var projectId = /*[[${project.id}]]*/;
+        var tableColumns = constructTableColumns();
         $(function () {
-            // oadData("table-filter");
+            loadData("table-filter");
         });
 
         function loadData(container_id) {
-            var projectId = /*[[${project.id}]]*/;
-            $.ajax(openApiContextPath + "/projects/" + projectId, {
-                    data: {},
-                    type: 'GET',
-                    success: function(rsp) {
-                    var ret = eval(rsp);
-                    if (ret.data != null) {
-                        var dataAndColumns = constructDataAndColumns(ret.data.rows);
-                        initJqxTable(container_id, dataAndColumns.columns, rebuildData(dataAndColumns.data));
-                    }
-
-                    disableAjaxLoading();
-                },
-                beforeSend: function(){
-                    enableAjaxLoading("Loading Data...");
-                },
-                error: function(rsp) {
-                    disableAjaxLoading();
-                }
+            sendAjaxRequest("projects/" + projectId + "/traces", 'GET', {}, function(data) {
+                initJqxTable(container_id, tableColumns, rebuildColumnData(data));
             });
         }
 
-        function rebuildData (data) {
+        function constructTableColumns () {
+            var columns = [
+                {
+                  text: 'No.', sortable: false, filterable: false, editable: false,
+                  groupable: false, draggable: false, resizable: false,
+                  datafield: '', columntype: 'number', width: 40, cellsalign: 'center',
+                  cellsrenderer: function (row, column, value) {
+                      return "<div style='margin:4px;'>" + (value + 1) + "</div>";
+                  }
+                },
+                {text: 'ID', datafield: 'id', hidden: true},
+                {text: 'Action', datafield: 'operationType', cellsalign: 'left', align: 'center', width: 80},
+                {text: 'Domain', datafield: 'domain', cellsalign: 'left', align: 'center', width: 120},
+                {text: 'Category', datafield: 'category', cellsalign: 'left', align: 'center', width: 140},
+                {text: 'Identifier', hidden: true, datafield: 'identifier', cellsalign: 'left', align: 'center', width: 80},
+                {text: 'Description', datafield: 'message', cellsalign:'left', align: 'center'},
+                {text: 'Operator', datafield: 'operator', cellsalign: 'left', align: 'center', width: 130},
+                {text: 'Time', datafield: 'eventTime', cellsalign: 'center', align: 'center', width: 170},
+                {text: 'oldData', hidden: true, datafield: 'oldData'},
+                {text: 'newData', hidden: true, datafield: 'newData'},
+                {
+                    text: 'Diffs', columntype: 'link', cellsalign:'center', align: 'center', width: 80,
+                    cellsrenderer: function (row, column, value) {
+                        return "<a href='javascript:void(0);' style='margin:4px;display:block; text-align: center'>Diffs</a>";
+                    }
+                }
+            ];
+            return columns;
+        }
+
+        function rebuildColumnData(data) {
             if (data != null) {
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].creationTime != null) {
-                        var date = new Date();
-                        date.setTime(data[i].creationTime);
-                        data[i].creationTime = date.Format('yyyy-MM-dd hh:mm:ss');
+                    var date = new Date();
+                    date.setTime(data[i].eventTime);
+                    data[i].eventTime = date.Format('yyyy-MM-dd hh:mm:ss');
 
-                        // updateTime must be replaced with valid property
-                        data[i].updateTime = data[i].creationTime;
-                    } else {
-                        data[i].creationTime = "---";
-                        data[i].updateTime = "---";
+                    if (data[i].eventType != null) {
+                        var opTypeCode = parseInt(data[i].eventType);
+                        var opTypeDesc = opTypeCode == 0 ? "Add" : (opTypeCode == 1 ? "Update" : "Delete");
+                        data[i].operationType = opTypeDesc;
                     }
                 }
             }
             return data;
-        }
-
-        function constructDataAndColumns (rows) {
-            var cellColumnInitialized = false;
-            var result = { data: [], columns: [] };
-            var columns = [
-                {text: 'ID', datafield: 'id', hidden: true},
-                {text: 'Category Name', datafield: 'categoryName', align: 'left', filterable: true}
-            ];
-            for (var rowIndex in rows) {
-                var row = rows[rowIndex];
-                result.data.push( { id: row.id, categoryName: row.categoryName, creationTime: row.creationTime, updateTime: row.lastUpdateTime} );
-                if (!cellColumnInitialized) {
-                    var cells = row.cells;
-                    for (var cellIndex in cells) {
-                        var cell = cells[cellIndex];
-                        result.columns.push( { text: cell.name, datafield: cell.id } );
-                        result.data[rowIndex][cell.id] = cell.value;
-                    }
-                }
-                cellColumnInitialized = true;
-            }
-
-            result.columns.push({text: 'Creation Time', datafield: 'creationTime', align: 'center', filterable: true});
-            result.columns.push({text: 'Last Update Time', datafield: 'updateTime', align: 'center', filterable: true});
-            return result;
         }
 
         /*]]>*/

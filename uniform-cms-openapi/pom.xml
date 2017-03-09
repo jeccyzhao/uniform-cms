@@ -21,6 +21,11 @@
             <groupId>com.nokia.innovation</groupId>
             <artifactId>uniform-cms-biz</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.4.0</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -1,5 +1,6 @@
 package com.nokia.ucms.biz.service;
 
+import com.nokia.ucms.biz.constants.EOperationDomain;
 import com.nokia.ucms.biz.constants.EOperationType;
 import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.entity.ProjectInfo;
@@ -93,8 +94,11 @@ public class ProjectColumnService extends BaseService
                 {
                     try
                     {
-                        projectTraceService.addProjectTrace(projectInfo.getId(), EOperationType.OPERATION_DEL,
-                                String.format("Remove project column '%s'", projectColumn.getColumnName()), projectColumn);
+                        projectTraceService.addProjectTrace(projectInfo.getId(),
+                                EOperationType.OPERATION_DEL, EOperationDomain.DOMAIN_PROJECT_COLUMN,
+                                String.valueOf(projectColumn.getProjectId()), getModuleCategory(),
+                                String.format("Remove project column '%s'", projectColumn.getColumnName()),
+                                projectColumn, null);
                     }
                     catch (Exception ex)
                     {
@@ -126,9 +130,11 @@ public class ProjectColumnService extends BaseService
                     {
                         try
                         {
-                            projectTraceService.addProjectTrace(projectId, EOperationType.OPERATION_UPDATE,
-                                    String.format("Update project column from '%s' to '%s'",
-                                            entityById.getColumnName(), projectColumn.getColumnName()), projectColumn);
+                            projectTraceService.addProjectTrace(projectId,
+                                    EOperationType.OPERATION_UPDATE, EOperationDomain.DOMAIN_PROJECT_COLUMN,
+                                    String.valueOf(projectColumn.getProjectId()), getModuleCategory(),
+                                    String.format("Update project column from '%s' to '%s'", entityById.getColumnName(), projectColumn.getColumnName()),
+                                    entityById, projectColumn);
                         }
                         catch (Exception ex)
                         {
@@ -179,6 +185,18 @@ public class ProjectColumnService extends BaseService
                     {
                         dbAdminRepository.addTableColumn(projectInfo.getTableName(),
                                 projectColumn.getColumnId(), projectColumn.getColumnLength());
+                        try
+                        {
+                            projectTraceService.addProjectTrace(projectColumn.getProjectId(),
+                                    EOperationType.OPERATION_ADD, EOperationDomain.DOMAIN_PROJECT_COLUMN,
+                                    String.valueOf(projectColumn.getProjectId()), getModuleCategory(),
+                                    String.format("Create project column '%s'", projectColumn.getColumnName()),
+                                    null, projectColumn);
+                        }
+                        catch (Exception ex)
+                        {
+                            LOGGER.error("Failed to trace when updating project column: " + ex);
+                        }
 
                         return projectColumn.getId();
                     }
@@ -196,5 +214,10 @@ public class ProjectColumnService extends BaseService
     private String makeProjectColumnFieldId(String columnName)
     {
         return String.format("%s%d", DYNAMIC_COLUMN_NAME_PREFIX, columnName.trim().hashCode());
+    }
+
+    protected String getModuleCategory ()
+    {
+        return "Columns";
     }
 }

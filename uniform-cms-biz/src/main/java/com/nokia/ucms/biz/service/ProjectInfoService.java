@@ -245,4 +245,8 @@ public class ProjectInfoService extends BaseService
     }
 
 
+    protected String getModuleCategory ()
+    {
+        return "Project";
+    }
 }
