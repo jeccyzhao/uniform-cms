@@ -11,13 +11,8 @@ import java.util.Map;
  */
 public interface DatabaseAdminRepository
 {
-    Integer createTableIfNotExist(@Param("tableName") String tableName);
-    Integer addTableColumn(
-            @Param("tableName") String tableName,
-            @Param("columnName") String columnName,
-            @Param("columnLength") Integer columnLength);
-
-    void removeTableColumn();
-
     List<Map<String, Object>> query(@Param("tableName") String tableName, @Param("categoryId") Integer categoryId);
+    Integer createTableIfNotExist(@Param("tableName") String tableName);
+    Integer addTableColumn(@Param("tableName") String tableName, @Param("columnName") String columnName, @Param("columnLength") Integer columnLength);
+    Integer removeTableColumn(@Param("tableName") String tableName, @Param("columnId") String columnId);
 }

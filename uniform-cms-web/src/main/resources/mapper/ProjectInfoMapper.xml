@@ -48,7 +48,7 @@
     </update>
 
     <delete id="removeProjectInfo">
-        DELETE FROM `t_project` WHERE `id` = #{projectId} ORDER BY `p_updateTime` DESC
+        DELETE FROM `t_project` WHERE `id` = #{projectId}
     </delete>
 
 </mapper>

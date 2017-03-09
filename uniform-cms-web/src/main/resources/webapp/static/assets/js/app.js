@@ -131,6 +131,15 @@ function updateGridRowData (grid_id, newdata, rowIndex)
     }
 }
 
+function removeGridRowData (grid_id, rowIndex)
+{
+    rowIndex = rowIndex ? rowIndex : getCurrentGridRowIndex(grid_id);
+    if (rowIndex > -1)
+    {
+        $('#' + grid_id).jqxGrid('deleterow', rowIndex);
+    }
+}
+
 function sendAjaxRequest(uri, type, data, callback, contentType, loadingMessage)
 {
     var msg_loading = loadingMessage ? loadingMessage : "Loading Data...";

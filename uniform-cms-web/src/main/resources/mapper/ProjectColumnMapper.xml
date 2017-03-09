@@ -48,4 +48,8 @@
         WHERE `id` = #{id}
     </update>
 
+    <delete id="deleteProjectColumn" parameterType="java.lang.Integer">
+        DELETE FROM `t_project_column` WHERE `id` = #{id}
+    </delete>
+
 </mapper>

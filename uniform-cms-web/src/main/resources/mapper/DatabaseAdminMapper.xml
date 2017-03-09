@@ -20,7 +20,7 @@
     </update>
 
     <update id="removeTableColumn">
-        ALTER TABLE `${tableName}` DROP `${columnName}`
+        ALTER TABLE `${tableName}` DROP `${columnId}`
     </update>
     
     <select id="query" resultType="java.util.Map" statementType="STATEMENT">

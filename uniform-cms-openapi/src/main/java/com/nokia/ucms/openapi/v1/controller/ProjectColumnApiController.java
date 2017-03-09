@@ -6,6 +6,7 @@ import com.nokia.ucms.biz.service.ProjectService;
 import com.nokia.ucms.common.controller.BaseController;
 import com.nokia.ucms.common.entity.ApiQueryResult;
 import com.nokia.ucms.common.exception.ServiceException;
+import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -85,18 +86,16 @@ public class ProjectColumnApiController extends BaseController
         return new ApiQueryResult<Integer>(result > 0, result);
     }
 
-    @RequestMapping(path="", method= RequestMethod.DELETE)
+    @RequestMapping(path="/{projectColumnId}", method= RequestMethod.DELETE)
     public @ResponseBody ApiQueryResult<Integer> deleteProjectColumn(
             @PathVariable Integer projectId,
-            @RequestBody TableColumnDTO tableColumn)
+            @PathVariable Integer projectColumnId)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter deleteProjectColumn - [projectId: %d, tableColumn: %s]", projectId, tableColumn));
+            LOGGER.debug(String.format("Enter deleteProjectColumn - [projectId: %d, projectColumnId: %d]", projectId, projectColumnId));
 
-        // TODO
-        // 1. remove project column data from data table
-        // 2. remove project column entry
-        return createEmptyQueryResult();
+        Integer result = projectService.removeProjectColumn(projectColumnId);
+        return new ApiQueryResult<Integer>(result);
     }
 
     protected String getModulePath ()

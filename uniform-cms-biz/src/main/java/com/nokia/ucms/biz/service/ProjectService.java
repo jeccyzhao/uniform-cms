@@ -65,13 +65,23 @@ public class ProjectService
 
     public List<ProjectColumn> getProjectColumnsByName (String columnName) throws ServiceException
     {
-
         return null;
     }
 
     public ProjectColumn getProjectColumnById (Integer projectColumnId) throws ServiceException
     {
-        return projectColumnRepository.getColumnById(projectColumnId);
+        if (projectColumnId != null && projectColumnId > 0)
+        {
+            ProjectColumn projectColumn = projectColumnRepository.getColumnById(projectColumnId);
+            if (projectColumn != null)
+            {
+                return projectColumn;
+            }
+
+            throw new ServiceException(String.format("Project column (id: '%d') does not exist", projectColumnId));
+        }
+
+        throw new ServiceException("Invalid project column id: " + projectColumnId);
     }
 
 
@@ -172,6 +182,25 @@ public class ProjectService
         throw new ServiceException("Empty project cannot be created");
     }
 
+    @Transactional
+    public Integer removeProjectColumn (Integer projectColumnId) throws ServiceException
+    {
+        ProjectColumn projectColumn = getProjectColumnById(projectColumnId);
+        if (projectColumn != null)
+        {
+            ProjectInfo projectInfo = getProjectById(projectColumn.getProjectId());
+            if (projectInfo != null)
+            {
+                Integer result = projectColumnRepository.deleteProjectColumn(projectColumnId);
+                if (result != null)
+                {
+                    return dbAdminRepository.removeTableColumn(projectInfo.getTableName(), projectColumn.getColumnId());
+                }
+            }
+        }
+
+        throw new ServiceException(String.format("Failed to remove project column (id: %s)", projectColumnId));
+    }
 
     @Transactional
     public ProjectColumn updateProjectColumn (Integer projectId, ProjectColumn projectColumn) throws ServiceException

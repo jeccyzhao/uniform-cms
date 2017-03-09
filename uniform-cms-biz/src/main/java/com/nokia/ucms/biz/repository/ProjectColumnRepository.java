@@ -16,4 +16,5 @@ public interface ProjectColumnRepository
     List<ProjectColumn> getColumnsByProjectName(@Param("projectName") String projectName);
     ProjectColumn getColumnById (@Param("id") Integer projectColumnId);
     ProjectColumn getColumnsByColumnName(@Param("name") String columnName, @Param("projectId") Integer projectId);
+    Integer deleteProjectColumn(@Param("id") Integer projectColumnId);
 }
