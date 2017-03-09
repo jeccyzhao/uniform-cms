@@ -1,7 +1,7 @@
 package com.nokia.ucms.biz.service;
 
-import com.nokia.ucms.biz.constants.EOperationDomain;
 import com.nokia.ucms.biz.constants.EOperationType;
+import com.nokia.ucms.biz.constants.EServiceDomain;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.biz.entity.ProjectTrace;
 import com.nokia.ucms.biz.repository.ProjectTraceRepository;
@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Date;
+
+import static com.nokia.ucms.biz.constants.Constants.*;
 
 /**
  * Created by x36zhao on 2017/3/9.
@@ -40,10 +42,8 @@ public class ProjectTraceService extends BaseService
     }
 
     public ProjectTrace addProjectTrace (
-            Integer projectId,
-            EOperationType operationType,
-            EOperationDomain operationDomain,
-            String identifier, String category, String message,
+            Integer projectId, EOperationType operationType,
+            String serviceDomain, String identifier, String serviceCategory, String message,
             Object oldData, Object newData)
     {
         ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
@@ -57,12 +57,12 @@ public class ProjectTraceService extends BaseService
             projectTrace.setOperator("Change It");
             projectTrace.setEventType(operationType.getCode());
             projectTrace.setMessage(message);
-            projectTrace.setCategory(category);
+            projectTrace.setCategory(serviceCategory);
             projectTrace.setIdentifier(identifier);
 
-            if (operationDomain != null)
+            if (serviceDomain != null)
             {
-                projectTrace.setDomain(operationDomain.getLabel());
+                projectTrace.setDomain(serviceDomain);
             }
 
             if (newData != null)
@@ -103,8 +103,13 @@ public class ProjectTraceService extends BaseService
         throw new ServiceException(String.format("Invalid project id (%d) or project does not exist.", projectId));
     }
 
-    protected String getModuleCategory ()
+    protected String getServiceCategory ()
     {
-        return "Traces";
+        return NOT_AVAILABLE;
+    }
+
+    protected String getServiceDomain ()
+    {
+        return EServiceDomain.DOMAIN_PROJECT_TRACES.getLabel();
     }
 }

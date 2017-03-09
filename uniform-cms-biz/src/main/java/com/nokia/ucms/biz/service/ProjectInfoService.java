@@ -1,5 +1,6 @@
 package com.nokia.ucms.biz.service;
 
+import com.nokia.ucms.biz.constants.EServiceDomain;
 import com.nokia.ucms.biz.dto.ProjectDataTableDTO;
 import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.entity.ProjectInfo;
@@ -244,9 +245,13 @@ public class ProjectInfoService extends BaseService
                 projectName.trim().replaceAll(" ", KEYWORD_SPLITTER).toLowerCase());
     }
 
-
-    protected String getModuleCategory ()
+    protected String getServiceCategory ()
     {
-        return "Project";
+        return NOT_AVAILABLE;
+    }
+
+    protected String getServiceDomain ()
+    {
+        return EServiceDomain.DOMAIN_PROJECT_INFO.getLabel();
     }
 }

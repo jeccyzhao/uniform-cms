@@ -20,8 +20,13 @@ public class ProjectCategoryService extends BaseService
     @Autowired
     private ProjectInfoService projectInfoService;
 
-    protected String getModuleCategory ()
+    protected String getServiceCategory ()
     {
-        return "Categories";
+        return null;
+    }
+
+    protected String getServiceDomain ()
+    {
+        return null;
     }
 }

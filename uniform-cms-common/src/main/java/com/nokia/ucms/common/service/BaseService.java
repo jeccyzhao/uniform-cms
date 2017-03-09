@@ -5,5 +5,6 @@ package com.nokia.ucms.common.service;
  */
 public abstract class BaseService
 {
-    protected abstract String getModuleCategory();
+    protected abstract String getServiceCategory();
+    protected abstract String getServiceDomain();
 }

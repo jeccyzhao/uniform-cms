@@ -3,15 +3,17 @@ package com.nokia.ucms.biz.constants;
 /**
  * Created by x36zhao on 2017/3/9.
  */
-public enum EOperationDomain
+public enum EServiceDomain
 {
     DOMAIN_PROJECT_COLUMN("Project Columns"),
     DOMAIN_PROJECT_TAGS("Project Tags"),
     DOMAIN_PROJECT_CATEGORIES("Project Categories"),
+    DOMAIN_PROJECT_TRACES("Project Traces"),
+    DOMAIN_PROJECT_INFO("Project Info"),
     DOMAIN_PROJECT_DATA("Project Data");
 
     private String label;
-    EOperationDomain (String label)
+    EServiceDomain (String label)
     {
         this.label = label;
     }
