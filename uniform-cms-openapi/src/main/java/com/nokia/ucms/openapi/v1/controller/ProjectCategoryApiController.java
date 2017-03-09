@@ -1,7 +1,7 @@
 package com.nokia.ucms.openapi.v1.controller;
 
 import com.nokia.ucms.biz.entity.ProjectCategory;
-import com.nokia.ucms.biz.service.ProjectService;
+import com.nokia.ucms.biz.service.ProjectInfoService;
 import com.nokia.ucms.common.controller.BaseController;
 import com.nokia.ucms.common.entity.ApiQueryResult;
 import org.apache.log4j.Logger;
@@ -18,7 +18,7 @@ public class ProjectCategoryApiController extends BaseController
     private static Logger LOGGER = Logger.getLogger(ProjectCategoryApiController.class);
 
     @Autowired
-    private ProjectService projectService;
+    private ProjectInfoService projectService;
 
     @RequestMapping(path="", method= RequestMethod.GET)
     public @ResponseBody ApiQueryResult<ProjectCategory> getProjectCategory(

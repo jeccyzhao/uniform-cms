@@ -10,6 +10,6 @@ public interface ProjectTagRepository
 {
     ProjectTag getTagByName (@Param("name") String tagName);
     ProjectTag getTagById (@Param("id") Integer tagId);
-    Integer addTag (ProjectTag projectTag);
+    Integer addTag (final ProjectTag projectTag);
     Integer removeTagById(@Param("id") Integer tagId);
 }

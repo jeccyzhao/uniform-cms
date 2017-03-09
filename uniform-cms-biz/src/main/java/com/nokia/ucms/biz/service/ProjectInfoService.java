@@ -7,8 +7,8 @@ import com.nokia.ucms.biz.repository.DatabaseAdminRepository;
 import com.nokia.ucms.biz.repository.ProjectCategoryRepository;
 import com.nokia.ucms.biz.repository.ProjectColumnRepository;
 import com.nokia.ucms.biz.repository.ProjectInfoRepository;
-import com.nokia.ucms.common.entity.KeyValueEntityPair;
 import com.nokia.ucms.common.exception.ServiceException;
+import com.nokia.ucms.common.service.BaseService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,9 +23,9 @@ import java.util.*;
  * Created by x36zhao on 2017/3/5.
  */
 @Service
-public class ProjectService
+public class ProjectInfoService extends BaseService
 {
-    private static Logger LOGGER = Logger.getLogger(ProjectService.class);
+    private static Logger LOGGER = Logger.getLogger(ProjectInfoService.class);
 
     @Autowired
     private DatabaseAdminRepository dbAdminRepository;
@@ -52,49 +52,6 @@ public class ProjectService
         }
     }
 
-    public List<ProjectColumn> getProjectColumnsByProjectName (String projectName) throws ServiceException
-    {
-        ProjectInfo projectInfo = getProjectByName(projectName);
-        if (projectInfo != null)
-        {
-            return projectColumnRepository.getColumnsByProjectName(projectName);
-        }
-
-        throw new ServiceException("Failed to get project column by project name: " + projectName);
-    }
-
-    public List<ProjectColumn> getProjectColumnsByName (String columnName) throws ServiceException
-    {
-        return null;
-    }
-
-    public ProjectColumn getProjectColumnById (Integer projectColumnId) throws ServiceException
-    {
-        if (projectColumnId != null && projectColumnId > 0)
-        {
-            ProjectColumn projectColumn = projectColumnRepository.getColumnById(projectColumnId);
-            if (projectColumn != null)
-            {
-                return projectColumn;
-            }
-
-            throw new ServiceException(String.format("Project column (id: '%d') does not exist", projectColumnId));
-        }
-
-        throw new ServiceException("Invalid project column id: " + projectColumnId);
-    }
-
-
-    public List<ProjectColumn> getProjectColumnsByProjectId (Integer projectId) throws ServiceException
-    {
-        ProjectInfo projectInfo = getProjectById(projectId);
-        if (projectInfo != null)
-        {
-            return projectColumnRepository.getColumnsByProjectId(projectId);
-        }
-
-        throw new ServiceException("Failed to get project column by project id: " + projectId);
-    }
 
     public ProjectInfo getProjectById (Integer projectId) throws ServiceException
     {
@@ -182,100 +139,8 @@ public class ProjectService
         throw new ServiceException("Empty project cannot be created");
     }
 
-    @Transactional
-    public Integer removeProjectColumn (Integer projectColumnId) throws ServiceException
-    {
-        ProjectColumn projectColumn = getProjectColumnById(projectColumnId);
-        if (projectColumn != null)
-        {
-            ProjectInfo projectInfo = getProjectById(projectColumn.getProjectId());
-            if (projectInfo != null)
-            {
-                Integer result = projectColumnRepository.deleteProjectColumn(projectColumnId);
-                if (result != null)
-                {
-                    return dbAdminRepository.removeTableColumn(projectInfo.getTableName(), projectColumn.getColumnId());
-                }
-            }
-        }
 
-        throw new ServiceException(String.format("Failed to remove project column (id: %s)", projectColumnId));
-    }
-
-    @Transactional
-    public ProjectColumn updateProjectColumn (Integer projectId, ProjectColumn projectColumn) throws ServiceException
-    {
-        if (projectColumn != null && projectColumn.getId() != null &&
-                projectColumn.getColumnName() != null && !"".equals(projectColumn.getColumnName()))
-        {
-            ProjectColumn entityByName = projectColumnRepository.getColumnsByColumnName(projectColumn.getColumnName(), projectId);
-            if (entityByName == null || entityByName.getId().equals(projectColumn.getId()))
-            {
-                ProjectColumn entityById = projectColumnRepository.getColumnById(projectColumn.getId());
-                if (entityById != null)
-                {
-                    projectColumn.setUpdateTime(new Date());
-                    if (projectColumnRepository.updateProjectColumn(projectColumn) > 0)
-                    {
-                        return projectColumn;
-                    }
-                    else
-                    {
-                        throw new ServiceException(String.format("Project column (%s) update failed", projectColumn));
-                    }
-                }
-                else
-                {
-                    throw new ServiceException(String.format("Project column (%s) does not exist", projectColumn));
-                }
-            }
-            else
-            {
-                throw new ServiceException(String.format("Conflicted with another column with same name (%s)", entityByName));
-            }
-        }
-
-        throw new ServiceException("Invalid project column: " + projectColumn);
-    }
-
-    @Transactional
-    public Integer createProjectColumn (ProjectColumn projectColumn) throws ServiceException
-    {
-        if (projectColumn != null && projectColumn.getColumnName() != null && !"".equals(projectColumn.getColumnName().trim()))
-        {
-            // Steps
-            // 1. generate column field id
-            // 2. insert column entry in `t_project_column`
-            // 3. create column filed in the data table of project
-            ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectColumn.getProjectId());
-            if (projectInfo != null)
-            {
-                String columnName = projectColumn.getColumnName();
-                ProjectColumn entity = projectColumnRepository.getColumnsByColumnName(columnName, projectInfo.getId());
-                if (entity == null)
-                {
-                    projectColumn.setColumnId(makeProjectColumnFieldId(columnName));
-                    projectColumn.setUpdateTime(new Date());
-                    Integer result = projectColumnRepository.addProjectColumn(projectColumn);
-                    if (result > 0)
-                    {
-                        dbAdminRepository.addTableColumn(projectInfo.getTableName(),
-                                projectColumn.getColumnId(), projectColumn.getColumnLength());
-
-                        return projectColumn.getId();
-                    }
-                }
-                else
-                {
-                    throw new ServiceException(String.format("Project column '%s' already exists", columnName));
-                }
-            }
-        }
-
-        throw new ServiceException("Project column cannot be created due to missing properties, e.g. column name, length and etc.");
-    }
-
-    public ProjectDataTableDTO getProjectData(Integer projectId, Integer categoryId)
+    public ProjectDataTableDTO getProjectById(Integer projectId, Integer categoryId)
     {
         ProjectDataTableDTO projectDataTable = null;
         ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
@@ -283,6 +148,7 @@ public class ProjectService
         {
             projectDataTable = new ProjectDataTableDTO();
             projectDataTable.setProject(projectInfo);
+            projectDataTable.setColumns(projectColumnRepository.getColumnsByProjectId(projectInfo.getId()));
 
             List<ProjectColumn> projectColumns = projectColumnRepository.getColumnsByProjectId(projectInfo.getId());
             if (projectColumns != null && projectColumns.size() > 0)
@@ -378,8 +244,5 @@ public class ProjectService
                 projectName.trim().replaceAll(" ", KEYWORD_SPLITTER).toLowerCase());
     }
 
-    private String makeProjectColumnFieldId(String columnName)
-    {
-        return String.format("%s%d", DYNAMIC_COLUMN_NAME_PREFIX, columnName.trim().hashCode());
-    }
+
 }

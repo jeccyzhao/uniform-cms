@@ -14,7 +14,7 @@ public interface ProjectInfoRepository
     ProjectInfo getProjectInfoByName(@Param("projectName") String projectName);
     ProjectInfo getProjectInfoById(@Param("projectId") Integer projectId);
     ProjectInfo getProjectInfoByTableName (@Param("tableName") String tableName);
-    Integer addProjectInfo (ProjectInfo projectInfo);
-    Integer updateProjectInfo (ProjectInfo projectInfo);
+    Integer addProjectInfo (final ProjectInfo projectInfo);
+    Integer updateProjectInfo (final ProjectInfo projectInfo);
     Integer removeProjectInfo(@Param("projectId") Integer projectId);
 }

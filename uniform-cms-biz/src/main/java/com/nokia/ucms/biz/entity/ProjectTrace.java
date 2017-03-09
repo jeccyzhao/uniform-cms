@@ -18,4 +18,5 @@ public class ProjectTrace extends BaseEntity
     private Date operationTime;
     private Integer operationType;
     private String message;
+    private String data;
 }

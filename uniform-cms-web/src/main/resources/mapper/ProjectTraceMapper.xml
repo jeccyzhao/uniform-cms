@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nokia.ucms.biz.repository.ProjectTraceRepository">
+
+    <resultMap type="ProjectTrace" id="rs_projectTrace">
+        <id property="id" column="id"/>
+        <result property="projectId" column="p_id"/>
+        <result property="operator" column="op_user"/>
+        <result property="operationTime" column="op_time"/>
+        <result property="operationType" column="op_type"/>
+        <result property="message" column="op_message"/>
+        <result property="data" column="op_data"/>
+    </resultMap>
+
+    <select id="getTraceByProjectId" parameterType="java.lang.Integer" resultMap="rs_projectTrace">
+        SELECT * FROM `t_project_trace` WHERE `p_id` = #{projectId} ORDER BY `op_time` DESC
+    </select>
+
+    <delete id="deleteProjectTrace" parameterType="java.lang.Integer">
+        DELETE FROM `t_project_trace` WHERE `p_id` = #{projectId}
+    </delete>
+
+</mapper>

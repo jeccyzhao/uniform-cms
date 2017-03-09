@@ -13,6 +13,6 @@ public interface ProjectCategoryRepository
     ProjectCategory getCategoryByName(@Param("name") String categoryName);
     ProjectCategory getCategoryById(@Param("id") Integer categoryId);
     List<ProjectCategory> getCategoryByProjectId(@Param("projectId") Integer projectId);
-    Integer addCategory(ProjectCategory projectCategory);
+    Integer addCategory(final ProjectCategory projectCategory);
     Integer removeCategoryById(@Param("id") Integer categoryId);
 }

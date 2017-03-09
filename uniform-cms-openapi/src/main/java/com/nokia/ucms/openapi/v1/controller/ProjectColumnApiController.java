@@ -1,17 +1,15 @@
 package com.nokia.ucms.openapi.v1.controller;
 
-import com.nokia.ucms.biz.dto.TableColumnDTO;
 import com.nokia.ucms.biz.entity.ProjectColumn;
-import com.nokia.ucms.biz.service.ProjectService;
+import com.nokia.ucms.biz.service.ProjectColumnService;
+import com.nokia.ucms.biz.service.ProjectInfoService;
 import com.nokia.ucms.common.controller.BaseController;
 import com.nokia.ucms.common.entity.ApiQueryResult;
 import com.nokia.ucms.common.exception.ServiceException;
-import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.ws.Service;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,7 +23,7 @@ public class ProjectColumnApiController extends BaseController
     private static Logger LOGGER = Logger.getLogger(ProjectColumnApiController.class);
 
     @Autowired
-    private ProjectService projectService;
+    private ProjectColumnService projectColumnService;
 
     @RequestMapping(path="", method= RequestMethod.GET)
     public @ResponseBody ApiQueryResult<List<ProjectColumn>> getProjectColumn(
@@ -40,7 +38,7 @@ public class ProjectColumnApiController extends BaseController
         // column id first
         if (columnId != null && columnId > 0)
         {
-            ProjectColumn projectColumn = projectService.getProjectColumnById(columnId);
+            ProjectColumn projectColumn = projectColumnService.getProjectColumnById(columnId);
             if (projectColumn != null)
             {
                 return new ApiQueryResult<List<ProjectColumn>>(Arrays.asList(projectColumn));
@@ -54,10 +52,10 @@ public class ProjectColumnApiController extends BaseController
         // column name second
         if (columnName != null && !"".equals(columnName))
         {
-            return new ApiQueryResult<List<ProjectColumn>>(projectService.getProjectColumnsByName(columnName));
+            return new ApiQueryResult<List<ProjectColumn>>(projectColumnService.getProjectColumnsByName(columnName));
         }
 
-        return new ApiQueryResult<List<ProjectColumn>>(projectService.getProjectColumnsByProjectId(projectId));
+        return new ApiQueryResult<List<ProjectColumn>>(projectColumnService.getProjectColumnsByProjectId(projectId));
     }
 
     @RequestMapping(path="", method= RequestMethod.PUT)
@@ -68,7 +66,7 @@ public class ProjectColumnApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter updateProjectColumn - [projectId: %d, projectColumn: %s]", projectId, projectColumn));
 
-        return new ApiQueryResult<ProjectColumn>(projectService.updateProjectColumn(projectId, projectColumn));
+        return new ApiQueryResult<ProjectColumn>(projectColumnService.updateProjectColumn(projectId, projectColumn));
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
@@ -82,7 +80,7 @@ public class ProjectColumnApiController extends BaseController
         // use path variable as property
         projectColumn.setProjectId(projectId);
 
-        Integer result = projectService.createProjectColumn(projectColumn);
+        Integer result = projectColumnService.createProjectColumn(projectColumn);
         return new ApiQueryResult<Integer>(result > 0, result);
     }
 
@@ -94,7 +92,7 @@ public class ProjectColumnApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter deleteProjectColumn - [projectId: %d, projectColumnId: %d]", projectId, projectColumnId));
 
-        Integer result = projectService.removeProjectColumn(projectColumnId);
+        Integer result = projectColumnService.removeProjectColumn(projectColumnId);
         return new ApiQueryResult<Integer>(result);
     }
 

@@ -1,5 +1,6 @@
 package com.nokia.ucms.biz.dto;
 
+import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.common.dto.BaseDTO;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class ProjectDataTableDTO<T> extends BaseDTO
 {
     private ProjectInfo project;
     private List<ProjectDataTableRow> rows;
+    private List<ProjectColumn> columns;
 
     @Data
     @ToString

@@ -1,7 +1,7 @@
 package com.nokia.ucms.openapi.v1.controller;
 
 import com.nokia.ucms.biz.entity.ProjectTag;
-import com.nokia.ucms.biz.service.ProjectService;
+import com.nokia.ucms.biz.service.ProjectInfoService;
 import com.nokia.ucms.common.controller.BaseController;
 import com.nokia.ucms.common.entity.ApiQueryResult;
 import org.apache.log4j.Logger;
@@ -20,7 +20,7 @@ public class ProjectTagApiController extends BaseController
     private static Logger LOGGER = Logger.getLogger(ProjectTagApiController.class);
 
     @Autowired
-    private ProjectService projectService;
+    private ProjectInfoService projectService;
 
     @RequestMapping(path="", method= RequestMethod.POST)
     public @ResponseBody ApiQueryResult<Integer> createProjectTag(

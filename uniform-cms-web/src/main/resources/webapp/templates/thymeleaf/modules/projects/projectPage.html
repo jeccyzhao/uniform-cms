@@ -28,7 +28,7 @@
             var projectId = /*[[${project.id}]]*/;
             sendAjaxRequest("projects/" + projectId, 'GET', {}, function(data) {
                 if (data.rows) {
-                    var tableDataAndColumns = constructTableColumnsAndData(data.rows);
+                    var tableDataAndColumns = constructTableColumnsAndData(data);
                     initJqxTable(container_id, tableDataAndColumns.columns, rebuildData(tableDataAndColumns.data));
                 }
             });
@@ -58,8 +58,9 @@
             return data;
         }
 
-        function constructTableColumnsAndData (rows) {
-            var cellColumnInitialized = false;
+        function constructTableColumnsAndData (data) {
+            var rows = data.rows;
+            var columns = data.columns;
             var result = { data: [], columns: [] };
 
             result.columns.push({text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false});
@@ -68,22 +69,23 @@
             result.columns.push({text: 'No.', datafield: 'id', hidden: false, width: 40, editable: false, align: 'center', cellsalign: 'center'});
             result.columns.push({text: 'Category', datafield: 'categoryName', align: 'center', cellsalign: 'left', filterable: true, width: 160});
 
+            for (var columnIndex in columns) {
+                var column = columns[columnIndex];
+                result.columns.push( { text: column.columnName, datafield: column.columnId, cellsalign: 'left', align: 'center' } );
+            }
+
             for (var rowIndex in rows) {
                 var row = rows[rowIndex];
                 result.data.push( { id: row.id, categoryName: row.categoryName, creationTime: row.creationTime, updateTime: row.lastUpdateTime} );
                 var cells = row.cells;
                 for (var cellIndex in cells) {
                     var cell = cells[cellIndex];
-                    if (!cellColumnInitialized) {
-                        result.columns.push( { text: cell.name, datafield: cell.id, cellsalign: 'left', align: 'left'} );
-                    }
                     result.data[rowIndex][cell.id] = cell.value;
                 }
-                cellColumnInitialized = true;
             }
 
-            result.columns.push({text: 'Creation Time', datafield: 'creationTime', align: 'center', filterable: true, width: 160});
-            result.columns.push({text: 'Last Update Time', datafield: 'updateTime', align: 'center', filterable: true,  width: 160});
+            result.columns.push({text: 'Creation Time', datafield: 'creationTime', align: 'center', cellsalign: 'center', filterable: true, width: 160});
+            result.columns.push({text: 'Last Update Time', datafield: 'updateTime', align: 'center', cellsalign: 'center', filterable: true,  width: 160});
 
             return result;
         }

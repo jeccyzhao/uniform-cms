@@ -15,7 +15,7 @@ import static com.nokia.ucms.biz.constants.Constants.*;
  */
 @Data
 @ToString(exclude = "id")
-@JsonIgnoreProperties(value = { "columnId" })
+//@JsonIgnoreProperties(value = { "columnId" })
 public class ProjectColumn extends BaseEntity
 {
     public static Integer STAT_VISIBLE = 1;
@@ -31,10 +31,20 @@ public class ProjectColumn extends BaseEntity
     private Date updateTime;
 
     // default column length would be used if not set
-    private Integer columnLength = DEFAULT_COLUMN_LENGTH;
+    private Integer columnLength;
 
     // default as visibility if not set
-    private Integer visible = STAT_VISIBLE;
+    private Integer visible;
 
     private Integer seq = 0;
+
+    public Integer getColumnLength()
+    {
+        return columnLength != null && columnLength > 0 ? columnLength : DEFAULT_COLUMN_LENGTH;
+    }
+
+    public Integer getVisible()
+    {
+        return visible != null && visible > 0 ? visible : STAT_VISIBLE;
+    }
 }

@@ -1,7 +1,7 @@
 package com.nokia.ucms.portal.controller;
 
 import com.nokia.ucms.biz.entity.ProjectInfo;
-import com.nokia.ucms.biz.service.ProjectService;
+import com.nokia.ucms.biz.service.ProjectInfoService;
 import com.nokia.ucms.common.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ import java.util.List;
 public class ProjectController extends BaseController
 {
     @Autowired
-    private ProjectService projectService;
+    private ProjectInfoService projectService;
 
     private void setBasicInfoInModel (String projectName, Model model)
     {

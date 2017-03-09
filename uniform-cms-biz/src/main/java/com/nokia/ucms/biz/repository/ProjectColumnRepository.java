@@ -10,8 +10,8 @@ import java.util.List;
  */
 public interface ProjectColumnRepository
 {
-    Integer addProjectColumn(ProjectColumn projectColumn);
-    Integer updateProjectColumn(ProjectColumn projectColumn);
+    Integer addProjectColumn(final ProjectColumn projectColumn);
+    Integer updateProjectColumn(final ProjectColumn projectColumn);
     List<ProjectColumn> getColumnsByProjectId(@Param("projectId") Integer projectId);
     List<ProjectColumn> getColumnsByProjectName(@Param("projectName") String projectName);
     ProjectColumn getColumnById (@Param("id") Integer projectColumnId);

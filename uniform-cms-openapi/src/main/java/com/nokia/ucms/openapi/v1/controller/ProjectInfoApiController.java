@@ -2,7 +2,7 @@ package com.nokia.ucms.openapi.v1.controller;
 
 import com.nokia.ucms.biz.dto.ProjectDataTableDTO;
 import com.nokia.ucms.biz.entity.ProjectInfo;
-import com.nokia.ucms.biz.service.ProjectService;
+import com.nokia.ucms.biz.service.ProjectInfoService;
 import com.nokia.ucms.common.controller.BaseController;
 import com.nokia.ucms.common.entity.ApiQueryResult;
 import org.apache.log4j.Logger;
@@ -16,12 +16,12 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/openapi/v1/projects")
-public class ProjectApiController extends BaseController
+public class ProjectInfoApiController extends BaseController
 {
-    private static Logger LOGGER = Logger.getLogger(ProjectApiController.class);
+    private static Logger LOGGER = Logger.getLogger(ProjectInfoApiController.class);
 
     @Autowired
-    private ProjectService projectService;
+    private ProjectInfoService projectInfoService;
 
     @RequestMapping(path="/{projectId}", method= RequestMethod.GET)
     public @ResponseBody ApiQueryResult<ProjectDataTableDTO> getProject(
@@ -30,10 +30,7 @@ public class ProjectApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter getProject - [projectId : %d]", projectId));
 
-        // for testing purpose
-        return new ApiQueryResult<ProjectDataTableDTO>(projectService.getProjectData(projectId, null));
-
-        //return new ApiQueryResult<ProjectInfo>(projectService.getProjectById(projectId));
+        return new ApiQueryResult<ProjectDataTableDTO>(projectInfoService.getProjectById(projectId, null));
     }
 
     @RequestMapping(path="/{projectId}", method= RequestMethod.PUT)
@@ -49,7 +46,7 @@ public class ProjectApiController extends BaseController
         // set id with path variable
         projectInfo.setId(projectId);
 
-        boolean result = projectService.updateProject(projectInfo);
+        boolean result = projectInfoService.updateProject(projectInfo);
         return new ApiQueryResult<ProjectInfo>(result);
     }
 
@@ -60,7 +57,7 @@ public class ProjectApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug("Enter getAllProject");
 
-        return new ApiQueryResult<List<ProjectInfo>>(projectService.getProject(projectName));
+        return new ApiQueryResult<List<ProjectInfo>>(projectInfoService.getProject(projectName));
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
@@ -71,7 +68,7 @@ public class ProjectApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter createProject - [projectInfo: %s, from: %d]", projectInfo, fromProject));
 
-        Integer result = projectService.createProject(projectInfo, fromProject);
+        Integer result = projectInfoService.createProject(projectInfo, fromProject);
         return new ApiQueryResult<Object>(result > 0, result);
     }
 
