@@ -106,9 +106,9 @@ function showConfirmationDialog (title, body_message, callback, dialog_id)
     });
 }
 
-function getCurrentGridRowData (grid_id)
+function getCurrentGridRowData (grid_id, rowIndex)
 {
-    var rowIndex = getCurrentGridRowIndex(grid_id);
+    var rowIndex = rowIndex ? rowIndex : getCurrentGridRowIndex(grid_id);
     if (rowIndex > -1)
     {
         return $('#' + grid_id).jqxGrid('getrowdata', rowIndex);
@@ -136,7 +136,11 @@ function removeGridRowData (grid_id, rowIndex)
     rowIndex = rowIndex ? rowIndex : getCurrentGridRowIndex(grid_id);
     if (rowIndex > -1)
     {
-        $('#' + grid_id).jqxGrid('deleterow', rowIndex);
+        rowData = getCurrentGridRowData (grid_id, rowIndex);
+        if (rowData != null) {
+            $('#' + grid_id).jqxGrid('deleterow', rowData.uid);
+            $('#' + grid_id).jqxGrid("refresh");
+        }
     }
 }
 

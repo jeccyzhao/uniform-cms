@@ -147,7 +147,6 @@
                     function() {
                         sendAjaxRequest("projects/" + projectId + "/columns/" + rowData.id, 'DELETE', {}, function(data) {
                             removeGridRowData("table-filter");
-                            $("#table-filter").jqxGrid("refresh");
                         });
                     }
                 );
