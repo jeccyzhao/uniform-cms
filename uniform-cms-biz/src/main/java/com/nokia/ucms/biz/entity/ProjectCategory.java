@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.util.Date;
+
 /**
  * Created by x36zhao on 2017/3/4.
  */
@@ -17,4 +19,8 @@ public class ProjectCategory extends BaseEntity
     @NotEmpty
     private String name;
     private String description;
+
+    private Date creationTime;
+    private Date updateTime;
+    private String owner;
 }

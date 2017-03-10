@@ -8,9 +8,9 @@
     </div>
     <div class="col-md-10">
         <div class="panel panel-shadow panel-blue-cap">
-            <div class="panel-heading panel-heading-transparent" style="height: 66px">
+            <div class="panel-heading panel-heading-transparent">
+                <div style="color: #C8C9D1; padding: 3px 0; float:right;" th:text="${'Owner - ' + project.owner}">Owner</div>
                 <h1 th:text="${'Project - ' + project.name}" style="line-height: 30px"></h1>
-                <div style="color: #C8C9D1; padding: 3px 0;" th:text="${'Owner - ' + project.owner}">Owner</div>
             </div>
             <div class="panel-body" style="padding: 0 10px 20px 10px;">
                 <div id="table-filter" class="grid-alternating-rows n-table-hover n-jqxgrid-table n-grid-paging "></div>
@@ -35,18 +35,8 @@
         function rebuildData (data) {
             if (data != null) {
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].creationTime != null) {
-                        var date = new Date();
-                        date.setTime(data[i].creationTime);
-                        data[i].creationTime = date.Format('yyyy-MM-dd hh:mm:ss');
-
-                        // updateTime must be replaced with valid property
-                        data[i].updateTime = data[i].creationTime;
-                    } else {
-                        data[i].creationTime = "---";
-                        data[i].updateTime = "---";
-                    }
-
+                    data[i].creationTime = reformatDate(data[i].creationTime);
+                    data[i].updateTime = reformatDate(data[i].updateTime);
                     data[i].undo = '<div class="n-row-indicated" onclick="reviseColumn(\'clean\');" title="Cleanup"><span class="icon icon-undo"></span></div>';
                     data[i].edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';
                     data[i].delete = '<div class="n-row-indicated" onclick="reviseColumn(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';

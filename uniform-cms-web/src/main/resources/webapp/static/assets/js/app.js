@@ -184,7 +184,36 @@ function clearFormInputs (form_id)
 }
 
 
-function makeElementWithIcon (title, iconClass)
+function makeElementWithIcon (title, icon_class)
 {
-    return "<div class='n-cell-icon'><span title='" + title + "' class='icon " + iconClass + "'><span></div>";
+    return "<div class='n-cell-icon'><span title='" + title + "' class='icon " + icon_class + "'><span></div>";
+}
+
+function reformatDate (timestamp_num)
+{
+    if (timestamp_num != null)
+    {
+        var date = new Date();
+        date.setTime(timestamp_num);
+        return date.Format('yyyy-MM-dd hh:mm:ss');
+    }
+
+    return "---";
+}
+
+function updateRowWithConfirmation (title, body_message, callback)
+{
+    showConfirmationDialog(title, body_message, function() {
+        callback();
+    });
+}
+
+function removeObjectAttribute (json_obj, attributes)
+{
+    for (var i = 0; i < attributes.length; i++)
+    {
+        delete json_obj[attributes[i]];
+    }
+
+    return json_obj;
 }

@@ -5,16 +5,19 @@
     <resultMap type="ProjectCategory" id="rs_projectCategory">
         <id property="id" column="id"/>
         <result property="projectId" column="p_id"/>
+        <result property="owner" column="c_owner"/>
         <result property="name" column="c_name"/>
         <result property="description" column="c_desc"/>
+        <result property="creationTime" column="c_createTime"/>
+        <result property="updateTime" column="c_updateTime"/>
     </resultMap>
 
     <select id="getCategoryByName" parameterType="java.lang.String" resultMap="rs_projectCategory">
         SELECT * FROM `t_project_category` WHERE `c_name` = #{name}
     </select>
 
-    <select id="getCategoryByProjectId" parameterType="java.lang.Integer" resultMap="rs_projectCategory">
-        SELECT * FROM `t_project_category` WHERE `p_id` = #{projectId}
+    <select id="getCategoriesByProjectId" parameterType="java.lang.Integer" resultMap="rs_projectCategory">
+        SELECT * FROM `t_project_category` WHERE `p_id` = #{projectId} ORDER BY `c_updateTime` DESC
     </select>
 
     <select id="getCategoryById" parameterType="java.lang.Integer" resultMap="rs_projectCategory">
@@ -22,12 +25,26 @@
     </select>
 
     <insert id="addCategory" parameterType="ProjectCategory" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_project_category` (`p_id`, `c_name`, `c_desc`)
-            VALUES (#{projectId}, #{name}, #{description})
+        INSERT INTO `t_project_category` (
+            `p_id`, `c_owner`, `c_name`, `c_desc`, `c_createTime`, `c_updateTime`)
+        VALUES (
+            #{projectId}, #{owner}, #{name}, #{description}, #{creationTime}, #{updateTime})
     </insert>
+
+    <update id="updateCategory">
+        UPDATE `t_project_column` SET
+            `c_name` = #{name},
+            `c_desc` = #{description},
+            `c_updateTime` = #{updateTime}
+        WHERE `id` = #{id}
+    </update>
 
     <delete id="removeCategoryById" parameterType="java.lang.Integer">
         DELETE FROM `t_project_category` WHERE `id` = #{id}
+    </delete>
+
+    <delete id="removeCategoriesByProjectId" parameterType="java.lang.Integer">
+        DELETE FROM `t_project_category` WHERE `p_id` = #{projectId}
     </delete>
 
 </mapper>

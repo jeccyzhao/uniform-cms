@@ -8,7 +8,8 @@
     </div>
     <div class="col-md-10">
         <div class="panel panel-shadow panel-blue-cap">
-            <div class="panel-heading panel-heading-transparent" style="height: 66px">
+            <div class="panel-heading panel-heading-transparent">
+                <div style="color: #C8C9D1; padding: 3px 0; float:right;" th:text="${'Owner - ' + project.owner}">Owner</div>
                 <h1 th:text="'\'' + ${project.name} + '\' - Authorization'" style="line-height: 30px"></h1>
             </div>
             <div class="panel-body" style="padding: 0 10px 20px 10px;">

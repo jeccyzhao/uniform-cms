@@ -1,0 +1,64 @@
+<div xmlns:th="http://www.thymeleaf.org" class="modal" id="m_projectCat" role="dialog" aria-labelledby="myModalDlgLabel-subhead" aria-hidden="true" tabindex="1">
+    <div class="modal-dialog">
+        <div class="modal-content" id="dialog-addProjectCategory">
+            <div class="modal-header">
+                <div class="n-dialog-header-fg-filler"></div>
+                <div class="n-dialog-header-bg-filler"></div>
+                <!-- -->
+                <div class="n-dialog-header-curve">
+                    <div class="fg-mask"></div>
+                    <div class="bg-mask"></div>
+                    <div class="fg-corner"></div>
+                    <div class="bg-corner"></div>
+                </div>
+                <i role="button" class="icon icon-close-rounded" data-dismiss="modal" aria-label="Close dialog" tabindex='4' id="TA-dialog-plaindialogcloseicon"></i>
+                <h1 class="modal-title" id="myModalLabel">Add Category</h1>
+                <h2 class="modal-title-subheading" id="myModalLabelVersion">Create new project category</h2>
+            </div>
+            <form class="form-horizontal">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Category Name:</label>
+                        <div class="col-sm-9 input-required has-feedback">
+                            <input type="text" class="form-control n-inputfield" id="exInputCatName" placeholder="" />
+                            <a class="form-control-feedback"><span class="icon icon-mandatory"></span></a>
+                        </div>
+                    </div>
+                    <div class="form-group n-login-textfields">
+                        <label class="col-sm-3 control-label">Description:</label>
+                        <div class="col-sm-9  has-feedback">
+                            <textarea  id="exInputCatDesc" class="n-textarea"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" id="projectId" th:value="${project.id}" />
+                    <button type="button" class="btn btn-standard btn-defaultBlue" id="dialogSubmit" tabindex='2'>OK</button>
+                    <button type="button" class="btn btn-standard" data-dismiss="modal" id="dialogCancel" tabindex='3' >Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        $("#dialogSubmit").click(function(){
+            var projectId = $("#projectId").val();
+            sendAjaxRequest("projects/" + projectId + "/categories", 'POST', JSON.stringify(constructFormInputs()), function(data){
+                loadData("table-filter");
+                $('#m_projectCat').modal('hide');
+                clearFormInputs("m_projectCat");
+            }, "application/json; charset=utf-8");
+        });
+    });
+
+    function constructFormInputs() {
+        var data = {
+            "name" : $("#exInputCatName").val(),
+            "description" : $("#exInputCatDesc").val()
+        };
+        return data;
+    }
+
+</script>

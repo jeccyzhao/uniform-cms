@@ -9,6 +9,7 @@
     <div class="col-md-10">
         <div class="panel panel-shadow panel-blue-cap">
             <div class="panel-heading panel-heading-transparent" >
+                <div style="color: #C8C9D1; padding: 3px 0; float:right;" th:text="${'Owner - ' + project.owner}">Owner</div>
                 <h1 th:text="'\'' + ${project.name} + '\' - Columns'" style="line-height: 30px"></h1>
             </div>
             <div class="panel-body" style="padding: 0 10px 20px 10px;">
@@ -16,7 +17,7 @@
                     <div style="float: left;">
                         <a href="#" class="btn btn-icon-button"
                            data-backdrop="true" data-toggle="modal" id="op_add">
-                            <span class="icon icon-add"></span><span>Create</span>
+                            <span class="icon icon-add"></span><span>Add</span>
                         </a>
                     </div>
                 </div>
@@ -76,10 +77,7 @@
                 data.undo = '<div class="n-row-indicated" onclick="reviseColumn(\'clean\');" title="Cleanup"><span class="icon icon-undo"></span></div>';
                 data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';
                 data.delete = '<div class="n-row-indicated" onclick="reviseColumn(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';
-
-                var date = new Date();
-                date.setTime(data.updateTime);
-                data.updateTime = date.Format('yyyy-MM-dd hh:mm:ss');
+                data.updateTime = reformatDate(data.updateTime);
             }
 
             return data;
@@ -102,70 +100,42 @@
             if (rowData != null) {
                 switch (operationType) {
                     case "update":
-                        updateColumn(rowData);
+                        updateRowWithConfirmation("Do you want to update this column?",
+                            "Column property would be updated to," + constructColumnInstructions(rowData),
+                            function() {
+                                // remove some unnecessary attribute from row data
+                                rowData = removeObjectAttribute(rowData, ['delete', 'edit', 'uid', 'undo', 'uniqueid', 'visibleindex', 'boundindex', 'projectId', 'updateTime']);
+                                sendAjaxRequest("projects/" + projectId + "/columns", 'PUT', JSON.stringify(rowData), function(data) {
+                                    updateGridRowData("table-filter", rebuildSingleColumnData(data));
+                                }, "application/json; charset=utf-8");
+                            }
+                        );
                         break;
                     case "delete":
-                        deleteColumn(rowData);
+                        updateRowWithConfirmation("Do you want to delete this column?",
+                            "Below column would be removed and including all relevant data in project table: " + constructColumnInstructions(rowData),
+                            function() {
+                                sendAjaxRequest("projects/" + projectId + "/columns/" + rowData.id, 'DELETE', {}, function(data) {
+                                    removeGridRowData("table-filter");
+                                });
+                            }
+                        );
                         break;
                     case "clean":
-                        cleanColumn(rowData);
+                        updateRowWithConfirmation("Do you want to cleanup the column?",
+                            "It would cleanup all the revisions from editor.",
+                            function() {
+                                sendAjaxRequest("projects/" + projectId + "/columns", 'GET', {columnId: rowData.id}, function(data) {
+                                    if (data.length > 0) {
+                                        updateGridRowData("table-filter", rebuildSingleColumnData(data[0]));
+                                    }
+                                });
+                            }
+                        );
                         break;
                     default:
                         showErrorDialog("Operation (" + operationType + ") is not supported!");
                 }
-            }
-        }
-
-        function updateColumn(rowData) {
-            if (rowData != null) {
-                showConfirmationDialog(
-                    "Do you want to update this column?",
-                    "Column property would be updated to," + constructColumnInstructions(rowData),
-                    function() {
-                        // remove some unnecessary attribute from row data
-                        rowData = removeObjectAttribute(rowData, ['delete', 'edit', 'uid', 'undo', 'uniqueid', 'visibleindex', 'boundindex', 'projectId', 'updateTime']);
-                        sendAjaxRequest("projects/" + projectId + "/columns", 'PUT', JSON.stringify(rowData), function(data) {
-                            updateGridRowData("table-filter", rebuildSingleColumnData(data));
-                        }, "application/json; charset=utf-8");
-                    }
-                );
-            }
-        }
-
-        function removeObjectAttribute (json_obj, attributes) {
-            for (var i = 0; i < attributes.length; i++) {
-                delete json_obj[attributes[i]];
-            }
-            return json_obj;
-        }
-
-        function deleteColumn (rowData) {
-            if (rowData != null) {
-                showConfirmationDialog(
-                    "Do you want to delete this column?",
-                    "Below column would be removed and including all relevant data in project table: " + constructColumnInstructions(rowData),
-                    function() {
-                        sendAjaxRequest("projects/" + projectId + "/columns/" + rowData.id, 'DELETE', {}, function(data) {
-                            removeGridRowData("table-filter");
-                        });
-                    }
-                );
-            }
-        }
-
-        function cleanColumn (rowData) {
-            if (rowData != null) {
-                showConfirmationDialog(
-                    "Do you want to cleanup the column?",
-                    "It would cleanup all the revisions from editor.",
-                    function() {
-                        sendAjaxRequest("projects/" + projectId + "/columns", 'GET', {columnId: rowData.id}, function(data) {
-                            if (data.length > 0) {
-                                updateGridRowData("table-filter", rebuildSingleColumnData(data[0]));
-                            }
-                        });
-                    }
-                );
             }
         }
 
