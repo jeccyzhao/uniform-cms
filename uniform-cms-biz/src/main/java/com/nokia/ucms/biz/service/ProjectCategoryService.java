@@ -116,6 +116,10 @@ public class ProjectCategoryService extends BaseService
                     {
                         category.setUpdateTime(new Date());
 
+                        // adding owner and creation time back only for the purpose of displaying in front-end page
+                        category.setOwner(entityById.getOwner());
+                        category.setCreationTime(entityById.getCreationTime());
+
                         Integer result = this.projectCategoryRepository.updateCategory(category);
                         if (result != null)
                         {
