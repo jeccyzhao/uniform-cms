@@ -54,8 +54,8 @@
                 {text: 'Category Name', datafield: 'name', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Category Description', datafield: 'description', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Owner', datafield: 'owner', cellsalign: 'left', editable: false, align: 'center', filterable: true},
-                {text: 'Creation Time', datafield: 'creationTime', editable: false, cellsalign: 'center', align: 'center',  width: 140, filterable: true},
-                {text: 'Last Update Time', datafield: 'updateTime', editable: false, cellsalign:'center', align: 'center', width: 140, filterable: true}
+                {text: 'Creation Time', datafield: 'creationTime', editable: false, cellsalign: 'center', align: 'center',  width: 160, filterable: true},
+                {text: 'Last Update Time', datafield: 'updateTime', editable: false, cellsalign:'center', align: 'center', width: 160, filterable: true}
             ];
             return columns;
         }
@@ -78,16 +78,38 @@
             if (rowData != null) {
                 switch (operationType) {
                     case "update":
-                        updateRowWithConfirmation("", "", rowData, function(){
-                        });
+                        updateRowWithConfirmation("Do you want to update this category?",
+                            "Category property would be updated to," + constructColumnInstructions(rowData),
+                            function() {
+                                // remove some unnecessary attribute from row data
+                                rowData = removeObjectAttribute(rowData, ['delete', 'edit', 'uid', 'undo', 'uniqueid', 'visibleindex', 'boundindex', 'projectId', 'updateTime']);
+                                sendAjaxRequest("projects/" + projectId + "/categories", 'PUT', JSON.stringify(rowData), function(data) {
+                                    updateGridRowData("table-filter", rebuildData([data]));
+                                }, "application/json; charset=utf-8");
+                            }
+                        );
                         break;
                     case "delete":
-                        updateRowWithConfirmation("", "", rowData, function(){
-                        });
+                        updateRowWithConfirmation("Do you want to delete this category?",
+                            "Below category would be removed and including all relevant data in project table: " + constructColumnInstructions(rowData),
+                            function() {
+                                sendAjaxRequest("projects/" + projectId + "/categories/" + rowData.id, 'DELETE', {}, function(data) {
+                                    removeGridRowData("table-filter");
+                                });
+                            }
+                        );
                         break;
                     case "clean":
-                        updateRowWithConfirmation("", "", rowData, function(){
-                        });
+                        updateRowWithConfirmation("Do you want to cleanup the column?",
+                            "It would cleanup all the revisions from editor.",
+                            function() {
+                                sendAjaxRequest("projects/" + projectId + "/categories/" + rowData.id, 'GET', {}, function(data) {
+                                    if (data.length > 0) {
+                                        updateGridRowData("table-filter", rebuildSingleColumnData(data[0]));
+                                    }
+                                });
+                            }
+                        );
                         break;
                     default:
                         showErrorDialog("Operation (" + operationType + ") is not supported!");
@@ -95,57 +117,12 @@
             }
         }
 
-        function updateCategory(rowData) {
-            if (rowData != null) {
-                showConfirmationDialog(
-                    "Do you want to update this column?",
-                    "Column property would be updated to," + constructColumnInstructions(rowData),
-                    function() {
-                        // remove some unnecessary attribute from row data
-                        rowData = removeObjectAttribute(rowData, ['delete', 'edit', 'uid', 'undo', 'uniqueid', 'visibleindex', 'boundindex', 'projectId', 'updateTime']);
-                        sendAjaxRequest("projects/" + projectId + "/columns", 'PUT', JSON.stringify(rowData), function(data) {
-                            updateGridRowData("table-filter", rebuildSingleColumnData(data));
-                        }, "application/json; charset=utf-8");
-                    }
-                );
-            }
-        }
-
-        function removeObjectAttribute (json_obj, attributes) {
-            for (var i = 0; i < attributes.length; i++) {
-                delete json_obj[attributes[i]];
-            }
-            return json_obj;
-        }
-
-        function deleteCategory (rowData) {
-            if (rowData != null) {
-                showConfirmationDialog(
-                    "Do you want to delete this column?",
-                    "Below column would be removed and including all relevant data in project table: " + constructColumnInstructions(rowData),
-                    function() {
-                        sendAjaxRequest("projects/" + projectId + "/columns/" + rowData.id, 'DELETE', {}, function(data) {
-                            removeGridRowData("table-filter");
-                        });
-                    }
-                );
-            }
-        }
-
-        function cleanCategory (rowData) {
-            if (rowData != null) {
-                showConfirmationDialog(
-                    "Do you want to cleanup the column?",
-                    "It would cleanup all the revisions from editor.",
-                    function() {
-                        sendAjaxRequest("projects/" + projectId + "/columns", 'GET', {columnId: rowData.id}, function(data) {
-                            if (data.length > 0) {
-                                updateGridRowData("table-filter", rebuildSingleColumnData(data[0]));
-                            }
-                        });
-                    }
-                );
-            }
+        function constructColumnInstructions (rowData, join) {
+            var dataInstructions = "";
+            join = join ? join : "<br/>";
+            dataInstructions += join + "- Category Name:    <font color='red'>" + rowData.name + "</font>";
+            dataInstructions += join + "- Category Description:  <font color='red'>" + rowData.description + "</font>";
+            return dataInstructions;
         }
 
         /*]]>*/

@@ -125,10 +125,8 @@
                         updateRowWithConfirmation("Do you want to cleanup the column?",
                             "It would cleanup all the revisions from editor.",
                             function() {
-                                sendAjaxRequest("projects/" + projectId + "/columns", 'GET', {columnId: rowData.id}, function(data) {
-                                    if (data.length > 0) {
-                                        updateGridRowData("table-filter", rebuildSingleColumnData(data[0]));
-                                    }
+                                sendAjaxRequest("projects/" + projectId + "/columns/" + rowData.id, 'GET', {}, function(data) {
+                                    updateGridRowData("table-filter", rebuildSingleColumnData(data));
                                 });
                             }
                         );

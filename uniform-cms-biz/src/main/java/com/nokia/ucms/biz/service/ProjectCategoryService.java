@@ -1,5 +1,7 @@
 package com.nokia.ucms.biz.service;
 
+import com.nokia.ucms.biz.constants.EOperationType;
+import com.nokia.ucms.biz.constants.EServiceDomain;
 import com.nokia.ucms.biz.entity.ProjectCategory;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.biz.repository.DatabaseAdminRepository;
@@ -30,6 +32,9 @@ public class ProjectCategoryService extends BaseService
 
     @Autowired
     private DatabaseAdminRepository databaseAdminRepository;
+
+    @Autowired
+    private ProjectTraceService projectTraceService;
 
     public ProjectCategory getProjectCategoryById (Integer categoryId)
     {
@@ -70,6 +75,19 @@ public class ProjectCategoryService extends BaseService
                 Integer result = projectCategoryRepository.addCategory(category);
                 if (result != null)
                 {
+                    try
+                    {
+                        projectTraceService.addProjectTrace(projectId,
+                                EOperationType.OPERATION_ADD, getServiceDomain(),
+                                String.valueOf(category.getId()), getServiceCategory(),
+                                String.format("Add project category '%s'", category.getName()),
+                                null, category);
+                    }
+                    catch (Exception ex)
+                    {
+                        LOGGER.error("Failed to trace when adding project category: " + ex);
+                    }
+
                     return category;
                 }
 
@@ -90,9 +108,43 @@ public class ProjectCategoryService extends BaseService
         {
             if (category.getName() != null && !"".equals(category.getName().trim()))
             {
-                category.setUpdateTime(new Date());
+                ProjectCategory entityByName = this.projectCategoryRepository.getCategoryByName(category.getName());
+                if (entityByName == null || entityByName.getId().equals(category.getId()))
+                {
+                    ProjectCategory entityById = this.projectCategoryRepository.getCategoryById(category.getId());
+                    if (entityById != null)
+                    {
+                        category.setUpdateTime(new Date());
 
-                return this.projectCategoryRepository.updateCategory(category) > 0;
+                        Integer result = this.projectCategoryRepository.updateCategory(category);
+                        if (result != null)
+                        {
+                            try
+                            {
+                                projectTraceService.addProjectTrace(category.getId(),
+                                        EOperationType.OPERATION_UPDATE, getServiceDomain(),
+                                        String.valueOf(category.getId()), getServiceCategory(),
+                                        String.format("Update project category from '%s' to '%s'", category.getName()),
+                                        entityById, category);
+                            } catch (Exception ex)
+                            {
+                                LOGGER.error("Failed to trace when updating project category: " + ex);
+                            }
+                        }
+                        else
+                        {
+                            throw new ServiceException(String.format("Project category (%s) update failed", category));
+                        }
+                    }
+                    else
+                    {
+                        throw new ServiceException(String.format("Project category (%s) does not exist", category));
+                    }
+                }
+                else
+                {
+                    throw new ServiceException(String.format("Conflicted with another category with same name (%s)", entityByName));
+                }
             }
             else
             {
@@ -114,8 +166,24 @@ public class ProjectCategoryService extends BaseService
             Integer result = this.projectCategoryRepository.removeCategoryById(categoryId);
             if (result != null)
             {
+                try
+                {
+                    projectTraceService.addProjectTrace(projectCategory.getProjectId(),
+                            EOperationType.OPERATION_DEL, getServiceDomain(),
+                            String.valueOf(projectCategory.getId()), getServiceCategory(),
+                            String.format("Delete project category '%s'", projectCategory.getName()),
+                            projectCategory, null);
+                } catch (Exception ex)
+                {
+                    LOGGER.error("Failed to trace when removing project category: " + ex);
+                }
+
                 // remove category data
                 return true;
+            }
+            else
+            {
+                throw new ServiceException(String.format("Project category (%s) deletion failed", projectCategory));
             }
         }
 
@@ -140,6 +208,6 @@ public class ProjectCategoryService extends BaseService
 
     protected String getServiceDomain ()
     {
-        return null;
+        return EServiceDomain.DOMAIN_PROJECT_CATEGORIES.getLabel();
     }
 }
