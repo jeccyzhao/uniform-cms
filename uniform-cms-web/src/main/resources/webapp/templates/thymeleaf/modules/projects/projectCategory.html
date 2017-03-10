@@ -31,6 +31,7 @@
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
         var tableColumns = constructTableColumns();
+        var projectId = /*[[${project.id}]]*/;
         $(function () {
             loadData("table-filter");
             $("#op_add").click(function() {
@@ -63,13 +64,21 @@
         function rebuildData (data) {
             if (data != null) {
                 for (var i = 0; i < data.length; i++) {
-                    data[i].creationTime = reformatDate(data[i].creationTime);
-                    data[i].updateTime = reformatDate(data[i].updateTime);
-                    data[i].undo = '<div class="n-row-indicated" onclick="reviseCategory(\'clean\');" title="Cleanup"><span class="icon icon-undo"></span></div>';
-                    data[i].edit = '<div class="n-row-indicated" onclick="reviseCategory(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';
-                    data[i].delete = '<div class="n-row-indicated" onclick="reviseCategory(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';
+                    rebuildSingleData(data[i]);
                 }
             }
+            return data;
+        }
+
+        function rebuildSingleData (data) {
+            if (data != null) {
+                data.creationTime = reformatDate(data.creationTime);
+                data.updateTime = reformatDate(data.updateTime);
+                data.undo = '<div class="n-row-indicated" onclick="reviseCategory(\'clean\');" title="Cleanup"><span class="icon icon-undo"></span></div>';
+                data.edit = '<div class="n-row-indicated" onclick="reviseCategory(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';
+                data.delete = '<div class="n-row-indicated" onclick="reviseCategory(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';
+            }
+
             return data;
         }
 
@@ -82,9 +91,9 @@
                             "Category property would be updated to," + constructColumnInstructions(rowData),
                             function() {
                                 // remove some unnecessary attribute from row data
-                                rowData = removeObjectAttribute(rowData, ['delete', 'edit', 'uid', 'undo', 'uniqueid', 'visibleindex', 'boundindex', 'projectId', 'updateTime']);
+                                rowData = removeObjectAttribute(rowData, ['delete', 'edit', 'uid', 'undo', 'uniqueid', 'visibleindex', 'boundindex', 'creationTime', 'owner', 'updateTime']);
                                 sendAjaxRequest("projects/" + projectId + "/categories", 'PUT', JSON.stringify(rowData), function(data) {
-                                    updateGridRowData("table-filter", rebuildData([data]));
+                                    updateGridRowData("table-filter", rebuildData(rebuildSingleData(data)));
                                 }, "application/json; charset=utf-8");
                             }
                         );

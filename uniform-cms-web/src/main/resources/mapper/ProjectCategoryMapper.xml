@@ -32,7 +32,7 @@
     </insert>
 
     <update id="updateCategory">
-        UPDATE `t_project_column` SET
+        UPDATE `t_project_category` SET
             `c_name` = #{name},
             `c_desc` = #{description},
             `c_updateTime` = #{updateTime}

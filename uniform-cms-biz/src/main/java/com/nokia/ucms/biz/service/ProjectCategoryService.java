@@ -9,9 +9,9 @@ import com.nokia.ucms.biz.repository.ProjectCategoryRepository;
 import com.nokia.ucms.common.exception.ServiceException;
 import com.nokia.ucms.common.service.BaseService;
 import org.apache.log4j.Logger;
-import org.h2.engine.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import static com.nokia.ucms.biz.constants.Constants.*;
 
 import java.util.Date;
 import java.util.List;
@@ -102,7 +102,7 @@ public class ProjectCategoryService extends BaseService
         throw new ServiceException(String.format("Project (id: %d) does not exist", projectId));
     }
 
-    public boolean updateProjectCategory (ProjectCategory category)
+    public ProjectCategory updateProjectCategory (ProjectCategory category)
     {
         if (category != null && category.getId() != null)
         {
@@ -126,10 +126,13 @@ public class ProjectCategoryService extends BaseService
                                         String.valueOf(category.getId()), getServiceCategory(),
                                         String.format("Update project category from '%s' to '%s'", category.getName()),
                                         entityById, category);
-                            } catch (Exception ex)
+                            }
+                            catch (Exception ex)
                             {
                                 LOGGER.error("Failed to trace when updating project category: " + ex);
                             }
+
+                            return category;
                         }
                         else
                         {
@@ -203,7 +206,7 @@ public class ProjectCategoryService extends BaseService
 
     protected String getServiceCategory ()
     {
-        return null;
+        return NOT_AVAILABLE;
     }
 
     protected String getServiceDomain ()

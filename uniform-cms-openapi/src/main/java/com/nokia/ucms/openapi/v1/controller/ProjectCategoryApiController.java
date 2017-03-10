@@ -67,7 +67,7 @@ public class ProjectCategoryApiController extends BaseController
     }
 
     @RequestMapping(path="", method= RequestMethod.PUT)
-    public @ResponseBody ApiQueryResult<Integer> updateProjectCategory(
+    public @ResponseBody ApiQueryResult<ProjectCategory> updateProjectCategory(
             @PathVariable Integer projectId, @RequestBody ProjectCategory projectCategory)
     {
         if (LOGGER.isDebugEnabled())
@@ -78,12 +78,18 @@ public class ProjectCategoryApiController extends BaseController
             // overwrite with given project id anyway to avoid incorrect update
             projectCategory.setProjectId(projectId);
 
-            boolean result = this.projectCategoryService.updateProjectCategory(projectCategory);
-            return new ApiQueryResult<Integer>(result, projectCategory.getId());
+            ProjectCategory category = this.projectCategoryService.updateProjectCategory(projectCategory);
+            if (category != null)
+            {
+                return new ApiQueryResult<ProjectCategory>(category);
+            }
+            else
+            {
+                return new ApiQueryResult<ProjectCategory>(false, null, "Failed to update project category: " + projectCategory);
+            }
         }
 
-        // TODO
-        return new ApiQueryResult<Integer>(false, null, "Invalid project category: " + projectCategory);
+        return new ApiQueryResult<ProjectCategory>(false, null, "Invalid project category: " + projectCategory);
     }
 
     @RequestMapping(path="/{categoryId}", method= RequestMethod.DELETE)
