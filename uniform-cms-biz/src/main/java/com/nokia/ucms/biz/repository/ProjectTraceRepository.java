@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface ProjectTraceRepository
 {
-    ProjectTrace addProjectTrace(final ProjectTrace projectTrace);
+    Integer addProjectTrace(final ProjectTrace projectTrace);
     ProjectTrace getTraceById(@Param("id") Integer projectTraceId);
     List<ProjectTrace> getTraceByProjectId(@Param("projectId") Integer projectId);
     Integer deleteProjectTrace(@Param("projectId") Integer projectId);

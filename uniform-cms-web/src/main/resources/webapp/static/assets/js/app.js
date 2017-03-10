@@ -50,7 +50,7 @@ function initJqxTable (container_id, columns, data, editable, width, height)
 
     $("#" + container_id).jqxGrid({
         width: width != undefined ? width : '100%',
-        height: height != undefined ? height : 550,
+        height: height != undefined ? height : 520,
         source: dataAdapter,
         columnsResize: true,
         columnsreorder: true,
@@ -67,7 +67,7 @@ function initJqxTable (container_id, columns, data, editable, width, height)
         altRows: true,
         scrollBarSize: 8,
         pagerheight: 40,
-        pagesize: 20,
+        pagesize: 15,
         rowsheight: 26,
         columnsheight: 26,
         editable: editable ? editable : false,

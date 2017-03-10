@@ -75,7 +75,15 @@ public class ProjectTraceService extends BaseService
                 projectTrace.setOldData(oldData.toString());
             }
 
-            return projectTraceRepository.addProjectTrace(projectTrace);
+            Integer result = projectTraceRepository.addProjectTrace(projectTrace);
+            if (result > 0)
+            {
+                return projectTrace;
+            }
+            else
+            {
+                throw new ServiceException(String.format("Failed to add project trace: %s", projectTrace));
+            }
         }
 
         throw new ServiceException(String.format("Invalid project id (%d) or project does not exist.", projectId));

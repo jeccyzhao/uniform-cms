@@ -12,7 +12,7 @@
             </dd>
         </a>
         <a href="#" th:href="@{'/projects/' + ${project.name} + '/trace'}">
-            <dd class="n-list-group-item" th:classappend="${menu == 'trace'} ? selected : ''" style="border-top-left-radius:0px; border-top-right-radius:0px;">
+            <dd class="n-list-group-item" th:classappend="${menu == 'trace'} ? selected : ''" style="border-top-left-radius:0px; border-top-right-radius:0px;border-bottom-left-radius:0px; border-bottom-right-radius:0px">
                 <span class="icon icon-manage icon-subnav"></span><span>Tracelog</span>
             </dd>
         </a>

@@ -113,9 +113,7 @@
                             "It would cleanup all the revisions from editor.",
                             function() {
                                 sendAjaxRequest("projects/" + projectId + "/categories/" + rowData.id, 'GET', {}, function(data) {
-                                    if (data.length > 0) {
-                                        updateGridRowData("table-filter", rebuildSingleColumnData(data[0]));
-                                    }
+                                    updateGridRowData("table-filter", rebuildSingleData(data));
                                 });
                             }
                         );

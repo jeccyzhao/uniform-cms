@@ -125,7 +125,7 @@ public class ProjectCategoryService extends BaseService
                         {
                             try
                             {
-                                projectTraceService.addProjectTrace(category.getId(),
+                                projectTraceService.addProjectTrace(category.getProjectId(),
                                         EOperationType.OPERATION_UPDATE, getServiceDomain(),
                                         String.valueOf(category.getId()), getServiceCategory(),
                                         String.format("Update project category from '%s' to '%s'", entityById.getName(), category.getName()),
