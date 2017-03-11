@@ -21,7 +21,13 @@
                         </a>
                     </div>
                 </div>
-                <div><input type="button" value="Export to Excel" id='excelExport' /></div>
+                <!--<div><input type="button" value="Export to Excel" id='excelExport' style="background:url()" /></div>-->
+                <div style="text-align:right; margin: 5px 0; line-height: 16px; font-size: 9pt">
+                    Export:
+                    <img title="Export to XLS" th:src="@{/assets/img/export2excel_small.gif}" class="icon-export" id="excelExport"/>
+                    <img title="Export to PDF" th:src="@{/assets/img/export2pdf.gif}" class="icon-export" id="pdfExport" />
+                    <!-- <img title="Export to HTML" th:src="@{/assets/img/export2html.gif}" class="icon-export" id="htmlExport" /> -->
+                </div>
                 <div id="table-filter" class="grid-alternating-rows n-table-hover n-jqxgrid-table n-grid-paging "></div>
             </div>
         </div>
@@ -33,17 +39,24 @@
         /*<![CDATA[*/
         var projectId = /*[[${project.id}]]*/;
         var tableColumns = constructTableColumns();
+        var excludedColumns = ["id", "edit", "delete", "undo", "seq", "updateTime", "columnLength", "visible"];
         $(function () {
             loadData("table-filter");
             $("#op_add").click(function() {
                 showPopupDialog('m_projectColumn');
             });
             $("#excelExport").click(function(){
-                $("#table-filter").jqxGrid('exportdata', 'xls', 'jqxGrid', true, null, true, ctxPath + "/export",
-                    ["id", "edit", "delete", "undo", "seq", "updateTime", "columnLength", "visible"]);
-                //alert(gridContent);
+                export2File("table-filter", "xls", "jqxGrid", excludedColumns);
+            });
+            $("#pdfExport").click(function(){
+                export2File("table-filter", "pdf", "jqxGrid", excludedColumns);
             });
         });
+
+        function export2File (gridId, fileFormat, fileName, excludedColumns) {
+            $("#" + gridId).jqxGrid('exportdata', fileFormat, fileName, true, null, true, ctxPath + "/export", excludedColumns);
+            $("#" + gridId).jqxGrid('updatebounddata', 'cells');
+        }
 
         function loadData(container_id) {
             sendAjaxRequest("projects/" + projectId + "/columns", 'GET', {}, function(data) {

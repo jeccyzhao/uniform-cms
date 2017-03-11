@@ -173,8 +173,14 @@ License: http://jqwidgets.com/license/
                         p[S]["font-size"] = aa.css("font-size");
                         p[S]["font-weight"] = aa.css("font-weight");
                         p[S]["font-style"] = aa.css("font-style");
-                        p[S]["background-color"] = V._getexportcolor(aa.css("background-color"));
+                        if (aa.hasClass("jqx-grid-column-header")) {
+                            p[S]["background-color"] = "#FFEFAC";
+                        } else {
+                            p[S]["background-color"] = V._getexportcolor(aa.css("background-color"));
+                        }
+
                         p[S]["color"] = V._getexportcolor(aa.css("color"));
+
                         p[S]["border-color"] = V._getexportcolor(aa.css("border-top-color"));
                         if (Z) {
                             p[S]["text-align"] = Y.align
