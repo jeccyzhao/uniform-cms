@@ -21,6 +21,7 @@
                         </a>
                     </div>
                 </div>
+                <div><input type="button" value="Export to Excel" id='excelExport' /></div>
                 <div id="table-filter" class="grid-alternating-rows n-table-hover n-jqxgrid-table n-grid-paging "></div>
             </div>
         </div>
@@ -36,6 +37,11 @@
             loadData("table-filter");
             $("#op_add").click(function() {
                 showPopupDialog('m_projectColumn');
+            });
+            $("#excelExport").click(function(){
+                $("#table-filter").jqxGrid('exportdata', 'xls', 'jqxGrid', true, null, true, ctxPath + "/export",
+                    ["id", "edit", "delete", "undo", "seq", "updateTime", "columnLength", "visible"]);
+                //alert(gridContent);
             });
         });
 

@@ -20,80 +20,25 @@
 
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
+        var tableColumns = constructTableColumns();
         $(function () {
-            loadData("table-filter");
+            // loadData("table-filter");
         });
 
-        function loadData(container_id) {
-            var projectId = /*[[${project.id}]]*/;
-            $.ajax(openApiContextPath + "/projects/" + projectId, {
-                    data: {},
-                    type: 'GET',
-                    success: function(rsp) {
-                    var ret = eval(rsp);
-                    if (ret.success) {
-                        var dataAndColumns = constructDataAndColumns(ret.data.rows);
-                        initJqxTable(container_id, dataAndColumns.columns, rebuildData(dataAndColumns.data));
-                    } else {
-                        showErrorDialog(ret.error);
-                    }
-
-                    disableAjaxLoading();
-                },
-                beforeSend: function(){
-                    enableAjaxLoading("Loading Data...");
-                },
-                error: function(rsp) {
-                    disableAjaxLoading();
-                }
-            });
-        }
-
-        function rebuildData (data) {
-            if (data != null) {
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].creationTime != null) {
-                        var date = new Date();
-                        date.setTime(data[i].creationTime);
-                        data[i].creationTime = date.Format('yyyy-MM-dd hh:mm:ss');
-
-                        // updateTime must be replaced with valid property
-                        data[i].updateTime = data[i].creationTime;
-                    } else {
-                        data[i].creationTime = "---";
-                        data[i].updateTime = "---";
-                    }
-                }
-            }
-            return data;
-        }
-
-        function constructDataAndColumns (rows) {
-            var cellColumnInitialized = false;
-            var result = { data: [], columns: [] };
+        function constructTableColumns () {
             var columns = [
                 {text: 'ID', datafield: 'id', hidden: true},
-                {text: 'Category Name', datafield: 'categoryName', align: 'left', filterable: true}
+                {text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false},
+                {text: 'C', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false},
+                {text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false},
+                {text: 'Category Name', datafield: 'name', cellsalign: 'left', align: 'center', filterable: true},
+                {text: 'Category Description', datafield: 'description', cellsalign: 'left', align: 'center', filterable: true},
+                {text: 'Owner', datafield: 'owner', cellsalign: 'left', editable: false, align: 'center', filterable: true},
+                {text: 'Creation Time', datafield: 'creationTime', editable: false, cellsalign: 'center', align: 'center',  width: 160, filterable: true},
+                {text: 'Last Update Time', datafield: 'updateTime', editable: false, cellsalign:'center', align: 'center', width: 160, filterable: true}
             ];
-            for (var rowIndex in rows) {
-                var row = rows[rowIndex];
-                result.data.push( { id: row.id, categoryName: row.categoryName, creationTime: row.creationTime, updateTime: row.lastUpdateTime} );
-                if (!cellColumnInitialized) {
-                    var cells = row.cells;
-                    for (var cellIndex in cells) {
-                        var cell = cells[cellIndex];
-                        result.columns.push( { text: cell.name, datafield: cell.id } );
-                        result.data[rowIndex][cell.id] = cell.value;
-                    }
-                }
-                cellColumnInitialized = true;
-            }
-
-            result.columns.push({text: 'Creation Time', datafield: 'creationTime', align: 'center', filterable: true});
-            result.columns.push({text: 'Last Update Time', datafield: 'updateTime', align: 'center', filterable: true});
-            return result;
+            return columns;
         }
-
         /*]]>*/
     </script>
 </th:block>

@@ -22,7 +22,18 @@ String.prototype.stripHTML = function()
 {  
     var reTag = /<(?:.|\s)*?>/g;  
     return this.replace(reTag,"");  
-}  
+}
+
+Array.prototype.inArray=function(e)
+{
+    for(i=0; i < this.length; i++)
+    {
+        if(this[i] == e)
+            return true;
+    }
+
+    return false;
+}
 
 Date.prototype.Format = function(fmt)   
 { //author: meizz   
