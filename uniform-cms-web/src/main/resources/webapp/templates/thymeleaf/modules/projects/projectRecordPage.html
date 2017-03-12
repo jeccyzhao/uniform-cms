@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <div th:include="modules/projects/popup/popupProjectRecord"></div>
+    <div th:include="modules/projects/popup/records/popupProjectRecordForm"></div>
 
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
@@ -78,9 +78,20 @@
             var columns = data.columns;
             var result = { data: [], columns: [] };
 
+
             result.columns.push({text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false});
             result.columns.push({text: 'C', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false});
             result.columns.push({text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false});
+
+            result.columns.push({
+              text: 'No.', sortable: false, filterable: false, editable: false,
+              groupable: false, draggable: false, resizable: false,
+              datafield: '', columntype: 'number', width: 38, cellsalign: 'center',
+              cellsrenderer: function (row, column, value) {
+                  return "<div style='margin:4px;'><a href='javascript:void(0);' style='text-decoration: none;'>" + (value + 1) + "</a></div>";
+              }
+            });
+
             // result.columns.push({text: 'No.', datafield: 'id', hidden: false, width: 40, editable: false, align: 'center', cellsalign: 'center'});
             result.columns.push({text: 'Category', datafield: 'categoryName', align: 'center', cellsalign: 'left', filterable: true, width: 120});
 
@@ -93,6 +104,8 @@
                 }
             }
 
+            result.columns.push({text: 'Owner', datafield: 'Owner', align: 'center', cellsalign: 'left', filterable: true, width: 120});
+            result.columns.push({text: 'Last Update By', datafield: 'Last Update User', align: 'center', cellsalign: 'left', filterable: true, width: 120});
             result.columns.push({text: 'Creation Time', hidden: true, datafield: 'Creation Time', align: 'center', cellsalign: 'center', filterable: true, width: 150});
             result.columns.push({text: 'Last Update Time', datafield: 'Update Time', align: 'center', cellsalign: 'center', filterable: true,  width: 150});
             result.data = data.rowData;
