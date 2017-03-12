@@ -8,6 +8,7 @@ import com.nokia.ucms.biz.repository.DatabaseAdminRepository;
 import com.nokia.ucms.biz.repository.ProjectColumnRepository;
 import com.nokia.ucms.common.exception.ServiceException;
 import com.nokia.ucms.common.service.BaseService;
+import com.nokia.ucms.common.util.UUIDGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -178,7 +179,8 @@ public class ProjectColumnService extends BaseService
                 ProjectColumn entity = projectColumnRepository.getColumnsByColumnName(columnName, projectInfo.getId());
                 if (entity == null)
                 {
-                    projectColumn.setColumnId(makeProjectColumnFieldId(columnName));
+                    // generate one random column id
+                    projectColumn.setColumnId(makeProjectColumnFieldId());
                     projectColumn.setUpdateTime(new Date());
                     Integer result = projectColumnRepository.addProjectColumn(projectColumn);
                     if (result > 0)
@@ -211,9 +213,9 @@ public class ProjectColumnService extends BaseService
         throw new ServiceException("Project column cannot be created due to missing properties, e.g. column name, length and etc.");
     }
 
-    private String makeProjectColumnFieldId(String columnName)
+    private String makeProjectColumnFieldId()
     {
-        return String.format("%s%d", DYNAMIC_COLUMN_NAME_PREFIX, columnName.trim().hashCode());
+        return String.format("%s%s", DYNAMIC_COLUMN_NAME_PREFIX, UUIDGenerator.generateShortUuid());
     }
 
     protected String getServiceCategory ()

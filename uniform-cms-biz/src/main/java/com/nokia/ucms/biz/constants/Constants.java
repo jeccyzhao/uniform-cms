@@ -12,6 +12,8 @@ public final class Constants
     public static final String TEMPLATE_COLUMN_CATEGORY_NAME = "c_name";
     public static final String TEMPLATE_COLUMN_CREATE_TIME = "creationTime";
     public static final String TEMPLATE_COLUMN_UPDATE_TIME = "updateTime";
+    public static final String TEMPLATE_COLUMN_OWNER = "owner";
+    public static final String TEMPLATE_COLUMN_UPDATE_USER = "lastUpdateUser";
 
     public static final String KEYWORD_SPLITTER = "_";
     public static final Integer DEFAULT_COLUMN_LENGTH = 60;

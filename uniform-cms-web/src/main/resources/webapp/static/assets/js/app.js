@@ -200,13 +200,14 @@ function makeElementWithIcon (title, icon_class)
     return "<div class='n-cell-icon'><span title='" + title + "' class='icon " + icon_class + "'><span></div>";
 }
 
-function reformatDate (timestamp_num)
+function reformatDate (timestamp)
 {
-    if (timestamp_num != null)
+    if (timestamp != undefined)
     {
-        var date = new Date();
-        date.setTime(timestamp_num);
-        return date.Format('yyyy-MM-dd hh:mm:ss');
+        //var date = new Date();
+        //date.setTime(timestamp_num);
+        //return date.Format('yyyy-MM-dd hh:mm:ss');
+        return timestamp;
     }
 
     return "---";

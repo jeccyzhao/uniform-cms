@@ -1,5 +1,6 @@
 package com.nokia.ucms.biz.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nokia.ucms.common.entity.BaseEntity;
 import lombok.Data;
 import lombok.ToString;
@@ -20,7 +21,10 @@ public class ProjectCategory extends BaseEntity
     private String name;
     private String description;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private Date creationTime;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private Date updateTime;
     private String owner;
 }

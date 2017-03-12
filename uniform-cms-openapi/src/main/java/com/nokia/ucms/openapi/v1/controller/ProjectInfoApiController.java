@@ -1,6 +1,6 @@
 package com.nokia.ucms.openapi.v1.controller;
 
-import com.nokia.ucms.biz.dto.ProjectDataTableDTO;
+import com.nokia.ucms.biz.dto.ProjectRecordDataDTO;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.biz.service.ProjectInfoService;
 import com.nokia.ucms.common.controller.BaseController;
@@ -24,13 +24,13 @@ public class ProjectInfoApiController extends BaseController
     private ProjectInfoService projectInfoService;
 
     @RequestMapping(path="/{projectId}", method= RequestMethod.GET)
-    public @ResponseBody ApiQueryResult<ProjectDataTableDTO> getProject(
+    public @ResponseBody ApiQueryResult<ProjectInfo> getProject(
             @PathVariable Integer projectId)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter getProject - [projectId : %d]", projectId));
 
-        return new ApiQueryResult<ProjectDataTableDTO>(projectInfoService.getProjectById(projectId, null));
+        return new ApiQueryResult<ProjectInfo>(projectInfoService.getProjectById(projectId));
     }
 
     @RequestMapping(path="/{projectId}", method= RequestMethod.PUT)
@@ -68,7 +68,7 @@ public class ProjectInfoApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter createProject - [projectInfo: %s, from: %d]", projectInfo, fromProject));
 
-        Integer result = projectInfoService.createProject(projectInfo, fromProject);
+        Integer result = projectInfoService.addProject(projectInfo, fromProject);
         return new ApiQueryResult<Object>(result > 0, result);
     }
 

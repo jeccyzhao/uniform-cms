@@ -1,5 +1,6 @@
 package com.nokia.ucms.biz.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nokia.ucms.common.entity.BaseEntity;
 import lombok.Data;
 import lombok.ToString;
@@ -16,7 +17,10 @@ public class ProjectTrace extends BaseEntity
     private Integer projectId;
     private String operator;
     private String domain;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private Date eventTime;
+
     private Integer eventType;
     private String identifier;
     private String category;

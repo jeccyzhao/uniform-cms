@@ -2,32 +2,27 @@ package com.nokia.ucms.biz.dto;
 
 import com.nokia.ucms.common.dto.BaseDTO;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Created by x36zhao on 2017/3/5.
  */
 @Data
+@ToString
 public class TableColumnDTO extends BaseDTO
 {
-    private String tableName;
     private String columnName;
-    private Integer columnLength;
+    private String columnId;
+    private String columnValue;
 
     public TableColumnDTO()
     {
-
     }
 
-    public TableColumnDTO (String tableName, String columnName)
+    public TableColumnDTO (String columnId, String columnName, String columnValue)
     {
-        this.tableName = tableName;
+        this.columnId = columnId;
         this.columnName = columnName;
-    }
-
-    public String toString()
-    {
-        return String.format("TableColumnDTO [tableName = %s, columnName = %s, columnLength = %s]", tableName, columnName, columnLength);
+        this.columnValue = columnValue;
     }
 }

@@ -1,5 +1,6 @@
 package com.nokia.ucms.biz.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nokia.ucms.common.entity.BaseEntity;
 import com.sun.istack.internal.NotNull;
@@ -39,7 +40,10 @@ public class ProjectInfo extends BaseEntity
     // marked as public as default
     private Integer publicity = P_PUBLIC;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private Date creationTime;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private Date lastUpdateTime;
 
     /*

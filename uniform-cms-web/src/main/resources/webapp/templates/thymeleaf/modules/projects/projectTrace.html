@@ -65,10 +65,7 @@
         function rebuildColumnData(data) {
             if (data != null) {
                 for (var i = 0; i < data.length; i++) {
-                    var date = new Date();
-                    date.setTime(data[i].eventTime);
-                    data[i].eventTime = date.Format('yyyy-MM-dd hh:mm:ss');
-
+                    data[i].eventTime = reformatDate(data[i].eventTime);
                     if (data[i].eventType != null) {
                         var opTypeCode = parseInt(data[i].eventType);
                         var opTypeDesc = opTypeCode == 0 ? "Add" : (opTypeCode == 1 ? "Update" : "Delete");

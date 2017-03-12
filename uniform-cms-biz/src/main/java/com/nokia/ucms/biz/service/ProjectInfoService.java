@@ -1,8 +1,6 @@
 package com.nokia.ucms.biz.service;
 
 import com.nokia.ucms.biz.constants.EServiceDomain;
-import com.nokia.ucms.biz.dto.ProjectDataTableDTO;
-import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.biz.repository.DatabaseAdminRepository;
 import com.nokia.ucms.biz.repository.ProjectCategoryRepository;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.nokia.ucms.biz.constants.Constants.*;
-import static com.nokia.ucms.biz.dto.ProjectDataTableDTO.*;
 
 import java.util.*;
 
@@ -29,7 +26,7 @@ public class ProjectInfoService extends BaseService
     private static Logger LOGGER = Logger.getLogger(ProjectInfoService.class);
 
     @Autowired
-    private DatabaseAdminRepository dbAdminRepository;
+    private DatabaseAdminRepository databaseAdminRepository;
 
     @Autowired
     private ProjectInfoRepository projectInfoRepository;
@@ -103,7 +100,7 @@ public class ProjectInfoService extends BaseService
     }
 
     @Transactional
-    public Integer createProject (ProjectInfo projectInfo, Integer fromProject) throws ServiceException
+    public Integer addProject (ProjectInfo projectInfo, Integer fromProject) throws ServiceException
     {
         // Steps
         // 1. add project info --> generate unique table name for project
@@ -124,7 +121,7 @@ public class ProjectInfoService extends BaseService
             Integer result = projectInfoRepository.addProjectInfo(projectInfo);
             if (result > 0)
             {
-                dbAdminRepository.createTableIfNotExist(projectInfo.getTableName());
+                databaseAdminRepository.createTableIfNotExist(projectInfo.getTableName());
 
                 if (fromProject != null)
                 {
@@ -140,60 +137,6 @@ public class ProjectInfoService extends BaseService
         throw new ServiceException("Empty project cannot be created");
     }
 
-
-    public ProjectDataTableDTO getProjectById(Integer projectId, Integer categoryId)
-    {
-        ProjectDataTableDTO projectDataTable = null;
-        ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
-        if (projectInfo != null)
-        {
-            projectDataTable = new ProjectDataTableDTO();
-            projectDataTable.setProject(projectInfo);
-            projectDataTable.setColumns(projectColumnRepository.getColumnsByProjectId(projectInfo.getId()));
-
-            List<ProjectColumn> projectColumns = projectColumnRepository.getColumnsByProjectId(projectInfo.getId());
-            if (projectColumns != null && projectColumns.size() > 0)
-            {
-                String dataTableName = projectInfo.getTableName();
-                List<Map<String, Object>> dataRows = dbAdminRepository.query(dataTableName, categoryId);
-                for (Map<String, Object> dataRow : dataRows)
-                {
-                    projectDataTable.addRow(constructDataRowDTO(dataRow, projectColumns));
-                }
-            }
-        }
-
-        return projectDataTable;
-    }
-
-    private ProjectDataTableRow constructDataRowDTO (
-            final Map<String, Object> row, final List<ProjectColumn> columns)
-    {
-        ProjectDataTableRow dataRowDTO = null;
-        if (row != null && row.size() > 0)
-        {
-            dataRowDTO = new ProjectDataTableRow();
-            dataRowDTO.setId(row.containsKey(TEMPLATE_COLUMN_ID) ? Integer.valueOf(row.get(TEMPLATE_COLUMN_ID).toString()) : null);
-            dataRowDTO.setCategoryName(row.containsKey(TEMPLATE_COLUMN_CATEGORY_NAME) ? row.get(TEMPLATE_COLUMN_CATEGORY_NAME).toString() : null);
-            dataRowDTO.setCreationTime(row.containsKey(TEMPLATE_COLUMN_CREATE_TIME) ? (Date) row.get(TEMPLATE_COLUMN_CREATE_TIME) : null);
-            dataRowDTO.setLastUpdateTime(row.containsKey(TEMPLATE_COLUMN_UPDATE_TIME) ? (Date) row.get(TEMPLATE_COLUMN_UPDATE_TIME) : null);
-            dataRowDTO.setCells(new ArrayList());
-            for (Map.Entry<String, Object> entry : row.entrySet())
-            {
-                for (ProjectColumn column : columns)
-                {
-                    if (entry.getKey().equals(column.getColumnId()))
-                    {
-                        dataRowDTO.getCells().add(new ProjectColumnProperty(
-                                column.getColumnId(), column.getColumnName(), entry.getValue().toString()));
-                        break;
-                    }
-                }
-            }
-        }
-
-        return dataRowDTO;
-    }
 
 
     /**

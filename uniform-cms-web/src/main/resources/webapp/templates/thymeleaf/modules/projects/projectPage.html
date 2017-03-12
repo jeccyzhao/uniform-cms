@@ -26,7 +26,7 @@
 
         function loadData(container_id) {
             var projectId = /*[[${project.id}]]*/;
-            sendAjaxRequest("projects/" + projectId, 'GET', {}, function(data) {
+            sendAjaxRequest("projects/" + projectId + '/records', 'GET', {}, function(data) {
                 var tableDataAndColumns = constructTableColumnsAndData(data);
                 initJqxTable(container_id, tableDataAndColumns.columns, rebuildData(tableDataAndColumns.data));
             });
@@ -59,7 +59,9 @@
 
             for (var columnIndex in columns) {
                 var column = columns[columnIndex];
-                result.columns.push( { text: column.columnName, datafield: column.columnId, cellsalign: 'left', align: 'center' } );
+                if (column.columnId != undefined) {
+                    result.columns.push( { text: column.columnName, datafield: column.columnId, cellsalign: 'left', align: 'center' } );
+                }
             }
 
             for (var rowIndex in rows) {

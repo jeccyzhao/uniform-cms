@@ -1,5 +1,6 @@
 package com.nokia.ucms.biz.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nokia.ucms.common.entity.BaseEntity;
 import lombok.Data;
@@ -28,6 +29,8 @@ public class ProjectColumn extends BaseEntity
     private String columnRemark;
     private String columnDataExample;
     private String columnId;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private Date updateTime;
 
     // default column length would be used if not set

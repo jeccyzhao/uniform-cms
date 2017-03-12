@@ -10,7 +10,7 @@ public enum EServiceDomain
     DOMAIN_PROJECT_CATEGORIES("Project Categories"),
     DOMAIN_PROJECT_TRACES("Project Traces"),
     DOMAIN_PROJECT_INFO("Project Info"),
-    DOMAIN_PROJECT_DATA("Project Data");
+    DOMAIN_PROJECT_RECORDS("Project Records");
 
     private String label;
     EServiceDomain (String label)
