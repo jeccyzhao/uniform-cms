@@ -12,28 +12,21 @@
                     <div class="bg-corner"></div>
                 </div>
                 <i role="button" class="icon icon-close-rounded" data-dismiss="modal" aria-label="Close dialog" tabindex='4' id="TA-dialog-plaindialogcloseicon"></i>
-                <h1 class="modal-title" id="myModalLabel">Add Project Record</h1>
-                <h2 class="modal-title-subheading" id="myModalLabelVersion">Create new project record</h2>
+                <h1 class="modal-title" id="myModalLabel">New Record</h1>
+                <h2 class="modal-title-subheading" id="myModalLabelVersion">Add new project record</h2>
             </div>
             <form class="form-horizontal">
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Column Name:</label>
-                        <div class="col-sm-9 input-required has-feedback">
-                            <input type="text" class="form-control n-inputfield" id="exInputColName" placeholder="" />
-                            <a class="form-control-feedback"><span class="icon icon-mandatory"></span></a>
-                        </div>
-                    </div>
-                    <div class="form-group n-login-textfields">
-                        <label class="col-sm-3 control-label">Project Category:</label>
-                        <div class="col-sm-9  has-feedback">
+                    <div class="form-group n-login-textfields" style="margin-bottom: 8px;">
+                        <label class="col-sm-4 control-label">Project Category:</label>
+                        <div class="col-sm-8  has-feedback">
                             <input type="text" class="form-control n-inputfield" id="exInputCat" value="60" placeholder="Default length (150) would be used if not given"/>
                             <a class="form-control-feedback"><span class="icon "></span></a>
                         </div>
                     </div>
-                    <div class="form-group n-login-textfields">
-                        <label class="col-sm-3 control-label">Column Length:</label>
-                        <div class="col-sm-9  has-feedback">
+                    <div class="form-group n-login-textfields"  style="margin-bottom: 8px;" th:each="col,iterStat:${columns}">
+                        <label class="col-sm-4 control-label" th:text="${col.columnName} +':'">Column Length:</label>
+                        <div class="col-sm-8  has-feedback">
                             <input type="text" class="form-control n-inputfield" id="exInputColLength" value="60" placeholder="Default length (150) would be used if not given"/>
                             <a class="form-control-feedback"><span class="icon "></span></a>
                         </div>

@@ -1,6 +1,7 @@
 package com.nokia.ucms.portal.controller;
 
 import com.nokia.ucms.biz.entity.ProjectInfo;
+import com.nokia.ucms.biz.service.ProjectColumnService;
 import com.nokia.ucms.biz.service.ProjectInfoService;
 import com.nokia.ucms.common.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class ProjectController extends BaseController
     @Autowired
     private ProjectInfoService projectService;
 
+    @Autowired
+    private ProjectColumnService projectColumnService;
+
     private void setBasicInfoInModel (String projectName, Model model)
     {
         List<ProjectInfo> projectInfoList = projectService.getProject(projectName);
@@ -35,6 +39,7 @@ public class ProjectController extends BaseController
     public String showProjectRecords(@PathVariable String projectName, Model model)
     {
         setBasicInfoInModel(projectName, model);
+        model.addAttribute("columns", projectColumnService.getProjectColumnsByProjectName(projectName));
         return getModulePage("projectRecordPage");
     }
 
