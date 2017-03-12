@@ -42,8 +42,8 @@
             `col_remark` = #{columnRemark},
             `col_example` = #{columnDataExample},
             `col_len` = #{columnLength},
-            `col_visible` = #{visible},
             `col_seq` = #{seq},
+            `col_visible` = #{visible},
             `col_updateTime` = #{updateTime}
         WHERE `id` = #{id}
     </update>

@@ -48,6 +48,6 @@ public class ProjectColumn extends BaseEntity
 
     public Integer getVisible()
     {
-        return visible != null && visible > 0 ? visible : STAT_VISIBLE;
+        return visible != null && visible >= 0 ? visible : STAT_VISIBLE;
     }
 }

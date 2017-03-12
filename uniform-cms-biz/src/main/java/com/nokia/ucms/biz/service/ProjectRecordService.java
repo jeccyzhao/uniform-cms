@@ -1,6 +1,7 @@
 package com.nokia.ucms.biz.service;
 
 import com.nokia.ucms.biz.constants.EServiceDomain;
+import com.nokia.ucms.biz.constants.ETemplateColumn;
 import com.nokia.ucms.biz.dto.ProjectRecordDataDTO;
 import com.nokia.ucms.biz.entity.ProjectCategory;
 import com.nokia.ucms.biz.entity.ProjectColumn;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static com.nokia.ucms.biz.constants.Constants.*;
-import static com.nokia.ucms.biz.constants.Constants.TEMPLATE_COLUMN_UPDATE_TIME;
 import static com.nokia.ucms.biz.dto.ProjectRecordDataDTO.*;
 
 /**
@@ -52,10 +52,10 @@ public class ProjectRecordService extends BaseService
             if (projectColumns != null && projectColumns.size() > 0)
             {
                 String dataTableName = projectInfo.getTableName();
-                List<Map<String, Object>> dataRows = databaseAdminRepository.query(dataTableName, categoryId);
-                for (Map<String, Object> dataRow : dataRows)
+                List<Map<String, Object>> rows = databaseAdminRepository.query(dataTableName, categoryId);
+                for (Map<String, Object> row : rows)
                 {
-                    projectRecordData.addRow(constructDataRowDTO(dataRow, projectColumns));
+                    projectRecordData.addRowData(constructRowData(row, projectColumns));
                 }
             }
         }
@@ -63,7 +63,44 @@ public class ProjectRecordService extends BaseService
         return projectRecordData;
     }
 
-    public ProjectRecordDataRow addProjectRecord (Integer projectId, ProjectRecordDataRow projectData)
+    private LinkedHashMap<String, Object> constructRowData (final Map<String, Object> row, final List<ProjectColumn> projectColumns)
+    {
+        if (row != null && projectColumns != null)
+        {
+            LinkedHashMap<String, Object> rowData = new LinkedHashMap<String, Object>();
+            for (ProjectColumn projectColumn : projectColumns)
+            {
+                rowData.put(projectColumn.getColumnName(), row.get(projectColumn.getColumnId()));
+            }
+
+            rowData.put(ETemplateColumn.TEMPLATE_COLUMN_ID.getColumnName(), getTemplateColumnData(row, ETemplateColumn.TEMPLATE_COLUMN_ID));
+            rowData.put(ETemplateColumn.TEMPLATE_COLUMN_CATEGORY_NAME.getColumnName(), getTemplateColumnData(row, ETemplateColumn.TEMPLATE_COLUMN_CATEGORY_NAME));
+            rowData.put(ETemplateColumn.TEMPLATE_COLUMN_CREATE_TIME.getColumnName(), getTemplateColumnData(row, ETemplateColumn.TEMPLATE_COLUMN_CREATE_TIME));
+            rowData.put(ETemplateColumn.TEMPLATE_COLUMN_UPDATE_TIME.getColumnName(), getTemplateColumnData(row, ETemplateColumn.TEMPLATE_COLUMN_UPDATE_TIME));
+
+            return rowData;
+        }
+
+        //return null;
+        //rowData.setId(row.containsKey(TEMPLATE_COLUMN_ID) ? Integer.valueOf(row.get(TEMPLATE_COLUMN_ID).toString()) : null);
+        //rowData.setCategoryName(row.containsKey(TEMPLATE_COLUMN_CATEGORY_NAME) ? row.get(TEMPLATE_COLUMN_CATEGORY_NAME).toString() : null);
+        //rowData.setCreationTime(row.containsKey(TEMPLATE_COLUMN_CREATE_TIME) ? (Date) row.get(TEMPLATE_COLUMN_CREATE_TIME) : null);
+        //rowData.setUpdateTime(row.containsKey(TEMPLATE_COLUMN_UPDATE_TIME) ? (Date) row.get(TEMPLATE_COLUMN_UPDATE_TIME) : null);
+
+        return null;
+    }
+
+    private Object getTemplateColumnData (final Map<String, Object> row, ETemplateColumn templateColumn)
+    {
+        if (row.containsKey(templateColumn.getColumnId()))
+        {
+            return row.get(templateColumn.getColumnId());
+        }
+
+        return null;
+    }
+
+    public Integer addProjectRecord (Integer projectId, ProjectRecordDataRow projectData)
     {
         ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
         if (projectInfo != null)
@@ -80,59 +117,41 @@ public class ProjectRecordService extends BaseService
                     }
                 }
 
-                projectData.setCreationTime(new Date());
-                projectData.setLastUpdateTime(new Date());
-                projectData.setCategoryName(null);
-
-                // TODO replace with valid user
-                projectData.setOwner("Change It");
-                projectData.setLastUpdateUser("Change It");
-
-                Map<String, String> insertMapParams = new HashMap<String, String>();
-                insertMapParams.put("id", null);
-                insertMapParams.put("tableName", projectDataTableName);
-                insertMapParams.put("columnIds", projectData.getInsertedColumnIds());
-                insertMapParams.put("columnValues", projectData.getInsertedColumnValues());
-
-                Integer result = this.databaseAdminRepository.insertByProps(projectDataTableName, projectData.getInsertedColumnIds(), projectData.getInsertedColumnValues());
-                if (result != null && result > 0)
+                List<ProjectColumn> projectColumns = projectColumnRepository.getColumnsByProjectId(projectInfo.getId());
+                if (projectColumns != null && projectColumns.size() > 0)
                 {
-                    projectData.setId(result);
-                }
+                    projectData.setCreationTime(new Date());
+                    projectData.setUpdateTime(new Date());
+                    projectData.setCategoryName(null);
 
-                return projectData;
-            }
-        }
-        return null;
-    }
+                    // TODO replace with valid user
+                    projectData.setOwner("Change It");
+                    projectData.setLastUpdateUser("Change It");
 
-    private ProjectRecordDataRow constructDataRowDTO (
-            final Map<String, Object> row, final List<ProjectColumn> columns)
-    {
-        ProjectRecordDataRow dataRowDTO = null;
-        if (row != null && row.size() > 0)
-        {
-            dataRowDTO = new ProjectRecordDataRow();
-            dataRowDTO.setId(row.containsKey(TEMPLATE_COLUMN_ID) ? Integer.valueOf(row.get(TEMPLATE_COLUMN_ID).toString()) : null);
-            dataRowDTO.setCategoryName(row.containsKey(TEMPLATE_COLUMN_CATEGORY_NAME) ? row.get(TEMPLATE_COLUMN_CATEGORY_NAME).toString() : null);
-            dataRowDTO.setCreationTime(row.containsKey(TEMPLATE_COLUMN_CREATE_TIME) ? (Date) row.get(TEMPLATE_COLUMN_CREATE_TIME) : null);
-            dataRowDTO.setLastUpdateTime(row.containsKey(TEMPLATE_COLUMN_UPDATE_TIME) ? (Date) row.get(TEMPLATE_COLUMN_UPDATE_TIME) : null);
-            dataRowDTO.setCells(new ArrayList());
-            for (Map.Entry<String, Object> entry : row.entrySet())
-            {
-                for (ProjectColumn column : columns)
-                {
-                    if (entry.getKey().equals(column.getColumnId()))
+                    Integer result = this.databaseAdminRepository.insertByProps(projectDataTableName,
+                            projectData.getInsertedColumnIdsByNames(projectColumns), projectData.getInsertedColumnValues());
+
+                    if (result != null && result > 0)
                     {
-                        dataRowDTO.getCells().add(new ProjectRecordDataDTO.ProjectColumnProperty(
-                                column.getColumnId(), column.getColumnName(), entry.getValue().toString()));
-                        break;
+                        return result;
                     }
+
+                    return null;
+                }
+                else
+                {
+                    throw new ServiceException(String.format("Project (name: %s) does not have any columns in place", projectInfo.getName()));
                 }
             }
+            else
+            {
+                throw new ServiceException(String.format("Project (%s) data table does not exit", projectInfo));
+            }
         }
-
-        return dataRowDTO;
+        else
+        {
+            throw new ServiceException(String.format("Project (id: %d) does not exit", projectId));
+        }
     }
 
     protected String getServiceCategory ()

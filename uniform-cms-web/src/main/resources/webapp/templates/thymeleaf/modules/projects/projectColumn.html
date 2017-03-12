@@ -46,17 +46,12 @@
                 showPopupDialog('m_projectColumn');
             });
             $("#excelExport").click(function(){
-                export2File("table-filter", "xls", "jqxGrid", excludedColumns);
+                export2File("table-filter", "xls", "jqxGrid", ctxPath + "/export", excludedColumns);
             });
             $("#pdfExport").click(function(){
-                export2File("table-filter", "pdf", "jqxGrid", excludedColumns);
+                export2File("table-filter", "pdf", "jqxGrid", ctxPath + "/export", excludedColumns);
             });
         });
-
-        function export2File (gridId, fileFormat, fileName, excludedColumns) {
-            $("#" + gridId).jqxGrid('exportdata', fileFormat, fileName, true, null, true, ctxPath + "/export", excludedColumns);
-            $("#" + gridId).jqxGrid('updatebounddata', 'cells');
-        }
 
         function loadData(container_id) {
             sendAjaxRequest("projects/" + projectId + "/columns", 'GET', {}, function(data) {

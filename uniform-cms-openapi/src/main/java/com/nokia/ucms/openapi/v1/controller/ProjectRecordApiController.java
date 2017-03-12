@@ -42,14 +42,14 @@ public class ProjectRecordApiController extends BaseController
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
-    public @ResponseBody ApiQueryResult<ProjectRecordDataRow> addProjectRecord(
+    public @ResponseBody ApiQueryResult<Integer> addProjectRecord(
             @PathVariable Integer projectId, @RequestParam(required = false) Integer categoryId,
             @RequestBody ProjectRecordDataRow recordData)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter addProjectRecord - [projectId : %d, categoryId: %d]", projectId, categoryId));
 
-        return new ApiQueryResult<ProjectRecordDataRow>(projectRecordService.addProjectRecord(projectId, recordData));
+        return new ApiQueryResult<Integer>(projectRecordService.addProjectRecord(projectId, recordData));
     }
 
     @RequestMapping(path="/{recordId}", method= RequestMethod.PUT)

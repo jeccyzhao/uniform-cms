@@ -12,9 +12,8 @@ public interface DatabaseAdminRepository
 {
     List<Map<String, Object>> query(@Param("tableName") String tableName, @Param("categoryId") Integer categoryId);
 
-
     /**
-     * Structure of map shall be as follow,
+     * The specified map must contain below keys,
      *
      * key: id
      * key: tableName

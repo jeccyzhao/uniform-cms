@@ -2,6 +2,7 @@ package com.nokia.ucms.biz.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.nokia.ucms.biz.constants.ETemplateColumn;
 import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.common.dto.BaseDTO;
@@ -9,9 +10,7 @@ import com.nokia.ucms.common.util.DateUtil;
 import lombok.Data;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.nokia.ucms.biz.constants.Constants.*;
 
@@ -23,44 +22,80 @@ import static com.nokia.ucms.biz.constants.Constants.*;
 public class ProjectRecordDataDTO<T> extends BaseDTO
 {
     private ProjectInfo project;
-    private List<ProjectRecordDataRow> rows;
+    //private List<ProjectRecordDataRow> rows;
     private List<ProjectColumn> columns;
+    private List<LinkedHashMap<String, Object>> rowData;
 
     @Data
     @ToString
-    @JsonIgnoreProperties(value = {"insertedColumnValues", "insertedColumnIds"})
     public static class ProjectRecordDataRow
     {
         private Integer id;
         private String categoryName;
         private Integer categoryId;
 
-        //@JsonSerialize(using=JsonDateSerializer.class)
+        private String owner;
+        private String lastUpdateUser;
+        private List<ProjectColumnProperty> props;
+
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
         private Date creationTime;
 
-        //@JsonSerialize(using=JsonDateSerializer.class)
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
-        private Date lastUpdateTime;
-        private String owner;
-        private String lastUpdateUser;
-        private List<ProjectColumnProperty> cells;
+        private Date updateTime;
+
+        private String buildDataTableTemplateColumns ()
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.append(String.format("`%s`,", ETemplateColumn.TEMPLATE_COLUMN_CATEGORY_ID.getColumnId()));
+            builder.append(String.format("`%s`,", ETemplateColumn.TEMPLATE_COLUMN_CREATE_TIME.getColumnId()));
+            builder.append(String.format("`%s`,", ETemplateColumn.TEMPLATE_COLUMN_UPDATE_TIME.getColumnId()));
+            builder.append(String.format("`%s`,", ETemplateColumn.TEMPLATE_COLUMN_OWNER.getColumnId()));
+            builder.append(String.format("`%s`,", ETemplateColumn.TEMPLATE_COLUMN_UPDATE_USER.getColumnId()));
+            return builder.toString();
+        }
 
         public String getInsertedColumnIds ()
         {
             StringBuilder builder = new StringBuilder();
-            builder.append(String.format("`%s`,", TEMPLATE_COLUMN_CATEGORY_ID));
-            builder.append(String.format("`%s`,", TEMPLATE_COLUMN_CREATE_TIME));
-            builder.append(String.format("`%s`,", TEMPLATE_COLUMN_UPDATE_TIME));
-            builder.append(String.format("`%s`,", TEMPLATE_COLUMN_OWNER));
-            builder.append(String.format("`%s`,", TEMPLATE_COLUMN_UPDATE_USER));
-            if (cells != null)
+            builder.append(buildDataTableTemplateColumns());
+            if (props != null)
             {
-                for (int i = 0, size = cells.size(); i < size; i++)
+                for (int i = 0, size = props.size(); i < size; i++)
                 {
-                    ProjectColumnProperty columnProperty = cells.get(i);
-                    String coma = (i < size - 1) ? "," : "";
-                    builder.append(String.format("`%s`%s", columnProperty.getId(), coma));
+                    ProjectColumnProperty columnProperty = props.get(i);
+                    if (columnProperty.getId() != null)
+                    {
+                        String coma = (i < size - 1) ? "," : "";
+                        builder.append(String.format("`%s`%s", columnProperty.getId(), coma));
+                    }
+                }
+            }
+
+            return builder.toString();
+        }
+
+        public String getInsertedColumnIdsByNames (final List<ProjectColumn> projectColumns)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.append(buildDataTableTemplateColumns());
+            if (props != null && projectColumns != null && projectColumns.size() > 0)
+            {
+                for (int i = 0, size = props.size(); i < size; i++)
+                {
+                    ProjectColumnProperty columnProperty = props.get(i);
+                    if (columnProperty.getName() != null)
+                    {
+                        for (ProjectColumn projectColumn : projectColumns)
+                        {
+                            if (projectColumn.getColumnName().equals(columnProperty.getName().trim()))
+                            {
+                                String columnId = projectColumn.getColumnId();
+                                String coma = (i < size - 1) ? "," : "";
+                                builder.append(String.format("`%s`%s", columnId, coma));
+                            }
+                        }
+                    }
                 }
             }
 
@@ -72,14 +107,14 @@ public class ProjectRecordDataDTO<T> extends BaseDTO
             StringBuilder builder = new StringBuilder();
             builder.append(String.format("%d,", categoryId));
             builder.append(String.format("'%s',", creationTime != null ? DateUtil.getFormatedDate(creationTime) : ""));
-            builder.append(String.format("'%s',", lastUpdateTime != null ? DateUtil.getFormatedDate(lastUpdateTime) : ""));
+            builder.append(String.format("'%s',", updateTime != null ? DateUtil.getFormatedDate(updateTime) : ""));
             builder.append(String.format("'%s',", owner.replaceAll("'", "\\'")));
             builder.append(String.format("'%s',", lastUpdateUser.replaceAll("'", "\\'")));
-            if (cells != null)
+            if (props != null)
             {
-                for (int i = 0, size = cells.size(); i < size; i++)
+                for (int i = 0, size = props.size(); i < size; i++)
                 {
-                    ProjectColumnProperty columnProperty = cells.get(i);
+                    ProjectColumnProperty columnProperty = props.get(i);
                     String coma = (i < size - 1) ? "," : "";
                     if (columnProperty.getValue() != null)
                     {
@@ -116,15 +151,27 @@ public class ProjectRecordDataDTO<T> extends BaseDTO
         }
     }
 
-    public void addRow(ProjectRecordDataRow row)
+//    public void addRow(ProjectRecordDataRow row)
+//    {
+//        if (row != null)
+//        {
+//            if (rows == null)
+//            {
+//                rows = new ArrayList<ProjectRecordDataRow>();
+//            }
+//            rows.add(row);
+//        }
+//    }
+
+    public void addRowData (LinkedHashMap<String, Object> data)
     {
-        if (row != null)
+        if (data != null)
         {
-            if (rows == null)
+            if (rowData == null)
             {
-                rows = new ArrayList<ProjectRecordDataRow>();
+                rowData = new ArrayList<LinkedHashMap<String, Object>>();
             }
-            rows.add(row);
+            rowData.add(data);
         }
     }
 

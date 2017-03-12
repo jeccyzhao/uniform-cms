@@ -13,6 +13,20 @@
                 <h1 th:text="${'Project - ' + project.name}" style="line-height: 30px"></h1>
             </div>
             <div class="panel-body" style="padding: 0 10px 20px 10px;">
+                <!--<div class="pannel-toolbar" style="overflow: hidden">
+                    <div style="float: left;">
+                        <a href="#" class="btn btn-icon-button"
+                           data-backdrop="true" data-toggle="modal" id="op_add">
+                            <span class="icon icon-add"></span><span>Add</span>
+                        </a>
+                    </div>
+                </div>-->
+                <div style="text-align:right; margin: 5px 0; line-height: 16px; font-size: 9pt">
+                    Export:
+                    <img title="Export to XLS" th:src="@{/assets/img/export2excel_small.gif}" class="icon-export" id="excelExport"/>
+                    <img title="Export to PDF" th:src="@{/assets/img/export2pdf.gif}" class="icon-export" id="pdfExport" />
+                    <!-- <img title="Export to HTML" th:src="@{/assets/img/export2html.gif}" class="icon-export" id="htmlExport" /> -->
+                </div>
                 <div id="table-filter" class="grid-alternating-rows n-table-hover n-jqxgrid-table n-grid-paging "></div>
             </div>
         </div>
@@ -20,8 +34,15 @@
 
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
+        var excludedColumns = ["id", "edit", "delete", "undo", "seq", "updateTime", "columnLength", "visible"];
         $(function () {
             loadData("table-filter");
+            $("#excelExport").click(function(){
+                export2File("table-filter", "xls", "jqxGrid", ctxPath + "/export", excludedColumns);
+            });
+            $("#pdfExport").click(function(){
+                export2File("table-filter", "pdf", "jqxGrid", ctxPath + "/export", excludedColumns);
+            });
         });
 
         function loadData(container_id) {
@@ -35,8 +56,8 @@
         function rebuildData (data) {
             if (data != null) {
                 for (var i = 0; i < data.length; i++) {
-                    data[i].creationTime = reformatDate(data[i].creationTime);
-                    data[i].updateTime = reformatDate(data[i].updateTime);
+                    data[i]['Creation Time'] = reformatDate(data[i]['Creation Time']);
+                    data[i]['Update Time'] = reformatDate(data[i]['Update Time']);
                     data[i].undo = '<div class="n-row-indicated" onclick="reviseColumn(\'clean\');" title="Cleanup"><span class="icon icon-undo"></span></div>';
                     data[i].edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';
                     data[i].delete = '<div class="n-row-indicated" onclick="reviseColumn(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';
@@ -54,28 +75,20 @@
             result.columns.push({text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false});
             result.columns.push({text: 'C', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false});
             result.columns.push({text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false});
-            result.columns.push({text: 'No.', datafield: 'id', hidden: false, width: 40, editable: false, align: 'center', cellsalign: 'center'});
-            result.columns.push({text: 'Category', datafield: 'categoryName', align: 'center', cellsalign: 'left', filterable: true, width: 160});
+            // result.columns.push({text: 'No.', datafield: 'id', hidden: false, width: 40, editable: false, align: 'center', cellsalign: 'center'});
+            result.columns.push({text: 'Category', datafield: 'categoryName', align: 'center', cellsalign: 'left', filterable: true, width: 120});
 
             for (var columnIndex in columns) {
                 var column = columns[columnIndex];
                 if (column.columnId != undefined) {
-                    result.columns.push( { text: column.columnName, datafield: column.columnId, cellsalign: 'left', align: 'center' } );
+                    //result.columns.push( { text: column.columnName, datafield: column.columnId, cellsalign: 'left', align: 'center', hidden: column.visible == 0} );
+                    result.columns.push( { text: column.columnName, datafield: column.columnName, cellsalign: 'left', align: 'center', hidden: column.visible == 0 } );
                 }
             }
 
-            for (var rowIndex in rows) {
-                var row = rows[rowIndex];
-                result.data.push( { id: row.id, categoryName: row.categoryName, creationTime: row.creationTime, updateTime: row.lastUpdateTime} );
-                var cells = row.cells;
-                for (var cellIndex in cells) {
-                    var cell = cells[cellIndex];
-                    result.data[rowIndex][cell.id] = cell.value;
-                }
-            }
-
-            result.columns.push({text: 'Creation Time', datafield: 'creationTime', align: 'center', cellsalign: 'center', filterable: true, width: 160});
-            result.columns.push({text: 'Last Update Time', datafield: 'updateTime', align: 'center', cellsalign: 'center', filterable: true,  width: 160});
+            result.columns.push({text: 'Creation Time', datafield: 'Creation Time', align: 'center', cellsalign: 'center', filterable: true, width: 150});
+            result.columns.push({text: 'Update Time', datafield: 'Update Time', align: 'center', cellsalign: 'center', filterable: true,  width: 150});
+            result.data = data.rowData;
 
             return result;
         }

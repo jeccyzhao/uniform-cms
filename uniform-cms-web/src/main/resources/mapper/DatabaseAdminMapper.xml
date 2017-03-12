@@ -37,9 +37,9 @@
     </select>
 
     <insert id="insertByProps">
-        <selectKey resultType="int" order="AFTER" keyProperty="id">
+        <!--<selectKey resultType="int" order="AFTER" keyProperty="id">
             SELECT LAST_INSERT_ID() AS id
-        </selectKey>
+        </selectKey>-->
         INSERT INTO `${tableName}` (${columnIds}) VALUES (${columnValues})
     </insert>
 

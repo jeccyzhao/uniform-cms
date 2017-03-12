@@ -202,12 +202,11 @@ function makeElementWithIcon (title, icon_class)
 
 function reformatDate (timestamp)
 {
-    if (timestamp != undefined)
+    if (timestamp != undefined && !isNaN(timestamp))
     {
-        //var date = new Date();
-        //date.setTime(timestamp_num);
-        //return date.Format('yyyy-MM-dd hh:mm:ss');
-        return timestamp;
+        var date = new Date();
+        date.setTime(timestamp);
+        return date.Format('yyyy-MM-dd hh:mm:ss');
     }
 
     return "---";
@@ -228,4 +227,10 @@ function removeObjectAttribute (json_obj, attributes)
     }
 
     return json_obj;
+}
+
+function export2File (gridId, fileFormat, fileName, uri, excludedColumns)
+{
+    $("#" + gridId).jqxGrid('exportdata', fileFormat, fileName, true, null, true, uri, excludedColumns);
+    $("#" + gridId).jqxGrid('updatebounddata', 'cells');
 }
