@@ -54,14 +54,14 @@ Date.prototype.Format = function(fmt)
   return fmt;   
 }
 
-function initJqxTable (container_id, columns, data, editable, width, height)
+function initJqxTable (container_id, columns, data, editable, pagesize, height, width)
 {
     var source = { localdata: data, datatype: "array"};
     var dataAdapter = new $.jqx.dataAdapter(source);
 
     $("#" + container_id).jqxGrid({
         width: width != undefined ? width : '100%',
-        height: height != undefined ? height : 520,
+        height: height != undefined ? height : 470,
         source: dataAdapter,
         columnsResize: true,
         columnsreorder: true,
@@ -78,7 +78,7 @@ function initJqxTable (container_id, columns, data, editable, width, height)
         altRows: true,
         scrollBarSize: 8,
         pagerheight: 40,
-        pagesize: 15,
+        pagesize: pagesize != undefined ? pagesize : 15,
         rowsheight: 26,
         columnsheight: 26,
         editable: editable ? editable : false,
@@ -202,11 +202,16 @@ function makeElementWithIcon (title, icon_class)
 
 function reformatDate (timestamp)
 {
-    if (timestamp != undefined && !isNaN(timestamp))
+    if (timestamp != undefined)
     {
-        var date = new Date();
-        date.setTime(timestamp);
-        return date.Format('yyyy-MM-dd hh:mm:ss');
+        if (!isNaN(timestamp))
+        {
+            var date = new Date();
+            date.setTime(timestamp);
+            return date.Format('yyyy-MM-dd hh:mm:ss');
+        }
+
+        return timestamp;
     }
 
     return "---";

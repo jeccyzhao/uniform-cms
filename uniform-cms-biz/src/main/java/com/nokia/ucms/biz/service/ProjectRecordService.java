@@ -77,15 +77,11 @@ public class ProjectRecordService extends BaseService
             rowData.put(ETemplateColumn.TEMPLATE_COLUMN_CATEGORY_NAME.getColumnName(), getTemplateColumnData(row, ETemplateColumn.TEMPLATE_COLUMN_CATEGORY_NAME));
             rowData.put(ETemplateColumn.TEMPLATE_COLUMN_CREATE_TIME.getColumnName(), getTemplateColumnData(row, ETemplateColumn.TEMPLATE_COLUMN_CREATE_TIME));
             rowData.put(ETemplateColumn.TEMPLATE_COLUMN_UPDATE_TIME.getColumnName(), getTemplateColumnData(row, ETemplateColumn.TEMPLATE_COLUMN_UPDATE_TIME));
+            rowData.put(ETemplateColumn.TEMPLATE_COLUMN_OWNER.getColumnName(), getTemplateColumnData(row, ETemplateColumn.TEMPLATE_COLUMN_OWNER));
+            rowData.put(ETemplateColumn.TEMPLATE_COLUMN_UPDATE_USER.getColumnName(), getTemplateColumnData(row, ETemplateColumn.TEMPLATE_COLUMN_UPDATE_USER));
 
             return rowData;
         }
-
-        //return null;
-        //rowData.setId(row.containsKey(TEMPLATE_COLUMN_ID) ? Integer.valueOf(row.get(TEMPLATE_COLUMN_ID).toString()) : null);
-        //rowData.setCategoryName(row.containsKey(TEMPLATE_COLUMN_CATEGORY_NAME) ? row.get(TEMPLATE_COLUMN_CATEGORY_NAME).toString() : null);
-        //rowData.setCreationTime(row.containsKey(TEMPLATE_COLUMN_CREATE_TIME) ? (Date) row.get(TEMPLATE_COLUMN_CREATE_TIME) : null);
-        //rowData.setUpdateTime(row.containsKey(TEMPLATE_COLUMN_UPDATE_TIME) ? (Date) row.get(TEMPLATE_COLUMN_UPDATE_TIME) : null);
 
         return null;
     }

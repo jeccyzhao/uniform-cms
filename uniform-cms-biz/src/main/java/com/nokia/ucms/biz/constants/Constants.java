@@ -19,6 +19,6 @@ public final class Constants
     */
 
     public static final String KEYWORD_SPLITTER = "_";
-    public static final Integer DEFAULT_COLUMN_LENGTH = 150;
+    public static final Integer DEFAULT_COLUMN_LENGTH = 250;
     public static final String NOT_AVAILABLE = "N/A";
 }

@@ -116,13 +116,13 @@ public class ProjectRecordDataDTO<T> extends BaseDTO
                 {
                     ProjectColumnProperty columnProperty = props.get(i);
                     String coma = (i < size - 1) ? "," : "";
-                    if (columnProperty.getValue() != null)
+                    if (columnProperty.getValue() == null)
                     {
-                        builder.append(String.format("'%s'%s", columnProperty.getValue(), coma));
+                        builder.append(String.format("'%s'%s", "", coma));
                     }
                     else
                     {
-                        builder.append(String.format("'%s'%s", columnProperty.getValue().replaceAll("'", "\\'"), coma));
+                        builder.append(String.format("'%s'%s", columnProperty.getValue().replaceAll("'", "''"), coma));
                     }
                 }
             }

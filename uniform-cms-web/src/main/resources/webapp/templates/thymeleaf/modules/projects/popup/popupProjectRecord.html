@@ -1,6 +1,6 @@
 <div xmlns:th="http://www.thymeleaf.org" class="modal" id="m_projectRecord" role="dialog" aria-labelledby="myModalDlgLabel-subhead" aria-hidden="true" tabindex="1">
     <div class="modal-dialog">
-        <div class="modal-content" id="dialog-addProjectRecord">
+        <div class="modal-content" id="dialog-addProjectRecord" style="">
             <div class="modal-header">
                 <div class="n-dialog-header-fg-filler"></div>
                 <div class="n-dialog-header-bg-filler"></div>
@@ -16,7 +16,7 @@
                 <h2 class="modal-title-subheading" id="myModalLabelVersion">Add new project record</h2>
             </div>
             <form class="form-horizontal">
-                <div class="modal-body">
+                <div class="modal-body" style="overflow-y: auto; overflow-x: hidden; max-height: 480px; margin-right: 5px;">
                     <div class="form-group n-login-textfields" style="margin-bottom: 8px;">
                         <label class="col-sm-4 control-label">Project Category:</label>
                         <div class="col-sm-8  has-feedback">
@@ -24,10 +24,10 @@
                             <a class="form-control-feedback"><span class="icon "></span></a>
                         </div>
                     </div>
-                    <div class="form-group n-login-textfields"  style="margin-bottom: 8px;" th:each="col,iterStat:${columns}">
+                    <div class="form-group n-login-textfields n-login-dynfields"  style="margin-bottom: 8px;" th:each="col,iterStat:${columns}">
                         <label class="col-sm-4 control-label" th:text="${col.columnName} +':'">Column Length:</label>
                         <div class="col-sm-8  has-feedback">
-                            <input type="text" class="form-control n-inputfield" id="exInputColLength" value="60" placeholder="Default length (150) would be used if not given"/>
+                            <input type="text" class="form-control n-inputfield" th:name="${col.columnName}" value="" />
                             <a class="form-control-feedback"><span class="icon "></span></a>
                         </div>
                     </div>
@@ -46,20 +46,28 @@
     $(function() {
         $("#dialogSubmit").click(function(){
             var projectId = $("#projectId").val();
-            /*
-            sendAjaxRequest("projects/" + projectId + "/columns", 'POST', JSON.stringify(constructFormInputs()), function(data){
+
+            sendAjaxRequest("projects/" + projectId + "/records", 'POST', JSON.stringify(constructFormInputs()), function(data){
                 loadData("table-filter");
-                $('#m_projectColumn').modal('hide');
-                clearFormInputs("dialog-addProjectColumn");
+                $('#m_projectRecord').modal('hide');
+                clearFormInputs("dialog-addProjectRecord");
             }, "application/json; charset=utf-8");
-            */
+
         });
     });
 
     function constructFormInputs() {
-        var data = {
+        var data = { "props": [] };
 
-        };
+        // example data,
+        // {"name": "Value Stream", "value": "Core VS (incl. ''Medi'ation, adaptation) VS"}
+
+        $(".n-login-dynfields").find("input").each(function(){
+            var inputName = $(this).attr("name");
+            var inputValue = $(this).val();
+            data.props.push( {"name": inputName, "value": inputValue} );
+        });
+
         return data;
     }
 
