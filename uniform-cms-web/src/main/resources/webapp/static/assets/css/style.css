@@ -102,3 +102,14 @@ ul { list-style-type: none; margin: 0; padding: 0}
 .icon-export {position:relative; top: -1px; margin-left: 4px; cursor: pointer; width: 16px;}
 .jqx-grid .jqx-widget-header .jqx-grid-column-header.jqx-widget-header { border-color: #AAA; background-color: #EFEFEF; }
 .grid-alternating-rows .jqx-grid-cell-alt { background: #F0F0F0; } /* #F9F9F9 */
+
+:-moz-placeholder { color:#999; }
+::-moz-placeholder { color:#999; }
+input::-webkit-input-placeholder { color:#999; opacity:1;}
+input:-ms-input-placeholder { color:#999; }
+
+input::-webkit-input-placeholder {color: #999; }
+input:-moz-placeholder {color: #999;}
+input::-moz-placeholder {color: #999}
+input:-ms-input-placeholder {color: #999;}
+/* input[placeholder], [placeholder], *[placeholder] { color:#999 !important; } */

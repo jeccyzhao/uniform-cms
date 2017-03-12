@@ -61,7 +61,7 @@ function initJqxTable (container_id, columns, data, editable, pagesize, height, 
 
     $("#" + container_id).jqxGrid({
         width: width != undefined ? width : '100%',
-        height: height != undefined ? height : 465,
+        height: height != undefined ? height : 458,
         source: dataAdapter,
         columnsResize: true,
         columnsreorder: true,
