@@ -32,10 +32,10 @@ public class ProjectController extends BaseController
     }
 
     @RequestMapping("/{projectName}")
-    public String showProject(@PathVariable String projectName, Model model)
+    public String showProjectRecords(@PathVariable String projectName, Model model)
     {
         setBasicInfoInModel(projectName, model);
-        return getModulePage("projectPage");
+        return getModulePage("projectRecordPage");
     }
 
     @RequestMapping("/{projectName}/trace")

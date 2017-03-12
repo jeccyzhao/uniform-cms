@@ -13,14 +13,14 @@
                 <h1 th:text="${'Project - ' + project.name}" style="line-height: 30px"></h1>
             </div>
             <div class="panel-body" style="padding: 0 10px 20px 10px;">
-                <!--<div class="pannel-toolbar" style="overflow: hidden">
+                <div class="pannel-toolbar" style="overflow: hidden">
                     <div style="float: left;">
                         <a href="#" class="btn btn-icon-button"
                            data-backdrop="true" data-toggle="modal" id="op_add">
                             <span class="icon icon-add"></span><span>Add</span>
                         </a>
                     </div>
-                </div>-->
+                </div>
                 <div style="text-align:right; margin: 5px 0; line-height: 16px; font-size: 9pt">
                     Export:
                     <img title="Export to XLS" th:src="@{/assets/img/export2excel_small.gif}" class="icon-export" id="excelExport"/>
@@ -32,6 +32,8 @@
         </div>
     </div>
 
+    <div th:include="modules/projects/popup/popupProjectRecord"></div>
+
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
         var excludedColumns = ["id", "edit", "delete", "undo", "seq", "updateTime", "columnLength", "visible"];
@@ -42,6 +44,9 @@
             });
             $("#pdfExport").click(function(){
                 export2File("table-filter", "pdf", "jqxGrid", ctxPath + "/export", excludedColumns);
+            });
+            $("#op_add").click(function() {
+                showPopupDialog('m_projectRecord');
             });
         });
 
