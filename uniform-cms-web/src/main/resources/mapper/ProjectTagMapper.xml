@@ -26,4 +26,8 @@
         DELETE FROM `t_project_tag` WHERE `id` = #{id}
     </delete>
 
+    <select id="getTagsByProjectId" parameterType="java.lang.Integer" resultMap="rs_projectTag">
+        SELECT * FROM `t_project_tag` WHERE `p_id` = #{projectId}
+    </select>
+
 </mapper>
