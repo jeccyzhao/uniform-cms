@@ -113,3 +113,7 @@ input:-moz-placeholder {color: #999;}
 input::-moz-placeholder {color: #999}
 input:-ms-input-placeholder {color: #999;}
 /* input[placeholder], [placeholder], *[placeholder] { color:#999 !important; } */
+table.tbl-instructions {margin: 10px 0; border-collapse:collapse;}
+table.tbl-instructions td, table.tbl-instructions th { border:1px dashed #2183BA; padding:3px 7px 2px 7px;}
+table.tbl-instructions th {background-color: #E3E3E3;}
+table.tbl-instructions td font { color: #EC1212}

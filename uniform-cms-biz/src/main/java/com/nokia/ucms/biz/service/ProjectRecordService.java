@@ -1,7 +1,7 @@
 package com.nokia.ucms.biz.service;
 
 import com.nokia.ucms.biz.constants.EServiceDomain;
-import com.nokia.ucms.biz.constants.ETemplateColumn;
+import com.nokia.ucms.biz.constants.ETemplateColumnProperty;
 import com.nokia.ucms.biz.dto.ProjectRecordDataDTO;
 import com.nokia.ucms.biz.entity.ProjectCategory;
 import com.nokia.ucms.biz.entity.ProjectColumn;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import static com.nokia.ucms.biz.constants.Constants.*;
 import static com.nokia.ucms.biz.dto.ProjectRecordDataDTO.*;
 
 /**
@@ -38,7 +37,7 @@ public class ProjectRecordService extends BaseService
     @Autowired
     private ProjectCategoryRepository projectCategoryRepository;
 
-    public ProjectRecordDataDTO getProjectRecords (Integer projectId, Integer categoryId)
+    public ProjectRecordDataDTO getProjectRecordsByCategory (Integer projectId, Integer categoryId)
     {
         ProjectRecordDataDTO projectRecordData = null;
         ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
@@ -52,15 +51,48 @@ public class ProjectRecordService extends BaseService
             if (projectColumns != null && projectColumns.size() > 0)
             {
                 String dataTableName = projectInfo.getTableName();
-                List<Map<String, Object>> rows = databaseAdminRepository.query(dataTableName, categoryId);
+                List<Map<String, Object>> rows = databaseAdminRepository.getRecordByCategory(dataTableName, categoryId);
                 for (Map<String, Object> row : rows)
                 {
                     projectRecordData.addRowData(constructRowData(row, projectColumns));
                 }
             }
-        }
 
-        return projectRecordData;
+            return projectRecordData;
+        }
+        else
+        {
+            throw new ServiceException(String.format("Project (id: %d) does not exit", projectId));
+        }
+    }
+
+    public ProjectRecordDataDTO getProjectRecordById (Integer projectId, Integer recordId)
+    {
+        ProjectRecordDataDTO projectRecordData = null;
+        ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
+        if (projectInfo != null)
+        {
+            projectRecordData = new ProjectRecordDataDTO();
+            projectRecordData.setProject(projectInfo);
+            projectRecordData.setColumns(projectColumnRepository.getColumnsByProjectId(projectInfo.getId()));
+
+            List<ProjectColumn> projectColumns = projectColumnRepository.getColumnsByProjectId(projectInfo.getId());
+            if (projectColumns != null && projectColumns.size() > 0)
+            {
+                String dataTableName = projectInfo.getTableName();
+                Map<String, Object> row = databaseAdminRepository.getRecordById(dataTableName, recordId);
+                if (row != null)
+                {
+                    projectRecordData.addRowData(constructRowData(row, projectColumns));
+                }
+            }
+
+            return projectRecordData;
+        }
+        else
+        {
+            throw new ServiceException(String.format("Project (id: %d) does not exit", projectId));
+        }
     }
 
     private LinkedHashMap<String, Object> constructRowData (final Map<String, Object> row, final List<ProjectColumn> projectColumns)
@@ -73,12 +105,12 @@ public class ProjectRecordService extends BaseService
                 rowData.put(projectColumn.getColumnName(), row.get(projectColumn.getColumnId()));
             }
 
-            rowData.put(ETemplateColumn.TEMPLATE_COLUMN_ID.getColumnName(), getTemplateColumnData(row, ETemplateColumn.TEMPLATE_COLUMN_ID));
-            rowData.put(ETemplateColumn.TEMPLATE_COLUMN_CATEGORY_NAME.getColumnName(), getTemplateColumnData(row, ETemplateColumn.TEMPLATE_COLUMN_CATEGORY_NAME));
-            rowData.put(ETemplateColumn.TEMPLATE_COLUMN_CREATE_TIME.getColumnName(), getTemplateColumnData(row, ETemplateColumn.TEMPLATE_COLUMN_CREATE_TIME));
-            rowData.put(ETemplateColumn.TEMPLATE_COLUMN_UPDATE_TIME.getColumnName(), getTemplateColumnData(row, ETemplateColumn.TEMPLATE_COLUMN_UPDATE_TIME));
-            rowData.put(ETemplateColumn.TEMPLATE_COLUMN_OWNER.getColumnName(), getTemplateColumnData(row, ETemplateColumn.TEMPLATE_COLUMN_OWNER));
-            rowData.put(ETemplateColumn.TEMPLATE_COLUMN_UPDATE_USER.getColumnName(), getTemplateColumnData(row, ETemplateColumn.TEMPLATE_COLUMN_UPDATE_USER));
+            rowData.put(ETemplateColumnProperty.TEMPLATE_COLUMN_ID.getColumnName(), getTemplateColumnData(row, ETemplateColumnProperty.TEMPLATE_COLUMN_ID));
+            rowData.put(ETemplateColumnProperty.TEMPLATE_COLUMN_CATEGORY_NAME.getColumnName(), getTemplateColumnData(row, ETemplateColumnProperty.TEMPLATE_COLUMN_CATEGORY_NAME));
+            rowData.put(ETemplateColumnProperty.TEMPLATE_COLUMN_CREATE_TIME.getColumnName(), getTemplateColumnData(row, ETemplateColumnProperty.TEMPLATE_COLUMN_CREATE_TIME));
+            rowData.put(ETemplateColumnProperty.TEMPLATE_COLUMN_UPDATE_TIME.getColumnName(), getTemplateColumnData(row, ETemplateColumnProperty.TEMPLATE_COLUMN_UPDATE_TIME));
+            rowData.put(ETemplateColumnProperty.TEMPLATE_COLUMN_OWNER.getColumnName(), getTemplateColumnData(row, ETemplateColumnProperty.TEMPLATE_COLUMN_OWNER));
+            rowData.put(ETemplateColumnProperty.TEMPLATE_COLUMN_UPDATE_USER.getColumnName(), getTemplateColumnData(row, ETemplateColumnProperty.TEMPLATE_COLUMN_UPDATE_USER));
 
             return rowData;
         }
@@ -86,7 +118,7 @@ public class ProjectRecordService extends BaseService
         return null;
     }
 
-    private Object getTemplateColumnData (final Map<String, Object> row, ETemplateColumn templateColumn)
+    private Object getTemplateColumnData (final Map<String, Object> row, ETemplateColumnProperty templateColumn)
     {
         if (row.containsKey(templateColumn.getColumnId()))
         {
@@ -94,6 +126,24 @@ public class ProjectRecordService extends BaseService
         }
 
         return null;
+    }
+
+    public Integer deleteProjectRecord (Integer projectId, Integer recordId)
+    {
+        if (recordId != null && recordId > 0)
+        {
+            ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
+            if (projectInfo != null)
+            {
+                return this.databaseAdminRepository.delete(projectInfo.getTableName(), recordId);
+            }
+            else
+            {
+                throw new ServiceException(String.format("Project (id: %d) does not exit", projectId));
+            }
+        }
+
+        throw new ServiceException("Invalid project record id: " + recordId);
     }
 
     public Integer addProjectRecord (Integer projectId, ProjectRecordDataRow projectData)

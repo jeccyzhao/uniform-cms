@@ -28,7 +28,7 @@ public class ProjectRecordApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter getProjectRecords - [projectId : %d]", projectId));
 
-        return new ApiQueryResult<ProjectRecordDataDTO>(projectRecordService.getProjectRecords(projectId, null));
+        return new ApiQueryResult<ProjectRecordDataDTO>(projectRecordService.getProjectRecordsByCategory(projectId, null));
     }
 
     @RequestMapping(path="/{recordId}", method= RequestMethod.GET)
@@ -38,7 +38,7 @@ public class ProjectRecordApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter getProjectRecord - [projectId : %d, recordId: %d]", projectId, recordId));
 
-        return createEmptyQueryResult();
+        return new ApiQueryResult<ProjectRecordDataDTO>(projectRecordService.getProjectRecordById(projectId, recordId));
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
@@ -69,7 +69,8 @@ public class ProjectRecordApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter deleteProjectRecord - [projectId : %d, recordId: %d]", projectId, recordId));
 
-        return createEmptyQueryResult();
+        Integer result = this.projectRecordService.deleteProjectRecord(projectId, recordId);
+        return new ApiQueryResult<Integer>(result != null, result);
     }
 
     protected String getModulePath ()

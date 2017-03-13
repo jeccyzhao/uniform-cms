@@ -1,8 +1,7 @@
 package com.nokia.ucms.biz.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.nokia.ucms.biz.constants.ETemplateColumn;
+import com.nokia.ucms.biz.constants.ETemplateColumnProperty;
 import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.common.dto.BaseDTO;
@@ -11,8 +10,6 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.util.*;
-
-import static com.nokia.ucms.biz.constants.Constants.*;
 
 /**
  * Created by x36zhao on 2017/3/7.
@@ -47,11 +44,11 @@ public class ProjectRecordDataDTO<T> extends BaseDTO
         private String buildDataTableTemplateColumns ()
         {
             StringBuilder builder = new StringBuilder();
-            builder.append(String.format("`%s`,", ETemplateColumn.TEMPLATE_COLUMN_CATEGORY_ID.getColumnId()));
-            builder.append(String.format("`%s`,", ETemplateColumn.TEMPLATE_COLUMN_CREATE_TIME.getColumnId()));
-            builder.append(String.format("`%s`,", ETemplateColumn.TEMPLATE_COLUMN_UPDATE_TIME.getColumnId()));
-            builder.append(String.format("`%s`,", ETemplateColumn.TEMPLATE_COLUMN_OWNER.getColumnId()));
-            builder.append(String.format("`%s`,", ETemplateColumn.TEMPLATE_COLUMN_UPDATE_USER.getColumnId()));
+            builder.append(String.format("`%s`,", ETemplateColumnProperty.TEMPLATE_COLUMN_CATEGORY_ID.getColumnId()));
+            builder.append(String.format("`%s`,", ETemplateColumnProperty.TEMPLATE_COLUMN_CREATE_TIME.getColumnId()));
+            builder.append(String.format("`%s`,", ETemplateColumnProperty.TEMPLATE_COLUMN_UPDATE_TIME.getColumnId()));
+            builder.append(String.format("`%s`,", ETemplateColumnProperty.TEMPLATE_COLUMN_OWNER.getColumnId()));
+            builder.append(String.format("`%s`,", ETemplateColumnProperty.TEMPLATE_COLUMN_UPDATE_USER.getColumnId()));
             return builder.toString();
         }
 

@@ -10,8 +10,6 @@ import java.util.Map;
  */
 public interface DatabaseAdminRepository
 {
-    List<Map<String, Object>> query(@Param("tableName") String tableName, @Param("categoryId") Integer categoryId);
-
     /**
      * The specified map must contain below keys,
      *
@@ -24,9 +22,37 @@ public interface DatabaseAdminRepository
      * @return
      */
     Integer insertByMap(Map mapParams);
-    Integer insertByProps(@Param("tableName") String tableName, @Param("columnIds") String columnIds, @Param("columnValues") String columnValues);
 
-    Integer createTableIfNotExist(@Param("tableName") String tableName);
-    Integer addTableColumn(@Param("tableName") String tableName, @Param("columnName") String columnName, @Param("columnLength") Integer columnLength);
-    Integer removeTableColumn(@Param("tableName") String tableName, @Param("columnId") String columnId);
+    Integer insertByProps(
+            @Param("tableName") String tableName,
+            @Param("columnIds") String columnIds,
+            @Param("columnValues") String columnValues);
+
+    Integer createTableIfNotExist(
+            @Param("tableName") String tableName);
+
+    Integer addTableColumn(
+            @Param("tableName") String tableName,
+            @Param("columnName") String columnName,
+            @Param("columnLength") Integer columnLength);
+
+    Integer removeTableColumn(
+            @Param("tableName") String tableName,
+            @Param("columnId") String columnId);
+
+    Integer delete(
+            @Param("tableName") String tableName,
+            @Param("id") Integer id);
+
+    Integer update (
+            @Param("tableName") String tableName);
+
+    List<Map<String, Object>> getRecordByCategory(
+            @Param("tableName") String tableName,
+            @Param("categoryId") Integer categoryId);
+
+    Map<String, Object> getRecordById(
+            @Param("tableName") String tableName,
+            @Param("id") Integer recordId);
+
 }

@@ -91,14 +91,15 @@
         }
 
         function constructColumnInstructions (rowData, join) {
-            var dataInstructions = "";
-            join = join ? join : "<br/>";
-            dataInstructions += join + "- Column Name:    <font color='red'>" + rowData.columnName + "</font>";
-            dataInstructions += join + "- Column Remark:  <font color='red'>" + rowData.columnRemark + "</font>";
-            dataInstructions += join + "- Column Example: <font color='red'>" + rowData.columnDataExample + "</font>";
-            dataInstructions += join + "- Column Length:  <font color='red'>" + rowData.columnLength + "</font>";
-            dataInstructions += join + "- Column Order:   <font color='red'>" + rowData.seq + "</font>";
-            dataInstructions += join + "- Column Visible: <font color='red'>" + (rowData.visible == 1 ? "Yes" : "No") + "</font>";
+            var dataInstructions = "<table class='tbl-instructions' style=''>";
+            dataInstructions += "<tr><th>Property Name</th><th>Property Value</th></tr>";
+            dataInstructions += "<tr><td>Column Name</td><td><font>" + rowData.columnName + "</font></td></tr>";
+            dataInstructions += "<tr><td>Column Remark</td><td><font>" + rowData.columnRemark + "</font></td></tr>";
+            dataInstructions += "<tr><td>Column Example</td><td><font>" + rowData.columnDataExample + "</font></td></tr>";
+            dataInstructions += "<tr><td>Column Length</td><td><font>" + rowData.columnLength + "</font></td></tr>";
+            dataInstructions += "<tr><td>Column Order</td><td><font>" + rowData.seq + "</font></td></tr>";
+            dataInstructions += "<tr><td>Column Visible</td><td><font>" + (rowData.visible == 1 ? "Yes" : "No") + "</font></td></tr>";
+            dataInstructions += "</table>";
             return dataInstructions;
         }
 
