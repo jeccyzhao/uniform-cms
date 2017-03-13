@@ -87,16 +87,21 @@ public class ProjectInfoService extends BaseService
         throw new ServiceException("Invalid project name: " + projectName);
     }
 
-    public boolean updateProject (ProjectInfo projectInfo) throws ServiceException
+    public boolean updateProject (Integer projectId, ProjectInfo projectInfo) throws ServiceException
     {
-        ProjectInfo entity = projectInfoRepository.getProjectInfoById(projectInfo.getId());
-        if (entity != null)
+        if (projectInfo != null && !"".equals(projectInfo.getName()))
         {
-            Integer result = projectInfoRepository.updateProjectInfo(projectInfo);
-            return result > 0;
+            ProjectInfo entity = projectInfoRepository.getProjectInfoById(projectId);
+            if (entity != null)
+            {
+                Integer result = projectInfoRepository.updateProjectInfo(projectInfo);
+                return result > 0;
+            }
+
+            throw new ServiceException(String.format("Project '%s' does not exist", projectInfo));
         }
 
-        throw new ServiceException(String.format("Project '%s' does not exist", projectInfo));
+        throw new ServiceException("Invalid project info: " + projectInfo);
     }
 
     @Transactional
