@@ -66,9 +66,11 @@ public class ProjectCategoryApiController extends BaseController
         }
     }
 
-    @RequestMapping(path="", method= RequestMethod.PUT)
+    @RequestMapping(path="/{categoryId}", method= RequestMethod.PATCH)
     public @ResponseBody ApiQueryResult<ProjectCategory> updateProjectCategory(
-            @PathVariable Integer projectId, @RequestBody ProjectCategory projectCategory)
+            @PathVariable Integer projectId,
+            @PathVariable Integer categoryId,
+            @RequestBody ProjectCategory projectCategory)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter updateProjectCategory - [projectId: %d, projectCategory: %s]", projectId, projectCategory));
@@ -78,7 +80,7 @@ public class ProjectCategoryApiController extends BaseController
             // overwrite with given project id anyway to avoid incorrect update
             projectCategory.setProjectId(projectId);
 
-            ProjectCategory category = this.projectCategoryService.updateProjectCategory(projectCategory);
+            ProjectCategory category = this.projectCategoryService.updateProjectCategory(projectId, categoryId, projectCategory);
             if (category != null)
             {
                 return new ApiQueryResult<ProjectCategory>(category);

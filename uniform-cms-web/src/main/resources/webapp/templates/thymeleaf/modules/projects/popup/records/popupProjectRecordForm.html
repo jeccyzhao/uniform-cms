@@ -19,9 +19,15 @@
                 <div class="modal-body" style="overflow-y: auto; overflow-x: hidden; max-height: 480px; margin-right: 5px;">
                     <div class="form-group n-login-textfields" style="margin-bottom: 8px;">
                         <label class="col-sm-4 control-label">Project Category:</label>
-                        <div class="col-sm-8  has-feedback">
-                            <input type="text" class="form-control n-inputfield" id="exInputCat" value="60" placeholder="Default length (150) would be used if not given"/>
+                        <div class="col-sm-8  has-feedback" th:if="${category != null}">
+                            <input type="text" class="form-control n-inputfield" id="exInputCategoryName" th:value="${category.name}" disabled="true" />
+                            <input type="hidden" name="exInputCategory" th:value="${category.id}" />
                             <a class="form-control-feedback"><span class="icon "></span></a>
+                        </div>
+                        <div class="col-sm-8  has-feedback" th:if="${categories != null}">
+                            <select id="exInputCategory" name="exInputCategory" style="margin: 7px 0;">
+                                <option th:each="cat,iterStat:${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group n-login-textfields n-login-dynfields"  style="margin-bottom: 8px;" th:each="col,iterStat:${columns}">
@@ -46,29 +52,35 @@
     $(function() {
         $("#dialogSubmit").click(function(){
             var projectId = $("#projectId").val();
-
-            sendAjaxRequest("projects/" + projectId + "/records", 'POST', JSON.stringify(constructFormInputs()), function(data){
-                loadData("table-filter");
-                $('#m_projectRecord').modal('hide');
-                clearFormInputs("dialog-addProjectRecord");
-            }, "application/json; charset=utf-8");
-
+            var formInputs = constructFormInputs();
+            if (formInputs != null) {
+                sendAjaxRequest("projects/" + projectId + "/records", 'POST', JSON.stringify(formInputs), function(data){
+                    loadData("table-filter");
+                    $('#m_projectRecord').modal('hide');
+                    clearFormInputs("dialog-addProjectRecord");
+                }, "application/json; charset=utf-8");
+            }
         });
     });
 
     function constructFormInputs() {
         var data = { "props": [] };
-
-        // example data,
-        // {"name": "Value Stream", "value": "Core VS (incl. ''Medi'ation, adaptation) VS"}
-
         $(".n-login-dynfields").find("input").each(function(){
             var inputName = $(this).attr("name");
             var inputValue = $(this).val();
             data.props.push( {"name": inputName, "value": inputValue} );
         });
 
-        return data;
+        var categoryId = $("input[name='exInputCategory']").size() > 0 ? $("input[name='exInputCategory']").val() :
+            ($("select[name='exInputCategory']").size() > 0 ? $("select[name='exInputCategory']").val() : -1);
+
+        if (parseInt(categoryId) > 0) {
+            data.categoryId = categoryId;
+            return data;
+        } else {
+            showErrorDialog("Invalid category selected!");
+            return null;
+        }
     }
 
 </script>

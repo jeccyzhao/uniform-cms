@@ -19,6 +19,7 @@ public class GlobalDefaultExceptionHandler extends BaseController
     @ResponseBody
     public ApiQueryResult<Map<String, Object>> handleException(Exception ex)
     {
+        LOGGER.error("Unexpected exception caught: " + ex);
         return createErrorQueryResult(ex);
     }
 

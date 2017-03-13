@@ -28,6 +28,11 @@ public interface DatabaseAdminRepository
             @Param("columnIds") String columnIds,
             @Param("columnValues") String columnValues);
 
+    Integer update(
+            @Param("tableName") String tableName,
+            @Param("id") Integer id,
+            @Param("params") Map params);
+
     Integer createTableIfNotExist(
             @Param("tableName") String tableName);
 
@@ -54,5 +59,7 @@ public interface DatabaseAdminRepository
     Map<String, Object> getRecordById(
             @Param("tableName") String tableName,
             @Param("id") Integer recordId);
+
+    Integer empty(@Param("tableName") String tableName);
 
 }

@@ -26,13 +26,13 @@
     </update>
     
     <select id="getRecordByCategory" resultType="java.util.Map" statementType="STATEMENT">
-        SELECT dt.*, c.c_name FROM ${tableName} dt
+        SELECT dt.*, c.`c_name` FROM ${tableName} dt
+        LEFT JOIN `t_project_category` c ON dt.`c_id` = c.`id`
         <where>
             <if test="categoryId != null and categoryId > 0">
-                `c_id` = #{categoryId}
+                dt.`c_id` = ${categoryId}
             </if>
         </where>
-        LEFT JOIN `t_project_category` c ON dt.c_id = c.id
         ORDER BY `updateTime` DESC
     </select>
 
@@ -52,8 +52,22 @@
         DROP TABLE `${tableName}`
     </update>
 
+    <update id="update">
+        UPDATE `#{tableName}`
+        <foreach collection="params" item="param" separator="," open="(" close=")">
+            <set>
+                #{param.key} = #{param.value}
+            </set>
+        </foreach>
+        WHERE `id` = #{id}
+    </update>
+
     <delete id="delete">
         DELETE FROM `${tableName}` WHERE `id` = ${id}
     </delete>
+
+    <update id="empty" parameterType="java.lang.String">
+        TRUNCATE `#{tableName}`
+    </update>
 
 </mapper>

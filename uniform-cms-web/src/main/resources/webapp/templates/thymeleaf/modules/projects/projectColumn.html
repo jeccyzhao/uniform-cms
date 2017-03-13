@@ -113,7 +113,7 @@
                             function() {
                                 // remove some unnecessary attribute from row data
                                 rowData = removeObjectAttribute(rowData, ['delete', 'edit', 'uid', 'undo', 'uniqueid', 'visibleindex', 'boundindex', 'projectId', 'updateTime']);
-                                sendAjaxRequest("projects/" + projectId + "/columns", 'PUT', JSON.stringify(rowData), function(data) {
+                                sendAjaxRequest("projects/" + projectId + "/columns/" + rowData.id, 'PATCH', JSON.stringify(rowData), function(data) {
                                     updateGridRowData("table-filter", rebuildSingleColumnData(data));
                                 }, "application/json; charset=utf-8");
                             }

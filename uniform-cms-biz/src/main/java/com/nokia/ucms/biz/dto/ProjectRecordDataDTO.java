@@ -99,6 +99,31 @@ public class ProjectRecordDataDTO<T> extends BaseDTO
             return builder.toString();
         }
 
+        public Map<String, String> getUpdatedColumnIdsByNames (final List<ProjectColumn> projectColumns)
+        {
+            Map<String, String> updateColumnIds = null;
+            if (props != null && projectColumns != null && projectColumns.size() > 0)
+            {
+                updateColumnIds = new HashMap<String, String>();
+                for (int i = 0, size = props.size(); i < size; i++)
+                {
+                    ProjectColumnProperty columnProperty = props.get(i);
+                    if (columnProperty.getName() != null)
+                    {
+                        for (ProjectColumn projectColumn : projectColumns)
+                        {
+                            if (projectColumn.getColumnName().equals(columnProperty.getName().trim()))
+                            {
+                                updateColumnIds.put(projectColumn.getColumnId(), columnProperty.getValue());
+                            }
+                        }
+                    }
+                }
+            }
+
+            return updateColumnIds;
+        }
+
         public String getInsertedColumnValues ()
         {
             StringBuilder builder = new StringBuilder();

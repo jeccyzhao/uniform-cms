@@ -15,6 +15,7 @@ import com.nokia.ucms.common.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.sql.rowset.serial.SerialException;
 import java.util.*;
 
 import static com.nokia.ucms.biz.dto.ProjectRecordDataDTO.*;
@@ -37,19 +38,31 @@ public class ProjectRecordService extends BaseService
     @Autowired
     private ProjectCategoryRepository projectCategoryRepository;
 
+    @Autowired
+    private ProjectTraceService projectTraceService;
+
     public ProjectRecordDataDTO getProjectRecordsByCategory (Integer projectId, Integer categoryId)
     {
         ProjectRecordDataDTO projectRecordData = null;
         ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
         if (projectInfo != null)
         {
-            projectRecordData = new ProjectRecordDataDTO();
-            projectRecordData.setProject(projectInfo);
-            projectRecordData.setColumns(projectColumnRepository.getColumnsByProjectId(projectInfo.getId()));
+            if (categoryId != null && categoryId > 0)
+            {
+                ProjectCategory projectCategory = this.projectCategoryRepository.getCategoryById(categoryId);
+                if (projectCategory == null)
+                {
+                    throw new ServiceException(String.format("Project category (id: %d) does not exist", categoryId));
+                }
+            }
 
             List<ProjectColumn> projectColumns = projectColumnRepository.getColumnsByProjectId(projectInfo.getId());
             if (projectColumns != null && projectColumns.size() > 0)
             {
+                projectRecordData = new ProjectRecordDataDTO();
+                projectRecordData.setProject(projectInfo);
+                projectRecordData.setColumns(projectColumns);
+
                 String dataTableName = projectInfo.getTableName();
                 List<Map<String, Object>> rows = databaseAdminRepository.getRecordByCategory(dataTableName, categoryId);
                 for (Map<String, Object> row : rows)
@@ -85,9 +98,11 @@ public class ProjectRecordService extends BaseService
                 {
                     projectRecordData.addRowData(constructRowData(row, projectColumns));
                 }
+
+                return projectRecordData;
             }
 
-            return projectRecordData;
+            return null;
         }
         else
         {
@@ -144,6 +159,54 @@ public class ProjectRecordService extends BaseService
         }
 
         throw new ServiceException("Invalid project record id: " + recordId);
+    }
+
+    public ProjectRecordDataDTO updateProjectRecord (Integer projectId, ProjectRecordDataRow recordDataRow)
+    {
+        ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
+        if (projectInfo != null)
+        {
+            if (recordDataRow != null && recordDataRow.getId() != null)
+            {
+                ProjectRecordDataDTO recordDataInDB = this.getProjectRecordById(projectId, recordDataRow.getId());
+                if (recordDataInDB != null)
+                {
+                    List<ProjectColumn> projectColumns = projectColumnRepository.getColumnsByProjectId(projectInfo.getId());
+                    if (projectColumns != null && projectColumns.size() > 0)
+                    {
+                        recordDataRow.setUpdateTime(new Date());
+                        // TODO: replace with right user id
+                        recordDataRow.setLastUpdateUser("ci");
+
+                        Integer result = this.databaseAdminRepository.update(projectInfo.getTableName(),
+                                recordDataRow.getId(), recordDataRow.getUpdatedColumnIdsByNames(projectColumns));
+
+                        if (result != null && result > 0)
+                        {
+                            return this.getProjectRecordById(projectId, recordDataRow.getId());
+                        }
+
+                        return null;
+                    }
+                    else
+                    {
+                        throw new ServiceException(String.format("No project (name: %s) columns found", projectInfo.getName()));
+                    }
+                }
+                else
+                {
+                    throw new ServiceException(String.format("Project record data (id: %d) does not exist", recordDataRow.getId()));
+                }
+            }
+            else
+            {
+                throw new ServiceException(String.format("Missing identifier in project record data (%s)", recordDataRow));
+            }
+        }
+        else
+        {
+            throw new ServiceException(String.format("Project (id: %d) does not exit", projectId));
+        }
     }
 
     public Integer addProjectRecord (Integer projectId, ProjectRecordDataRow projectData)

@@ -3,6 +3,7 @@ package com.nokia.ucms.biz.service;
 import com.nokia.ucms.biz.constants.EOperationType;
 import com.nokia.ucms.biz.constants.EServiceDomain;
 import com.nokia.ucms.biz.entity.ProjectCategory;
+import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.biz.repository.DatabaseAdminRepository;
 import com.nokia.ucms.biz.repository.ProjectCategoryRepository;
@@ -47,6 +48,17 @@ public class ProjectCategoryService extends BaseService
         throw new ServiceException(String.format("Project category (id: %d) does not exist", categoryId));
     }
 
+    public ProjectCategory getProjectCategoryByName (Integer projectId, String categoryName)
+    {
+        ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
+        if (projectInfo != null)
+        {
+            return projectCategoryRepository.getCategoryByName(projectId, categoryName);
+        }
+
+        throw new ServiceException("Failed to get project categories by project id: " + projectId);
+    }
+
     public List<ProjectCategory> getProjectCategories (Integer projectId)
     {
         ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
@@ -56,6 +68,17 @@ public class ProjectCategoryService extends BaseService
         }
 
         throw new ServiceException("Failed to get project categories by project id: " + projectId);
+    }
+
+    public List<ProjectCategory> getProjectCategories (String projectName)
+    {
+        ProjectInfo projectInfo = projectInfoService.getProjectByName(projectName);
+        if (projectInfo != null)
+        {
+            return projectCategoryRepository.getCategoriesByProjectId(projectInfo.getId());
+        }
+
+        throw new ServiceException("Failed to get project categories by project name: " + projectName);
     }
 
     public ProjectCategory addProjectCategory (Integer projectId, ProjectCategory category)
@@ -102,64 +125,70 @@ public class ProjectCategoryService extends BaseService
         throw new ServiceException(String.format("Project (id: %d) does not exist", projectId));
     }
 
-    public ProjectCategory updateProjectCategory (ProjectCategory category)
+    public ProjectCategory updateProjectCategory (Integer projectId, Integer categoryId, ProjectCategory projectCategory)
     {
-        if (category != null && category.getId() != null)
+        if (projectCategory != null && !"".equals(projectCategory.getName()))
         {
-            if (category.getName() != null && !"".equals(category.getName().trim()))
+            ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
+            if (projectInfo != null)
             {
-                ProjectCategory entityByName = this.projectCategoryRepository.getCategoryByName(category.getName());
-                if (entityByName == null || entityByName.getId().equals(category.getId()))
+                ProjectCategory entityById = projectCategoryRepository.getCategoryById(categoryId);
+                if (entityById != null)
                 {
-                    ProjectCategory entityById = this.projectCategoryRepository.getCategoryById(category.getId());
-                    if (entityById != null)
+                    ProjectCategory entityByName = projectCategoryRepository.getCategoryByName(projectId, projectCategory.getName());
+                    if (entityByName == null || entityByName.getId().equals(entityById.getId()))
                     {
-                        category.setUpdateTime(new Date());
+                        projectCategory.setId(categoryId);
+                        projectCategory.setProjectId(projectId);
+                        projectCategory.setUpdateTime(new Date());
 
                         // adding owner and creation time back only for the purpose of displaying in front-end page
-                        category.setOwner(entityById.getOwner());
-                        category.setCreationTime(entityById.getCreationTime());
+                        projectCategory.setOwner(entityById.getOwner());
 
-                        Integer result = this.projectCategoryRepository.updateCategory(category);
+                        Integer result = this.projectCategoryRepository.updateCategory(projectCategory);
                         if (result != null)
                         {
                             try
                             {
-                                projectTraceService.addProjectTrace(category.getProjectId(),
+                                projectTraceService.addProjectTrace(projectId,
                                         EOperationType.OPERATION_UPDATE, getServiceDomain(),
-                                        String.valueOf(category.getId()), getServiceCategory(),
-                                        String.format("Update project category from '%s' to '%s'", entityById.getName(), category.getName()),
-                                        entityById, category);
+                                        String.valueOf(projectCategory.getId()), getServiceCategory(),
+                                        String.format("Update project category from '%s' to '%s'", entityById.getName(), projectCategory.getName()),
+                                        entityById, projectCategory);
                             }
                             catch (Exception ex)
                             {
                                 LOGGER.error("Failed to trace when updating project category: " + ex);
                             }
 
-                            return category;
+                            projectCategory.setCreationTime(entityById.getCreationTime());
+
+                            return projectCategory;
                         }
                         else
                         {
-                            throw new ServiceException(String.format("Project category (%s) update failed", category));
+                            throw new ServiceException(String.format("Project category (%s) update failed", projectCategory));
                         }
                     }
                     else
                     {
-                        throw new ServiceException(String.format("Project category (%s) does not exist", category));
+                        throw new ServiceException(String.format("Conflicted with another column with same name (%s)", entityByName));
                     }
                 }
                 else
                 {
-                    throw new ServiceException(String.format("Conflicted with another category with same name (%s)", entityByName));
+                    throw new ServiceException(String.format("Project category (id: %d) does not exist", categoryId));
                 }
             }
             else
             {
-                throw new ServiceException("Invalid category name: " + category.getName());
+                throw new ServiceException(String.format("Project (id: %d) does not exit", projectId));
             }
         }
-
-        throw new ServiceException("Invalid category: " + category);
+        else
+        {
+            throw new ServiceException("Invalid project category: " + projectCategory);
+        }
     }
 
     public boolean removeProjectCategory (Integer categoryId)

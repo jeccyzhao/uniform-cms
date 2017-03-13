@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface ProjectCategoryRepository
 {
-    ProjectCategory getCategoryByName(@Param("name") String categoryName);
+    ProjectCategory getCategoryByName(@Param("projectId") Integer projectId, @Param("name") String categoryName);
     ProjectCategory getCategoryById(@Param("id") Integer categoryId);
     Integer addCategory(final ProjectCategory projectCategory);
     Integer removeCategoryById(@Param("id") Integer categoryId);

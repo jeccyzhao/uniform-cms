@@ -115,52 +115,63 @@ public class ProjectColumnService extends BaseService
     }
 
     @Transactional
-    public ProjectColumn updateProjectColumn (Integer projectId, ProjectColumn projectColumn) throws ServiceException
+    public ProjectColumn updateProjectColumn (Integer projectId, Integer columnId, ProjectColumn projectColumn) throws ServiceException
     {
-        if (projectColumn != null && projectColumn.getId() != null &&
-                projectColumn.getColumnName() != null && !"".equals(projectColumn.getColumnName()))
+        if (projectColumn != null && !"".equals(projectColumn.getColumnName()))
         {
-            ProjectColumn entityByName = projectColumnRepository.getColumnsByColumnName(projectColumn.getColumnName(), projectId);
-            if (entityByName == null || entityByName.getId().equals(projectColumn.getId()))
+            ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
+            if (projectInfo != null)
             {
-                ProjectColumn entityById = projectColumnRepository.getColumnById(projectColumn.getId());
+                ProjectColumn entityById = projectColumnRepository.getColumnById(columnId);
                 if (entityById != null)
                 {
-                    projectColumn.setUpdateTime(new Date());
-                    if (projectColumnRepository.updateProjectColumn(projectColumn) > 0)
+                    ProjectColumn entityByName = projectColumnRepository.getColumnsByColumnName(projectColumn.getColumnName(), projectId);
+                    if (entityByName == null || entityByName.getId().equals(entityById.getId()))
                     {
-                        try
+                        projectColumn.setUpdateTime(new Date());
+                        projectColumn.setProjectId(projectId);
+                        projectColumn.setId(columnId);
+                        if (projectColumnRepository.updateProjectColumn(projectColumn) > 0)
                         {
-                            projectTraceService.addProjectTrace(projectId,
-                                    EOperationType.OPERATION_UPDATE, getServiceDomain(),
-                                    String.valueOf(projectColumn.getProjectId()), getServiceCategory(),
-                                    String.format("Update project column from '%s' to '%s'", entityById.getColumnName(), projectColumn.getColumnName()),
-                                    entityById, projectColumn);
-                        }
-                        catch (Exception ex)
-                        {
-                            LOGGER.error("Failed to trace when updating project column: " + ex);
-                        }
+                            try
+                            {
+                                projectTraceService.addProjectTrace(projectId,
+                                        EOperationType.OPERATION_UPDATE, getServiceDomain(),
+                                        String.valueOf(projectColumn.getProjectId()), getServiceCategory(),
+                                        String.format("Update project column from '%s' to '%s'", entityById.getColumnName(), projectColumn.getColumnName()),
+                                        entityById, projectColumn);
+                            }
+                            catch (Exception ex)
+                            {
+                                LOGGER.error("Failed to trace when updating project column: " + ex);
+                            }
 
-                        return projectColumn;
+                            return projectColumn;
+                        }
+                        else
+                        {
+                            throw new ServiceException(String.format("Project column (%s) update failed", projectColumn));
+                        }
                     }
                     else
                     {
-                        throw new ServiceException(String.format("Project column (%s) update failed", projectColumn));
+                        throw new ServiceException(String.format("Conflicted with another column with same name (%s)", entityByName));
                     }
                 }
                 else
                 {
-                    throw new ServiceException(String.format("Project column (%s) does not exist", projectColumn));
+                    throw new ServiceException(String.format("Project column (id: %d) does not exist", columnId));
                 }
             }
             else
             {
-                throw new ServiceException(String.format("Conflicted with another column with same name (%s)", entityByName));
+                throw new ServiceException(String.format("Project (id: %d) does not exit", projectId));
             }
         }
-
-        throw new ServiceException("Invalid project column: " + projectColumn);
+        else
+        {
+            throw new ServiceException("Invalid project column: " + projectColumn);
+        }
     }
 
     @Transactional

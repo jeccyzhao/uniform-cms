@@ -33,10 +33,12 @@
     </div>
 
     <div th:include="modules/projects/popup/records/popupProjectRecordForm"></div>
+    <div th:include="modules/projects/popup/records/popupProjectRecordData"></div>
 
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
         var projectId = /*[[${project.id}]]*/;
+        var categoryId = /*[[${category != null ? category.id : null}]]*/
         var excludedColumns = ["id", "edit", "delete", "undo", "seq", "updateTime", "columnLength", "visible"];
         var dataColumns = [];
         $(function () {
@@ -54,7 +56,8 @@
 
         function loadData(container_id) {
             var projectId = /*[[${project.id}]]*/;
-            sendAjaxRequest("projects/" + projectId + '/records', 'GET', {}, function(data) {
+            var uri = "projects/" + projectId + "/records" + (categoryId != null ? ("?categoryId=" + categoryId) : "");
+            sendAjaxRequest(uri, 'GET', {}, function(data) {
                 var tableDataAndColumns = constructTableColumnsAndData(data);
                 initJqxTable(container_id, tableDataAndColumns.columns, rebuildData(tableDataAndColumns.data), true);
             });
@@ -96,12 +99,12 @@
               groupable: false, draggable: false, resizable: false,
               datafield: '', columntype: 'number', width: 38, cellsalign: 'center',
               cellsrenderer: function (row, column, value) {
-                  return "<div style='margin:4px;'><a href='javascript:void(0);' style='text-decoration: none;'>" + (value + 1) + "</a></div>";
+                  return "<div style='margin:4px;'><a href='javascript:void(0);' onclick='showRecord();' style='text-decoration: none;'>" + (value + 1) + "</a></div>";
               }
             });
 
             // result.columns.push({text: 'No.', datafield: 'id', hidden: false, width: 40, editable: false, align: 'center', cellsalign: 'center'});
-            result.columns.push({text: 'Category', datafield: 'categoryName', align: 'center', cellsalign: 'left', filterable: true, width: 120});
+            result.columns.push({text: 'Category', datafield: 'Category Name', align: 'center', cellsalign: 'left', filterable: true, width: 120, editable: false});
 
             dataColumns = [];
             for (var columnIndex in columns) {
@@ -128,10 +131,10 @@
                 switch (operationType) {
                     case "update":
                         updateRowWithConfirmation("Do you want to update this record?",
-                            "Record property would be updated to," + constructColumnInstructions(rowData),
+                            "Record would be updated to," + constructColumnInstructions(rowData),
                             function() {
                                 // remove some unnecessary attribute from row data
-                                rowData = removeObjectAttribute(rowData, ['delete', 'edit', 'uid', 'undo', 'uniqueid', 'visibleindex', 'boundindex', 'projectId', 'updateTime']);
+                                rowData = removeObjectAttribute(rowData, ['delete', 'edit', 'uid', 'undo', 'uniqueid', 'visibleindex', 'boundindex', 'Owner', 'Last Update User', 'Creation Time', 'Update Time']);
                                 sendAjaxRequest("projects/" + projectId + "/records", 'PUT', JSON.stringify(rowData), function(data) {
                                     updateGridRowData("table-filter", rebuildSingleColumnData(data));
                                 }, "application/json; charset=utf-8");
@@ -164,10 +167,18 @@
             }
         }
 
-        function constructColumnInstructions (rowData, join) {
+        function showRecord() {
+            var rowData = getCurrentGridRowData("table-filter");
+            if (rowData != null) {
+                var dataProps = constructColumnInstructions(rowData);
+                $("#m_projectRecordData").find(".modal-body").html(dataProps);
+                $("#m_projectRecordData").modal('show');
+            }
+        }
+
+        function constructColumnInstructions (rowData) {
             var dataInstructions = "<table class='tbl-instructions' style=''>";
             dataInstructions += "<tr><th>Property Name</th><th>Property Value</th></tr>";
-            join = join ? join : "<br/>";
             if (dataColumns != null && dataColumns.length > 0) {
                 for (var i = 0; i < dataColumns.length; i++) {
                     dataInstructions += "<tr><td>" + dataColumns[i] + "</td><td><font>" + rowData[dataColumns[i]] + "</font></td></tr>";
