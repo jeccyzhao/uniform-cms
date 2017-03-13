@@ -71,7 +71,7 @@ public class ProjectController extends BaseController
             model.addAttribute("categories", projectCategoryService.getProjectCategories(projectName));
         }
 
-        return getModulePage("projectRecordPage");
+        return getModulePage("projectRecord");
     }
 
     @RequestMapping("/{projectName}/trace")
