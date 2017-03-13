@@ -3,7 +3,7 @@ package com.nokia.ucms.biz.constants;
 /**
  * Created by x36zhao on 2017/3/12.
  */
-public enum ETemplateColumn
+public enum ETemplateColumnProperty
 {
     TEMPLATE_COLUMN_ID("id", "id"),
     TEMPLATE_COLUMN_CATEGORY_NAME("c_name", "Category Name"),
@@ -16,7 +16,7 @@ public enum ETemplateColumn
     private String columnId;
     private String columnName;
 
-    ETemplateColumn (String columnId, String columnName)
+    ETemplateColumnProperty (String columnId, String columnName)
     {
         this.columnId = columnId;
         this.columnName = columnName;
