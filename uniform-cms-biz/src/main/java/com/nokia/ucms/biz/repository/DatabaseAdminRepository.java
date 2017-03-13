@@ -29,9 +29,9 @@ public interface DatabaseAdminRepository
             @Param("columnValues") String columnValues);
 
     Integer update(
-            @Param("tableName") String tableName,
-            @Param("id") Integer id,
-            @Param("params") Map params);
+            //@Param("tableName") String tableName,
+            //@Param("id") Integer id,
+            Map params);
 
     Integer createTableIfNotExist(
             @Param("tableName") String tableName);

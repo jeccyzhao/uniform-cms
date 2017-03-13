@@ -52,14 +52,16 @@
         DROP TABLE `${tableName}`
     </update>
 
-    <update id="update">
-        UPDATE `#{tableName}`
-        <foreach collection="params" item="param" separator="," open="(" close=")">
-            <set>
-                #{param.key} = #{param.value}
-            </set>
-        </foreach>
-        WHERE `id` = #{id}
+    <update id="update" parameterType="java.util.Map" statementType="STATEMENT">
+        UPDATE `${tableName}`
+        <set>
+           <foreach collection="fields.entrySet()" index="key" item="value" separator=",">
+               <if test="key != 'id'.toString()">
+                   `${key}` = '${value}'
+               </if>
+            </foreach>
+        </set>
+        WHERE `id` = ${id}
     </update>
 
     <delete id="delete">

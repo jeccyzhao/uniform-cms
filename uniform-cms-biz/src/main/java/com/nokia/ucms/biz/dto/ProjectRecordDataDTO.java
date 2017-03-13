@@ -114,7 +114,7 @@ public class ProjectRecordDataDTO<T> extends BaseDTO
                         {
                             if (projectColumn.getColumnName().equals(columnProperty.getName().trim()))
                             {
-                                updateColumnIds.put(projectColumn.getColumnId(), columnProperty.getValue());
+                                updateColumnIds.put(projectColumn.getColumnId(), columnProperty.getValue().replace("'", "''"));
                             }
                         }
                     }
