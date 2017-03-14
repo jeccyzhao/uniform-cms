@@ -217,9 +217,9 @@ public class ProjectController extends BaseController
                     Object cellValue = row.getCellValue(columnIndex);
                     recordData.addProperty(projectColumn.getColumnName(), cellValue != null ? cellValue.toString() : null);
                 }
-
-                recordDataList.add(recordData);
             }
+
+            recordDataList.add(recordData);
         }
 
         return recordDataList;
