@@ -12,6 +12,7 @@ import com.nokia.ucms.biz.repository.ProjectColumnRepository;
 import com.nokia.ucms.biz.repository.ProjectInfoRepository;
 import com.nokia.ucms.common.exception.ServiceException;
 import com.nokia.ucms.common.service.BaseService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,8 @@ import static com.nokia.ucms.biz.dto.ProjectRecordDataDTO.*;
 @Service
 public class ProjectRecordService extends BaseService
 {
+    private static Logger LOGGER = Logger.getLogger(ProjectRecordService.class);
+
     @Autowired
     private ProjectInfoService projectInfoService;
 
@@ -143,7 +146,23 @@ public class ProjectRecordService extends BaseService
         if (recordId != null && recordId > 0)
         {
             ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
-            return this.databaseAdminRepository.delete(projectInfo.getTableName(), recordId);
+            Integer result = this.databaseAdminRepository.delete(projectInfo.getTableName(), recordId);
+            if (result != null && result > 0)
+            {
+                try
+                {
+                    // update lastUpdateTime in project
+                    projectInfoService.updateProject(projectId, projectInfo);
+                }
+                catch (Exception ex)
+                {
+                    LOGGER.error("Exception raised during tracing and updating project last update time: " + ex);
+                }
+
+                return result;
+            }
+
+            throw new ServiceException("Failed to delete project record: " + recordId);
         }
 
         throw new ServiceException("Invalid project record id: " + recordId);
@@ -160,9 +179,6 @@ public class ProjectRecordService extends BaseService
                 recordDataRow.setLastUpdateUser("ci");
                 recordDataRow.setUpdateTime(new Date());
 
-                //Integer result = this.databaseAdminRepository.update(entityById.getProject().getTableName(),
-                //        recordDataRow.getId(), recordDataRow.getUpdatedColumnIdsByNames(entityById.getColumns()));
-
                 Map<String, Object> fieldMap = recordDataRow.getUpdatedColumnIdsByNames(entityById.getColumns());
                 if (fieldMap != null)
                 {
@@ -174,6 +190,16 @@ public class ProjectRecordService extends BaseService
                     Integer result = this.databaseAdminRepository.update(params);
                     if (result != null && result > 0)
                     {
+                        try
+                        {
+                            // update lastUpdateTime in project
+                            projectInfoService.updateProject(projectId, projectInfoService.getProjectById(projectId));
+                        }
+                        catch (Exception ex)
+                        {
+                            LOGGER.error("Exception raised during tracing and updating project last update time: " + ex);
+                        }
+
                         return this.getProjectRecordById(projectId, recordId);
                     }
                     else
@@ -218,6 +244,16 @@ public class ProjectRecordService extends BaseService
 
                 if (result != null && result > 0)
                 {
+                    try
+                    {
+                        // update lastUpdateTime in project
+                        projectInfoService.updateProject(projectId, projectInfo);
+                    }
+                    catch (Exception ex)
+                    {
+                        LOGGER.error("Exception raised during tracing and updating project last update time: " + ex);
+                    }
+
                     return result;
                 }
 

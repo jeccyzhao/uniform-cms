@@ -50,7 +50,7 @@
             if (data != null) {
                 for (var i = 0; i < data.length; i++) {
                     data[i].creationTime = reformatDate(data[i].creationTime);
-                    data[i].updateTime = reformatDate(data[i].updateTime);
+                    data[i].lastUpdateTime = reformatDate(data[i].lastUpdateTime);
                     data[i].name = "<a target='_self' href='" + ctxPath + "/projects/" + data[i].name + "'>" + data[i].name + "</a>";
                 }
             }
@@ -72,7 +72,7 @@
                 {text: 'Project Description', datafield: 'description', align: 'center'},
                 {text: 'Project Owner', datafield: 'owner', align: 'center', width: 180},
                 {text: 'Creation Time', datafield: 'creationTime', width: 180, cellsalign:'center', align: 'center'},
-                {text: 'Last Update Time', datafield: 'updateTime', width: 180, cellsalign:'center', align: 'center'}
+                {text: 'Last Update Time', datafield: 'lastUpdateTime', width: 180, cellsalign:'center', align: 'center'}
             ];
 
             return columns;

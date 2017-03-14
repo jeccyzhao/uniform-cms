@@ -97,9 +97,10 @@ public class ProjectInfoService extends BaseService
     {
         if (projectInfo != null && !"".equals(projectInfo.getName()))
         {
-            ProjectInfo entity = projectInfoRepository.getProjectInfoById(projectId);
+            ProjectInfo entity = this.getProjectById(projectId);
             if (entity != null)
             {
+                projectInfo.setLastUpdateTime(new Date());
                 Integer result = projectInfoRepository.updateProjectInfo(projectInfo);
                 return result > 0;
             }

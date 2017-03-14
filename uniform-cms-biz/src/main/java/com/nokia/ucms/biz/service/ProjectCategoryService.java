@@ -110,11 +110,17 @@ public class ProjectCategoryService extends BaseService
                                 String.valueOf(category.getId()), getServiceCategory(),
                                 String.format("Add project category '%s'", category.getName()),
                                 null, category);
+
+                        // update lastUpdateTime in project
+                        projectInfoService.updateProject(projectId, projectInfo);
                     }
                     catch (Exception ex)
                     {
                         LOGGER.error("Failed to trace when adding project category: " + ex);
                     }
+
+                    // update the lastUpdateTime in project
+                    projectInfoService.updateProject(projectId, projectInfo);
 
                     return category;
                 }
@@ -135,59 +141,48 @@ public class ProjectCategoryService extends BaseService
         if (projectCategory != null && !"".equals(projectCategory.getName()))
         {
             ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
-            if (projectInfo != null)
+            ProjectCategory entityById = this.getProjectCategoryById(categoryId);
+            ProjectCategory entityByName = projectCategoryRepository.getCategoryByName(projectId, projectCategory.getName());
+            if (entityByName == null || entityByName.getId().equals(entityById.getId()))
             {
-                ProjectCategory entityById = projectCategoryRepository.getCategoryById(categoryId);
-                if (entityById != null)
+                projectCategory.setId(categoryId);
+                projectCategory.setProjectId(projectId);
+                projectCategory.setUpdateTime(new Date());
+
+                // adding owner and creation time back only for the purpose of displaying in front-end page
+                projectCategory.setOwner(entityById.getOwner());
+
+                Integer result = this.projectCategoryRepository.updateCategory(projectCategory);
+                if (result != null)
                 {
-                    ProjectCategory entityByName = projectCategoryRepository.getCategoryByName(projectId, projectCategory.getName());
-                    if (entityByName == null || entityByName.getId().equals(entityById.getId()))
+                    try
                     {
-                        projectCategory.setId(categoryId);
-                        projectCategory.setProjectId(projectId);
-                        projectCategory.setUpdateTime(new Date());
+                        projectTraceService.addProjectTrace(projectId,
+                                EOperationType.OPERATION_UPDATE, getServiceDomain(),
+                                String.valueOf(projectCategory.getId()), getServiceCategory(),
+                                String.format("Update project category from '%s' to '%s'", entityById.getName(), projectCategory.getName()),
+                                entityById, projectCategory);
 
-                        // adding owner and creation time back only for the purpose of displaying in front-end page
-                        projectCategory.setOwner(entityById.getOwner());
-
-                        Integer result = this.projectCategoryRepository.updateCategory(projectCategory);
-                        if (result != null)
-                        {
-                            try
-                            {
-                                projectTraceService.addProjectTrace(projectId,
-                                        EOperationType.OPERATION_UPDATE, getServiceDomain(),
-                                        String.valueOf(projectCategory.getId()), getServiceCategory(),
-                                        String.format("Update project category from '%s' to '%s'", entityById.getName(), projectCategory.getName()),
-                                        entityById, projectCategory);
-                            }
-                            catch (Exception ex)
-                            {
-                                LOGGER.error("Failed to trace when updating project category: " + ex);
-                            }
-
-                            projectCategory.setCreationTime(entityById.getCreationTime());
-
-                            return projectCategory;
-                        }
-                        else
-                        {
-                            throw new ServiceException(String.format("Project category (%s) update failed", projectCategory));
-                        }
+                        // update lastUpdateTime in project
+                        projectInfoService.updateProject(projectId, projectInfo);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        throw new ServiceException(String.format("Conflicted with another column with same name (%s)", entityByName));
+                        LOGGER.error("Failed to trace when updating project category: " + ex);
                     }
+
+                    projectCategory.setCreationTime(entityById.getCreationTime());
+
+                    return projectCategory;
                 }
                 else
                 {
-                    throw new ServiceException(String.format("Project category (id: %d) does not exist", categoryId));
+                    throw new ServiceException(String.format("Project category (%s) update failed", projectCategory));
                 }
             }
             else
             {
-                throw new ServiceException(String.format("Project (id: %d) does not exit", projectId));
+                throw new ServiceException(String.format("Conflicted with another column with same name (%s)", entityByName));
             }
         }
         else
@@ -204,6 +199,7 @@ public class ProjectCategoryService extends BaseService
         ProjectCategory projectCategory = this.projectCategoryRepository.getCategoryById(categoryId);
         if (projectCategory != null)
         {
+            ProjectInfo projectInfo = this.projectInfoService.getProjectById(projectCategory.getProjectId());
             Integer result = this.projectCategoryRepository.removeCategoryById(categoryId);
             if (result != null)
             {
@@ -214,7 +210,11 @@ public class ProjectCategoryService extends BaseService
                             String.valueOf(projectCategory.getId()), getServiceCategory(),
                             String.format("Delete project category '%s'", projectCategory.getName()),
                             projectCategory, null);
-                } catch (Exception ex)
+
+                    // update lastUpdateTime in project
+                    projectInfoService.updateProject(projectInfo.getId(), projectInfo);
+                }
+                catch (Exception ex)
                 {
                     LOGGER.error("Failed to trace when removing project category: " + ex);
                 }

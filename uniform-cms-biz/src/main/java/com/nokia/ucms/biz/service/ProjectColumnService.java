@@ -98,6 +98,9 @@ public class ProjectColumnService extends BaseService
                             String.valueOf(projectColumn.getProjectId()), getServiceCategory(),
                             String.format("Remove project column '%s'", projectColumn.getColumnName()),
                             projectColumn, null);
+
+                    // update lastUpdateTime in project
+                    projectInfoService.updateProject(projectInfo.getId(), projectInfo);
                 }
                 catch (Exception ex)
                 {
@@ -133,7 +136,11 @@ public class ProjectColumnService extends BaseService
                                 String.valueOf(projectColumn.getProjectId()), getServiceCategory(),
                                 String.format("Update project column from '%s' to '%s'", entityById.getColumnName(), projectColumn.getColumnName()),
                                 entityById, projectColumn);
-                    } catch (Exception ex)
+
+                        // update the lastUpdateTime in project
+                        projectInfoService.updateProject(projectId, projectInfo);
+                    }
+                    catch (Exception ex)
                     {
                         LOGGER.error("Failed to trace when updating project column: " + ex);
                     }
@@ -180,7 +187,11 @@ public class ProjectColumnService extends BaseService
                                 String.valueOf(projectColumn.getProjectId()), getServiceCategory(),
                                 String.format("Create project column '%s'", projectColumn.getColumnName()),
                                 null, projectColumn);
-                    } catch (Exception ex)
+
+                        // update the lastUpdateTime in project
+                        projectInfoService.updateProject(projectInfo.getId(), projectInfo);
+                    }
+                    catch (Exception ex)
                     {
                         LOGGER.error("Failed to trace when updating project column: " + ex);
                     }
