@@ -7,6 +7,7 @@ import com.nokia.ucms.common.controller.BaseController;
 import com.nokia.ucms.common.entity.ApiQueryResult;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class ProjectInfoApiController extends BaseController
     }
 
     @RequestMapping(path="/{projectId}", method= RequestMethod.PATCH)
+    //@PreAuthorize("hasRole('')")
     public @ResponseBody ApiQueryResult<ProjectInfo> updateProject(
             @PathVariable Integer projectId,
             @RequestBody ProjectInfo projectInfo)

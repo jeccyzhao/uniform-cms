@@ -17,6 +17,12 @@ public class ApiQueryResult<T>
         this(true, data);
     }
 
+    public ApiQueryResult(String error)
+    {
+        this.error = error;
+        this.success = false;
+    }
+
     public ApiQueryResult(boolean success)
     {
         this(success, null);

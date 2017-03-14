@@ -73,7 +73,7 @@
     </delete>
 
     <update id="empty" parameterType="java.lang.String">
-        TRUNCATE `#{tableName}`
+        TRUNCATE `${tableName}`
     </update>
 
 </mapper>

@@ -10,8 +10,11 @@ import com.nokia.ucms.biz.repository.DatabaseAdminRepository;
 import com.nokia.ucms.biz.repository.ProjectCategoryRepository;
 import com.nokia.ucms.biz.repository.ProjectColumnRepository;
 import com.nokia.ucms.biz.repository.ProjectInfoRepository;
+import com.nokia.ucms.common.dto.ExcelSheetDataDTO;
+import com.nokia.ucms.common.entity.ApiQueryResult;
 import com.nokia.ucms.common.exception.ServiceException;
 import com.nokia.ucms.common.service.BaseService;
+import com.nokia.ucms.common.utils.ExcelParser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,9 @@ import static com.nokia.ucms.biz.dto.ProjectRecordDataDTO.*;
 public class ProjectRecordService extends BaseService
 {
     private static Logger LOGGER = Logger.getLogger(ProjectRecordService.class);
+    public static int IMPORT_PARTIAL_SUCCESS = 1;
+    public static int IMPORT_COMPLETE_SUCCESS = 0;
+    public static int IMPORT_FAILURE = -1;
 
     @Autowired
     private ProjectInfoService projectInfoService;
@@ -43,6 +49,7 @@ public class ProjectRecordService extends BaseService
 
     @Autowired
     private ProjectTraceService projectTraceService;
+
 
     public ProjectRecordDataDTO getProjectRecordsByCategory (Integer projectId, Integer categoryId)
     {
@@ -106,6 +113,79 @@ public class ProjectRecordService extends BaseService
         {
             throw new ServiceException(String.format("No project (name: %s) columns found", projectInfo.getName()));
         }
+    }
+
+    private Integer truncateProjectRecords (Integer projectId)
+    {
+        ProjectInfo projectInfo = this.projectInfoService.getProjectById(projectId);
+        return this.databaseAdminRepository.empty(projectInfo.getTableName());
+    }
+
+    public Integer batchAddProjectRecordsFromExcelFile (Integer projectId, Integer categoryId, String excelFile)
+    {
+        try
+        {
+            // truncate project records before importing
+            this.truncateProjectRecords(projectId);
+
+            boolean partialSuccess = false;
+            ExcelParser parser = new ExcelParser();
+            ExcelSheetDataDTO sheetData = parser.parseFile(excelFile);
+            if (sheetData != null)
+            {
+                ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
+                ProjectCategory projectCategory = projectCategoryService.getProjectCategoryById(categoryId);
+                List<ProjectColumn> projectColumns = this.projectColumnService.getProjectColumnsByProjectId(projectId);
+                List<ProjectRecordDataRow> recordDataList = constructProjectRecordData(sheetData, projectColumns);
+                for (ProjectRecordDataRow recordData : recordDataList)
+                {
+                    recordData.setCategoryId(projectCategory.getId());
+                    try
+                    {
+                        this.addProjectRecord(projectInfo.getId(), recordData);
+                    }
+                    catch (Exception ex)
+                    {
+                        LOGGER.error(String.format("Failed to add project record data (%s) due to %s", recordData, ex));
+                        partialSuccess = true;
+                    }
+                }
+
+                return partialSuccess ? IMPORT_PARTIAL_SUCCESS : IMPORT_COMPLETE_SUCCESS;
+            }
+            else
+            {
+                LOGGER.error("No data been found from the given upload file");
+            }
+        }
+        catch (Exception ex)
+        {
+            LOGGER.error("Failed to import project record data:  " + ex.getMessage());
+        }
+
+        return IMPORT_FAILURE;
+    }
+
+    private List<ProjectRecordDataRow> constructProjectRecordData (final ExcelSheetDataDTO sheetData, final List<ProjectColumn> projectColumns)
+    {
+        List<ProjectRecordDataRow> recordDataList = new ArrayList<ProjectRecordDataRow>();
+        for (ExcelSheetDataDTO.Row row : sheetData.getRows())
+        {
+            ProjectRecordDataRow recordData = new ProjectRecordDataRow();
+            for (ProjectColumn projectColumn : projectColumns)
+            {
+                int columnIndex = sheetData.getHeaderColumnIndexByName(projectColumn.getColumnName());
+                if (columnIndex > -1)
+                {
+                    Object cellValue = row.getCellValue(columnIndex);
+                    recordData.addProperty(projectColumn.getColumnName(), cellValue != null ? cellValue.toString() : null);
+                }
+            }
+
+            recordDataList.add(recordData);
+        }
+
+        return recordDataList;
     }
 
     private LinkedHashMap<String, Object> constructRowData (final Map<String, Object> row, final List<ProjectColumn> projectColumns)
