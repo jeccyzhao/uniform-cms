@@ -50,7 +50,6 @@ public class ProjectInfoService extends BaseService
         }
     }
 
-
     public ProjectInfo getProjectById (Integer projectId) throws ServiceException
     {
         if (projectId != null && projectId > 0)
@@ -58,7 +57,14 @@ public class ProjectInfoService extends BaseService
             ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
             if (projectInfo != null)
             {
-                return projectInfo;
+                if (isValidProject(projectInfo))
+                {
+                    return projectInfo;
+                }
+                else
+                {
+                    throw new ServiceException("Invalid project info: " + projectInfo);
+                }
             }
             else
             {
@@ -191,6 +197,16 @@ public class ProjectInfoService extends BaseService
     {
         return String.format("%s%s", DYNAMIC_TABLE_NAME_PREFIX,
                 projectName.trim().replaceAll(" ", KEYWORD_SPLITTER).toLowerCase());
+    }
+
+    private boolean isValidProject (final ProjectInfo projectInfo)
+    {
+        if (projectInfo != null)
+        {
+            return !"".equals(projectInfo.getName()) && !"".equals(projectInfo.getTableName());
+        }
+
+        return false;
     }
 
     protected String getServiceCategory ()

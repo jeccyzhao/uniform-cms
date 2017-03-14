@@ -39,13 +39,18 @@ public class ProjectCategoryService extends BaseService
 
     public ProjectCategory getProjectCategoryById (Integer categoryId)
     {
-        ProjectCategory category = projectCategoryRepository.getCategoryById(categoryId);
-        if (category != null)
+        if (categoryId != null && categoryId > 0)
         {
-            return category;
+            ProjectCategory category = projectCategoryRepository.getCategoryById(categoryId);
+            if (category != null)
+            {
+                return category;
+            }
+
+            throw new ServiceException(String.format("Project category (id: %d) does not exist", categoryId));
         }
 
-        throw new ServiceException(String.format("Project category (id: %d) does not exist", categoryId));
+        throw new ServiceException("Invalid project category id: " + categoryId);
     }
 
     public ProjectCategory getProjectCategoryByName (Integer projectId, String categoryName)

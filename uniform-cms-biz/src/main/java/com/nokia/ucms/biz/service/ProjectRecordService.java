@@ -27,16 +27,16 @@ import static com.nokia.ucms.biz.dto.ProjectRecordDataDTO.*;
 public class ProjectRecordService extends BaseService
 {
     @Autowired
-    private ProjectInfoRepository projectInfoRepository;
+    private ProjectInfoService projectInfoService;
 
     @Autowired
-    private ProjectColumnRepository projectColumnRepository;
+    private ProjectColumnService projectColumnService;
 
     @Autowired
     private DatabaseAdminRepository databaseAdminRepository;
 
     @Autowired
-    private ProjectCategoryRepository projectCategoryRepository;
+    private ProjectCategoryService projectCategoryService;
 
     @Autowired
     private ProjectTraceService projectTraceService;
@@ -44,74 +44,64 @@ public class ProjectRecordService extends BaseService
     public ProjectRecordDataDTO getProjectRecordsByCategory (Integer projectId, Integer categoryId)
     {
         ProjectRecordDataDTO projectRecordData = null;
-        ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
-        if (projectInfo != null)
+        ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
+
+        if (categoryId != null && categoryId > 0)
         {
-            if (categoryId != null && categoryId > 0)
+            ProjectCategory projectCategory = projectCategoryService.getProjectCategoryById(categoryId);
+            if (projectCategory == null)
             {
-                ProjectCategory projectCategory = this.projectCategoryRepository.getCategoryById(categoryId);
-                if (projectCategory == null)
-                {
-                    throw new ServiceException(String.format("Project category (id: %d) does not exist", categoryId));
-                }
+                throw new ServiceException(String.format("Project category (id: %d) does not exist", categoryId));
             }
+        }
 
-            List<ProjectColumn> projectColumns = projectColumnRepository.getColumnsByProjectId(projectInfo.getId());
-            if (projectColumns != null && projectColumns.size() > 0)
+        List<ProjectColumn> projectColumns = projectColumnService.getProjectColumnsByProjectId(projectInfo.getId());
+        if (projectColumns != null && projectColumns.size() > 0)
+        {
+            projectRecordData = new ProjectRecordDataDTO();
+            projectRecordData.setProject(projectInfo);
+            projectRecordData.setColumns(projectColumns);
+
+            String dataTableName = projectInfo.getTableName();
+            List<Map<String, Object>> rows = databaseAdminRepository.getRecordByCategory(dataTableName, categoryId);
+            for (Map<String, Object> row : rows)
             {
-                projectRecordData = new ProjectRecordDataDTO();
-                projectRecordData.setProject(projectInfo);
-                projectRecordData.setColumns(projectColumns);
-
-                String dataTableName = projectInfo.getTableName();
-                List<Map<String, Object>> rows = databaseAdminRepository.getRecordByCategory(dataTableName, categoryId);
-                for (Map<String, Object> row : rows)
-                {
-                    projectRecordData.addRowData(constructRowData(row, projectColumns));
-                }
+                projectRecordData.addRowData(constructRowData(row, projectColumns));
             }
-
-            return projectRecordData;
         }
         else
         {
-            throw new ServiceException(String.format("Project (id: %d) does not exit", projectId));
+            throw new ServiceException(String.format("No project (name: %s) columns found", projectInfo.getName()));
         }
+
+        return projectRecordData;
     }
 
     public ProjectRecordDataDTO getProjectRecordById (Integer projectId, Integer recordId)
     {
         ProjectRecordDataDTO projectRecordData = null;
-        ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
-        if (projectInfo != null)
+        ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
+        List<ProjectColumn> projectColumns = projectColumnService.getProjectColumnsByProjectId(projectInfo.getId());
+        if (projectColumns != null && projectColumns.size() > 0)
         {
             projectRecordData = new ProjectRecordDataDTO();
             projectRecordData.setProject(projectInfo);
-            projectRecordData.setColumns(projectColumnRepository.getColumnsByProjectId(projectInfo.getId()));
+            projectRecordData.setColumns(projectColumns);
 
-            List<ProjectColumn> projectColumns = projectColumnRepository.getColumnsByProjectId(projectInfo.getId());
-            if (projectColumns != null && projectColumns.size() > 0)
+            Map<String, Object> row = databaseAdminRepository.getRecordById(projectInfo.getTableName(), recordId);
+            if (row != null)
             {
-                String dataTableName = projectInfo.getTableName();
-                Map<String, Object> row = databaseAdminRepository.getRecordById(dataTableName, recordId);
-                if (row != null)
-                {
-                    projectRecordData.addRowData(constructRowData(row, projectColumns));
-                    return projectRecordData;
-                }
-                else
-                {
-                    throw new ServiceException(String.format("Project record (id: %d) does not exist", recordId));
-                }
+                projectRecordData.addRowData(constructRowData(row, projectColumns));
+                return projectRecordData;
             }
             else
             {
-                throw new ServiceException(String.format("No project (name: %s) columns found", projectInfo.getName()));
+                throw new ServiceException(String.format("Project record (id: %d) does not exist", recordId));
             }
         }
         else
         {
-            throw new ServiceException(String.format("Project (id: %d) does not exit", projectId));
+            throw new ServiceException(String.format("No project (name: %s) columns found", projectInfo.getName()));
         }
     }
 
@@ -152,15 +142,8 @@ public class ProjectRecordService extends BaseService
     {
         if (recordId != null && recordId > 0)
         {
-            ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
-            if (projectInfo != null)
-            {
-                return this.databaseAdminRepository.delete(projectInfo.getTableName(), recordId);
-            }
-            else
-            {
-                throw new ServiceException(String.format("Project (id: %d) does not exit", projectId));
-            }
+            ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
+            return this.databaseAdminRepository.delete(projectInfo.getTableName(), recordId);
         }
 
         throw new ServiceException("Invalid project record id: " + recordId);
@@ -216,56 +199,37 @@ public class ProjectRecordService extends BaseService
 
     public Integer addProjectRecord (Integer projectId, ProjectRecordDataRow projectData)
     {
-        ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
-        if (projectInfo != null)
+        if (projectData != null)
         {
-            String projectDataTableName = projectInfo.getTableName();
-            if (projectDataTableName != null && projectData != null)
+            ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
+            ProjectCategory projectCategory = projectCategoryService.getProjectCategoryById(projectData.getCategoryId());
+            List<ProjectColumn> projectColumns = projectColumnService.getProjectColumnsByProjectId(projectInfo.getId());
+            if (projectColumns != null && projectColumns.size() > 0)
             {
-                if (projectData.getCategoryId() != null)
+                projectData.setCreationTime(new Date());
+                projectData.setUpdateTime(new Date());
+
+                // TODO replace with valid user
+                projectData.setOwner("Change It");
+                projectData.setLastUpdateUser("Change It");
+
+                Integer result = this.databaseAdminRepository.insertByProps(projectInfo.getTableName(),
+                        projectData.getInsertedColumnIdsByNames(projectColumns), projectData.getInsertedColumnValues());
+
+                if (result != null && result > 0)
                 {
-                    ProjectCategory projectCategory = projectCategoryRepository.getCategoryById(projectData.getCategoryId());
-                    if (projectCategory == null)
-                    {
-                        throw new ServiceException(String.format("Project category (id: %d) does not exist", projectCategory.getId()));
-                    }
+                    return result;
                 }
 
-                List<ProjectColumn> projectColumns = projectColumnRepository.getColumnsByProjectId(projectInfo.getId());
-                if (projectColumns != null && projectColumns.size() > 0)
-                {
-                    projectData.setCreationTime(new Date());
-                    projectData.setUpdateTime(new Date());
-                    projectData.setCategoryName(null);
-
-                    // TODO replace with valid user
-                    projectData.setOwner("Change It");
-                    projectData.setLastUpdateUser("Change It");
-
-                    Integer result = this.databaseAdminRepository.insertByProps(projectDataTableName,
-                            projectData.getInsertedColumnIdsByNames(projectColumns), projectData.getInsertedColumnValues());
-
-                    if (result != null && result > 0)
-                    {
-                        return result;
-                    }
-
-                    return null;
-                }
-                else
-                {
-                    throw new ServiceException(String.format("Project (name: %s) does not have any columns in place", projectInfo.getName()));
-                }
+                throw new ServiceException("Failed to add project record: " + projectData);
             }
             else
             {
-                throw new ServiceException(String.format("Project (%s) data table does not exit", projectInfo));
+                throw new ServiceException(String.format("Project (name: %s) does not have any columns in place", projectInfo.getName()));
             }
         }
-        else
-        {
-            throw new ServiceException(String.format("Project (id: %d) does not exit", projectId));
-        }
+
+        throw new ServiceException("Invalid project record data: " + projectData);
     }
 
     protected String getServiceCategory ()
