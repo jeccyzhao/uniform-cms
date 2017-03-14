@@ -68,6 +68,10 @@
         DELETE FROM `${tableName}` WHERE `id` = ${id}
     </delete>
 
+    <delete id="deleteByCategory">
+        DELETE FROM `${tableName}` WHERE `c_id` = ${categoryId}
+    </delete>
+
     <update id="empty" parameterType="java.lang.String">
         TRUNCATE `#{tableName}`
     </update>

@@ -49,6 +49,10 @@ public interface DatabaseAdminRepository
             @Param("tableName") String tableName,
             @Param("id") Integer id);
 
+    Integer deleteByCategory(
+            @Param("tableName") String tableName,
+            @Param("categoryId") Integer categoryId);
+
     Integer update (
             @Param("tableName") String tableName);
 

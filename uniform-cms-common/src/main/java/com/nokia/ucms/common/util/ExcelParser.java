@@ -1,5 +1,6 @@
-package com.nokia.ucms.core.parser;
+package com.nokia.ucms.common.util;
 
+import com.nokia.ucms.common.dto.ExcelSheetDataDTO;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -11,7 +12,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by x36zhao on 2017/3/14.
@@ -29,12 +33,12 @@ public class ExcelParser
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public List<Object> parseFile (String excelFile) throws FileNotFoundException, IOException
+    public List<ExcelSheetDataDTO> parseFile (String excelFile) throws FileNotFoundException, IOException
     {
         return parseFile(excelFile, DEFAULT_SHEET_INDEX);
     }
 
-    public List<Object> parseFile (String excelFile, int sheetIndex) throws FileNotFoundException, IOException
+    public List<ExcelSheetDataDTO> parseFile (String excelFile, int sheetIndex) throws FileNotFoundException, IOException
     {
         LOGGER.info("Start parsing excel file: " + excelFile);
 
