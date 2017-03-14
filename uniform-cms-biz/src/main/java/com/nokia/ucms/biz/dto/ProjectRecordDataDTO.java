@@ -5,7 +5,7 @@ import com.nokia.ucms.biz.constants.ETemplateColumnProperty;
 import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.common.dto.BaseDTO;
-import com.nokia.ucms.common.util.DateUtil;
+import com.nokia.ucms.common.utils.DateUtil;
 import lombok.Data;
 import lombok.ToString;
 

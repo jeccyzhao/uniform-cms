@@ -8,7 +8,7 @@ import com.nokia.ucms.biz.repository.DatabaseAdminRepository;
 import com.nokia.ucms.biz.repository.ProjectColumnRepository;
 import com.nokia.ucms.common.exception.ServiceException;
 import com.nokia.ucms.common.service.BaseService;
-import com.nokia.ucms.common.util.UUIDGenerator;
+import com.nokia.ucms.common.utils.UUIDGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
