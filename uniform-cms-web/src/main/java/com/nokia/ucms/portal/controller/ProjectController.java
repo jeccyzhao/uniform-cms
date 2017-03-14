@@ -71,7 +71,7 @@ public class ProjectController extends BaseController
         return null;
     }
 
-    @RequestMapping("/{projectName}")
+    @RequestMapping("/{projectName}/records")
     public String showProjectRecords(@PathVariable String projectName, @RequestParam (required = false) String category, Model model)
     {
         ProjectInfo projectInfo = setBasicInfoInModel(projectName, model);

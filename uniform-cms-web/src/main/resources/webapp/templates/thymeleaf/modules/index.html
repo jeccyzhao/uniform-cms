@@ -51,7 +51,7 @@
                 for (var i = 0; i < data.length; i++) {
                     data[i].creationTime = reformatDate(data[i].creationTime);
                     data[i].lastUpdateTime = reformatDate(data[i].lastUpdateTime);
-                    data[i].name = "<a target='_self' href='" + ctxPath + "/projects/" + data[i].name + "'>" + data[i].name + "</a>";
+                    data[i].name = "<a target='_self' href='" + ctxPath + "/projects/" + data[i].name + "/categories'>" + data[i].name + "</a>";
                 }
             }
             return data;
