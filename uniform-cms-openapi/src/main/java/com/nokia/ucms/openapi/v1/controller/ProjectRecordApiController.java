@@ -37,10 +37,6 @@ public class ProjectRecordApiController extends BaseController
 {
     private static Logger LOGGER = Logger.getLogger(ProjectRecordApiController.class);
 
-    private static int IMPORT_PARTIAL_SUCCESS = 1;
-    private static int IMPORT_COMPLETE_SUCCESS = 0;
-    private static int IMPORT_FAILURE = -1;
-
     @Autowired
     private ProjectRecordService projectRecordService;
 

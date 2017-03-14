@@ -129,6 +129,13 @@ public class ProjectColumnService extends BaseService
                 projectColumn.setId(projectColumnId);
                 if (projectColumnRepository.updateProjectColumn(projectColumn) > 0)
                 {
+                    if (entityById.getColumnLength() != projectColumn.getColumnLength())
+                    {
+                        // update table column length in case any update happens
+                        dbAdminRepository.updateColumnLength(projectInfo.getTableName(),
+                                projectColumn.getColumnId(), projectColumn.getColumnLength());
+                    }
+
                     try
                     {
                         projectTraceService.addProjectTrace(projectId,

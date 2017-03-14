@@ -76,4 +76,8 @@
         TRUNCATE `${tableName}`
     </update>
 
+    <update id="updateColumnLength">
+        ALTER TABLE  `${tableName}` CHANGE `${columnId}` `${columnId}` VARCHAR( ${columnLength} )
+    </update>
+
 </mapper>
