@@ -7,7 +7,8 @@ public enum EOperationType
 {
     OPERATION_ADD(0),
     OPERATION_UPDATE(1),
-    OPERATION_DEL(2);
+    OPERATION_DEL(2),
+    OPERATION_IMPORT(3);
 
     private int code;
     EOperationType (int code)

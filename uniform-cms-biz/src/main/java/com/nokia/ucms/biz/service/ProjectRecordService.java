@@ -143,13 +143,28 @@ public class ProjectRecordService extends BaseService
                     recordData.setCategoryId(projectCategory.getId());
                     try
                     {
-                        this.addProjectRecord(projectInfo.getId(), recordData);
+                        this.addProjectRecord(projectInfo.getId(), recordData, false);
                     }
                     catch (Exception ex)
                     {
                         LOGGER.error(String.format("Failed to add project record data (%s) due to %s", recordData, ex));
                         partialSuccess = true;
                     }
+                }
+
+                try
+                {
+                    projectTraceService.addProjectTrace(projectId,
+                            EOperationType.OPERATION_IMPORT, getServiceDomain(),
+                            String.valueOf(projectId), projectCategory.getName(),
+                            "Import project record", null, null);
+
+                    // update lastUpdateTime in project
+                    projectInfoService.updateProject(projectId, projectInfo);
+                }
+                catch (Exception ex)
+                {
+                    LOGGER.error("Exception raised during tracing and updating project last update time: " + ex);
                 }
 
                 return partialSuccess ? IMPORT_PARTIAL_SUCCESS : IMPORT_COMPLETE_SUCCESS;
@@ -327,6 +342,11 @@ public class ProjectRecordService extends BaseService
 
     public Integer addProjectRecord (Integer projectId, ProjectRecordDataRow projectData)
     {
+        return addProjectRecord(projectId, projectData, true);
+    }
+
+    public Integer addProjectRecord (Integer projectId, ProjectRecordDataRow projectData, boolean trace)
+    {
         if (projectData != null)
         {
             ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
@@ -348,11 +368,14 @@ public class ProjectRecordService extends BaseService
                 {
                     try
                     {
-                        projectTraceService.addProjectTrace(projectId,
-                                EOperationType.OPERATION_ADD, getServiceDomain(),
-                                String.valueOf(projectId), projectCategory.getName(),
-                                "Add project record",
-                                null, projectData);
+                        if (trace)
+                        {
+                            projectTraceService.addProjectTrace(projectId,
+                                    EOperationType.OPERATION_ADD, getServiceDomain(),
+                                    String.valueOf(projectId), projectCategory.getName(),
+                                    "Add project record",
+                                    null, projectData);
+                        }
 
                         // update the lastUpdateTime in project
                         projectInfoService.updateProject(projectId, projectInfo);
