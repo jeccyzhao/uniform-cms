@@ -1,5 +1,6 @@
 package com.nokia.ucms.biz.service;
 
+import com.nokia.ucms.biz.constants.EOperationType;
 import com.nokia.ucms.biz.constants.EServiceDomain;
 import com.nokia.ucms.biz.constants.ETemplateColumnProperty;
 import com.nokia.ucms.biz.dto.ProjectRecordDataDTO;
@@ -226,23 +227,35 @@ public class ProjectRecordService extends BaseService
         if (recordId != null && recordId > 0)
         {
             ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
-            Integer result = this.databaseAdminRepository.delete(projectInfo.getTableName(), recordId);
-            if (result != null && result > 0)
+            ProjectRecordDataDTO recordDataDTO = this.getProjectRecordById(projectId, recordId);
+            if (recordDataDTO != null && recordDataDTO.getRowData() != null && recordDataDTO.getRowData().size() > 0)
             {
-                try
+                Integer result = this.databaseAdminRepository.delete(projectInfo.getTableName(), recordId);
+                if (result != null && result > 0)
                 {
-                    // update lastUpdateTime in project
-                    projectInfoService.updateProject(projectId, projectInfo);
-                }
-                catch (Exception ex)
-                {
-                    LOGGER.error("Exception raised during tracing and updating project last update time: " + ex);
+                    try
+                    {
+                        LinkedHashMap<String, Object> rowEntry = (LinkedHashMap<String, Object>) recordDataDTO.getRowData().get(0);
+                        String categoryName = rowEntry.get(ETemplateColumnProperty.TEMPLATE_COLUMN_CATEGORY_NAME.getColumnName()).toString();
+                        projectTraceService.addProjectTrace(projectId,
+                                EOperationType.OPERATION_DEL, getServiceDomain(),
+                                String.valueOf(projectId), categoryName,
+                                "Delete project record",
+                                recordDataDTO.getRowData(), null);
+
+                        // update lastUpdateTime in project
+                        projectInfoService.updateProject(projectId, projectInfo);
+                    }
+                    catch (Exception ex)
+                    {
+                        LOGGER.error("Exception raised during tracing and updating project last update time: " + ex);
+                    }
+
+                    return result;
                 }
 
-                return result;
+                throw new ServiceException("Failed to delete project record: " + recordId);
             }
-
-            throw new ServiceException("Failed to delete project record: " + recordId);
         }
 
         throw new ServiceException("Invalid project record id: " + recordId);
@@ -272,6 +285,15 @@ public class ProjectRecordService extends BaseService
                     {
                         try
                         {
+                            LinkedHashMap<String, Object> rowEntry = (LinkedHashMap<String, Object>) entityById.getRowData().get(0);
+                            String categoryName = rowEntry.get(ETemplateColumnProperty.TEMPLATE_COLUMN_CATEGORY_NAME.getColumnName()).toString();
+
+                            projectTraceService.addProjectTrace(projectId,
+                                    EOperationType.OPERATION_UPDATE, getServiceDomain(),
+                                    String.valueOf(projectId), categoryName,
+                                    "Update project record",
+                                    entityById, recordDataRow);
+
                             // update lastUpdateTime in project
                             projectInfoService.updateProject(projectId, projectInfoService.getProjectById(projectId));
                         }
@@ -326,8 +348,15 @@ public class ProjectRecordService extends BaseService
                 {
                     try
                     {
-                        // update lastUpdateTime in project
+                        projectTraceService.addProjectTrace(projectId,
+                                EOperationType.OPERATION_ADD, getServiceDomain(),
+                                String.valueOf(projectId), projectCategory.getName(),
+                                "Add project record",
+                                null, projectData);
+
+                        // update the lastUpdateTime in project
                         projectInfoService.updateProject(projectId, projectInfo);
+
                     }
                     catch (Exception ex)
                     {

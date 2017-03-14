@@ -23,7 +23,7 @@
     </select>
 
     <select id="getAllProject" resultMap="rs_project">
-        SELECT * FROM `t_project` ORDER BY `p_creationTime` DESC
+        SELECT * FROM `t_project` WHERE `p_public` = 1 ORDER BY `p_creationTime` DESC
     </select>
 
     <select id="getProjectInfoByTableName" resultMap="rs_project">

@@ -37,7 +37,9 @@
     </select>
 
     <select id="getRecordById" resultType="java.util.Map" statementType="STATEMENT">
-        SELECT * FROM ${tableName} WHERE `id` = ${id}
+        SELECT dt.*, c.`c_name` FROM ${tableName} dt
+        LEFT JOIN `t_project_category` c ON dt.`c_id` = c.`id`
+        WHERE dt.`id` = ${id}
     </select>
 
     <insert id="insertByProps">
