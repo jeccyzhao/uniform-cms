@@ -11,5 +11,32 @@
 
     <artifactId>uniform-cms-core</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlbeans</groupId>
+            <artifactId>xmlbeans</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nokia.innovation</groupId>
+            <artifactId>uniform-cms-biz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nokia.innovation</groupId>
+            <artifactId>uniform-cms-common</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>

@@ -19,6 +19,10 @@
                            data-backdrop="true" data-toggle="modal" id="op_add">
                             <span class="icon icon-add"></span><span>Add</span>
                         </a>
+                        <a href="#" class="btn btn-icon-button"
+                           data-backdrop="true" data-toggle="modal" id="op_import" th:if="${category != null}">
+                            <span class="icon icon-dashboard"></span><span>Import</span>
+                        </a>
                     </div>
                 </div>
                 <div style="text-align:right; margin: 5px 0; line-height: 16px; font-size: 9pt">
@@ -34,6 +38,7 @@
 
     <div th:include="modules/projects/popup/records/popupProjectRecordForm"></div>
     <div th:include="modules/projects/popup/records/popupProjectRecordData"></div>
+    <div th:include="modules/projects/popup/records/popupProjectRecordImport"></div>
 
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
