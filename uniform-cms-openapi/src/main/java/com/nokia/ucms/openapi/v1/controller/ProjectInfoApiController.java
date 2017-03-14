@@ -33,7 +33,7 @@ public class ProjectInfoApiController extends BaseController
         return new ApiQueryResult<ProjectInfo>(projectInfoService.getProjectById(projectId));
     }
 
-    @RequestMapping(path="/{projectId}", method= RequestMethod.PUT)
+    @RequestMapping(path="/{projectId}", method= RequestMethod.PATCH)
     public @ResponseBody ApiQueryResult<ProjectInfo> updateProject(
             @PathVariable Integer projectId,
             @RequestBody ProjectInfo projectInfo)
@@ -44,14 +44,14 @@ public class ProjectInfoApiController extends BaseController
         // TODO Validation must be added before update
 
         // set id with path variable
-        projectInfo.setId(projectId);
+        // projectInfo.setId(projectId);
 
-        boolean result = projectInfoService.updateProject(projectInfo);
+        boolean result = projectInfoService.updateProject(projectId, projectInfo);
         return new ApiQueryResult<ProjectInfo>(result);
     }
 
     @RequestMapping(path="/", method= RequestMethod.GET)
-    public @ResponseBody ApiQueryResult<List<ProjectInfo>> getProject(
+    public @ResponseBody ApiQueryResult<List<ProjectInfo>> getProjects(
             @RequestParam(required = false) String projectName)
     {
         if (LOGGER.isDebugEnabled())

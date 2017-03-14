@@ -19,6 +19,10 @@
                            data-backdrop="true" data-toggle="modal" id="op_add">
                             <span class="icon icon-add"></span><span>Add</span>
                         </a>
+                        <a href="#" class="btn btn-icon-button"
+                           data-backdrop="true" data-toggle="modal" id="op_import" th:if="${category != null}">
+                            <span class="icon icon-dashboard"></span><span>Import</span>
+                        </a>
                     </div>
                 </div>
                 <div style="text-align:right; margin: 5px 0; line-height: 16px; font-size: 9pt">
@@ -33,10 +37,13 @@
     </div>
 
     <div th:include="modules/projects/popup/records/popupProjectRecordForm"></div>
+    <div th:include="modules/projects/popup/records/popupProjectRecordData"></div>
+    <div th:include="modules/projects/popup/records/popupProjectRecordImport"></div>
 
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
         var projectId = /*[[${project.id}]]*/;
+        var categoryId = /*[[${category != null ? category.id : null}]]*/
         var excludedColumns = ["id", "edit", "delete", "undo", "seq", "updateTime", "columnLength", "visible"];
         var dataColumns = [];
         $(function () {
@@ -54,9 +61,10 @@
 
         function loadData(container_id) {
             var projectId = /*[[${project.id}]]*/;
-            sendAjaxRequest("projects/" + projectId + '/records', 'GET', {}, function(data) {
+            var uri = "projects/" + projectId + "/records" + (categoryId != null ? ("?categoryId=" + categoryId) : "");
+            sendAjaxRequest(uri, 'GET', {}, function(data) {
                 var tableDataAndColumns = constructTableColumnsAndData(data);
-                initJqxTable(container_id, tableDataAndColumns.columns, rebuildData(tableDataAndColumns.data), true);
+                initJqxTable(container_id, tableDataAndColumns.columns, rebuildData(tableDataAndColumns.data), false);
             });
         }
 
@@ -74,8 +82,8 @@
             if (data != null) {
                 data['Creation Time'] = reformatDate(data['Creation Time']);
                 data['Update Time'] = reformatDate(data['Update Time']);
-                data.undo = '<div class="n-row-indicated" onclick="reviseColumn(\'clean\');" title="Cleanup"><span class="icon icon-undo"></span></div>';
-                data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';
+                //data.undo = '<div class="n-row-indicated" onclick="reviseColumn(\'clean\');" title="Cleanup"><span class="icon icon-undo"></span></div>';
+                //data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';
                 data.delete = '<div class="n-row-indicated" onclick="reviseColumn(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';
             }
 
@@ -88,20 +96,20 @@
             var result = { data: [], columns: [] };
 
             result.columns.push({text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false});
-            result.columns.push({text: 'C', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false});
-            result.columns.push({text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false});
+            //result.columns.push({text: 'C', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false});
+            //result.columns.push({text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false});
 
             result.columns.push({
               text: 'No.', sortable: false, filterable: false, editable: false,
               groupable: false, draggable: false, resizable: false,
               datafield: '', columntype: 'number', width: 38, cellsalign: 'center',
               cellsrenderer: function (row, column, value) {
-                  return "<div style='margin:4px;'><a href='javascript:void(0);' style='text-decoration: none;'>" + (value + 1) + "</a></div>";
+                  return "<div style='margin:4px;'><a href='javascript:void(0);' onclick='showRecord();' style='text-decoration: none;'>" + (value + 1) + "</a></div>";
               }
             });
 
             // result.columns.push({text: 'No.', datafield: 'id', hidden: false, width: 40, editable: false, align: 'center', cellsalign: 'center'});
-            result.columns.push({text: 'Category', datafield: 'categoryName', align: 'center', cellsalign: 'left', filterable: true, width: 120});
+            result.columns.push({text: 'Category', datafield: 'Category Name', align: 'center', cellsalign: 'left', filterable: true, width: 120, editable: false});
 
             dataColumns = [];
             for (var columnIndex in columns) {
@@ -128,10 +136,10 @@
                 switch (operationType) {
                     case "update":
                         updateRowWithConfirmation("Do you want to update this record?",
-                            "Record property would be updated to," + constructColumnInstructions(rowData),
+                            "Record would be updated to," + constructColumnInstructions(rowData),
                             function() {
                                 // remove some unnecessary attribute from row data
-                                rowData = removeObjectAttribute(rowData, ['delete', 'edit', 'uid', 'undo', 'uniqueid', 'visibleindex', 'boundindex', 'projectId', 'updateTime']);
+                                rowData = removeObjectAttribute(rowData, ['delete', 'edit', 'uid', 'undo', 'uniqueid', 'visibleindex', 'boundindex', 'Owner', 'Last Update User', 'Creation Time', 'Update Time']);
                                 sendAjaxRequest("projects/" + projectId + "/records", 'PUT', JSON.stringify(rowData), function(data) {
                                     updateGridRowData("table-filter", rebuildSingleColumnData(data));
                                 }, "application/json; charset=utf-8");
@@ -164,10 +172,18 @@
             }
         }
 
-        function constructColumnInstructions (rowData, join) {
+        function showRecord() {
+            var rowData = getCurrentGridRowData("table-filter");
+            if (rowData != null) {
+                var dataProps = constructColumnInstructions(rowData);
+                $("#m_projectRecordData").find(".modal-body").html(dataProps);
+                $("#m_projectRecordData").modal('show');
+            }
+        }
+
+        function constructColumnInstructions (rowData) {
             var dataInstructions = "<table class='tbl-instructions' style=''>";
             dataInstructions += "<tr><th>Property Name</th><th>Property Value</th></tr>";
-            join = join ? join : "<br/>";
             if (dataColumns != null && dataColumns.length > 0) {
                 for (var i = 0; i < dataColumns.length; i++) {
                     dataInstructions += "<tr><td>" + dataColumns[i] + "</td><td><font>" + rowData[dataColumns[i]] + "</font></td></tr>";

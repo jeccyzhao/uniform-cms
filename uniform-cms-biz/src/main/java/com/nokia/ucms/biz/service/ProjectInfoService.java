@@ -50,7 +50,6 @@ public class ProjectInfoService extends BaseService
         }
     }
 
-
     public ProjectInfo getProjectById (Integer projectId) throws ServiceException
     {
         if (projectId != null && projectId > 0)
@@ -58,7 +57,14 @@ public class ProjectInfoService extends BaseService
             ProjectInfo projectInfo = projectInfoRepository.getProjectInfoById(projectId);
             if (projectInfo != null)
             {
-                return projectInfo;
+                if (isValidProject(projectInfo))
+                {
+                    return projectInfo;
+                }
+                else
+                {
+                    throw new ServiceException("Invalid project info: " + projectInfo);
+                }
             }
             else
             {
@@ -87,16 +93,22 @@ public class ProjectInfoService extends BaseService
         throw new ServiceException("Invalid project name: " + projectName);
     }
 
-    public boolean updateProject (ProjectInfo projectInfo) throws ServiceException
+    public boolean updateProject (Integer projectId, ProjectInfo projectInfo) throws ServiceException
     {
-        ProjectInfo entity = projectInfoRepository.getProjectInfoById(projectInfo.getId());
-        if (entity != null)
+        if (projectInfo != null && !"".equals(projectInfo.getName()))
         {
-            Integer result = projectInfoRepository.updateProjectInfo(projectInfo);
-            return result > 0;
+            ProjectInfo entity = this.getProjectById(projectId);
+            if (entity != null)
+            {
+                projectInfo.setLastUpdateTime(new Date());
+                Integer result = projectInfoRepository.updateProjectInfo(projectInfo);
+                return result > 0;
+            }
+
+            throw new ServiceException(String.format("Project '%s' does not exist", projectInfo));
         }
 
-        throw new ServiceException(String.format("Project '%s' does not exist", projectInfo));
+        throw new ServiceException("Invalid project info: " + projectInfo);
     }
 
     @Transactional
@@ -186,6 +198,16 @@ public class ProjectInfoService extends BaseService
     {
         return String.format("%s%s", DYNAMIC_TABLE_NAME_PREFIX,
                 projectName.trim().replaceAll(" ", KEYWORD_SPLITTER).toLowerCase());
+    }
+
+    private boolean isValidProject (final ProjectInfo projectInfo)
+    {
+        if (projectInfo != null)
+        {
+            return !"".equals(projectInfo.getName()) && !"".equals(projectInfo.getTableName());
+        }
+
+        return false;
     }
 
     protected String getServiceCategory ()

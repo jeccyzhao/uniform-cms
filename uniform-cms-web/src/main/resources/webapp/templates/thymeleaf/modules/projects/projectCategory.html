@@ -32,6 +32,7 @@
         /*<![CDATA[*/
         var tableColumns = constructTableColumns();
         var projectId = /*[[${project.id}]]*/;
+        var projectName = /*[[${project.name}]]*/;
         $(function () {
             loadData("table-filter");
             $("#op_add").click(function() {
@@ -56,7 +57,8 @@
                 {text: 'Category Description', datafield: 'description', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Owner', datafield: 'owner', cellsalign: 'left', editable: false, align: 'center', filterable: true},
                 {text: 'Creation Time', datafield: 'creationTime', editable: false, cellsalign: 'center', align: 'center',  width: 160, filterable: true},
-                {text: 'Last Update Time', datafield: 'updateTime', editable: false, cellsalign:'center', align: 'center', width: 160, filterable: true}
+                {text: 'Last Update Time', datafield: 'updateTime', editable: false, cellsalign:'center', align: 'center', width: 160, filterable: true},
+                {text: 'Goto', datafield: 'go', editable: false, cellsalign:'center', align: 'center', width: 48, filterable: true}
             ];
             return columns;
         }
@@ -77,6 +79,7 @@
                 data.undo = '<div class="n-row-indicated" onclick="reviseCategory(\'clean\');" title="Cleanup"><span class="icon icon-undo"></span></div>';
                 data.edit = '<div class="n-row-indicated" onclick="reviseCategory(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';
                 data.delete = '<div class="n-row-indicated" onclick="reviseCategory(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';
+                data.go = '<div class="n-row-indicated" title="Goto"><a href="' + ctxPath + '/projects/' + projectName + '?category=' + data.name + '" target="_self"><span class="icon icon-goto"></span></a></div>';
             }
 
             return data;
@@ -92,7 +95,7 @@
                             function() {
                                 // remove some unnecessary attribute from row data
                                 rowData = removeObjectAttribute(rowData, ['delete', 'edit', 'uid', 'undo', 'uniqueid', 'visibleindex', 'boundindex', 'creationTime', 'owner', 'updateTime']);
-                                sendAjaxRequest("projects/" + projectId + "/categories", 'PUT', JSON.stringify(rowData), function(data) {
+                                sendAjaxRequest("projects/" + projectId + "/categories/" + rowData.id, 'PATCH', JSON.stringify(rowData), function(data) {
                                     updateGridRowData("table-filter", rebuildData(rebuildSingleData(data)));
                                 }, "application/json; charset=utf-8");
                             }

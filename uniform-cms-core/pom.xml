@@ -11,5 +11,15 @@
 
     <artifactId>uniform-cms-core</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.nokia.innovation</groupId>
+            <artifactId>uniform-cms-biz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nokia.innovation</groupId>
+            <artifactId>uniform-cms-common</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

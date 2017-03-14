@@ -18,7 +18,7 @@ public class ProjectTrace extends BaseEntity
     private String operator;
     private String domain;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date eventTime;
 
     private Integer eventType;

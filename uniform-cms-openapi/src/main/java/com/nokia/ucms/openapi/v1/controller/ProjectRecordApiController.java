@@ -23,17 +23,20 @@ public class ProjectRecordApiController extends BaseController
     private ProjectRecordService projectRecordService;
 
     @RequestMapping(path="", method= RequestMethod.GET)
-    public @ResponseBody ApiQueryResult<ProjectRecordDataDTO> getProjectRecords(@PathVariable Integer projectId)
+    public @ResponseBody ApiQueryResult<ProjectRecordDataDTO> getProjectRecords(
+            @PathVariable Integer projectId,
+            @RequestParam(required = false) Integer categoryId)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter getProjectRecords - [projectId : %d]", projectId));
 
-        return new ApiQueryResult<ProjectRecordDataDTO>(projectRecordService.getProjectRecordsByCategory(projectId, null));
+        return new ApiQueryResult<ProjectRecordDataDTO>(projectRecordService.getProjectRecordsByCategory(projectId, categoryId));
     }
 
     @RequestMapping(path="/{recordId}", method= RequestMethod.GET)
     public @ResponseBody ApiQueryResult<ProjectRecordDataDTO> getProjectRecord (
-            @PathVariable Integer projectId, @PathVariable Integer recordId)
+            @PathVariable Integer projectId,
+            @PathVariable Integer recordId)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter getProjectRecord - [projectId : %d, recordId: %d]", projectId, recordId));
@@ -43,7 +46,8 @@ public class ProjectRecordApiController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.POST)
     public @ResponseBody ApiQueryResult<Integer> addProjectRecord(
-            @PathVariable Integer projectId, @RequestParam(required = false) Integer categoryId,
+            @PathVariable Integer projectId,
+            @RequestParam(required = false) Integer categoryId,
             @RequestBody ProjectRecordDataRow recordData)
     {
         if (LOGGER.isDebugEnabled())
@@ -52,19 +56,22 @@ public class ProjectRecordApiController extends BaseController
         return new ApiQueryResult<Integer>(projectRecordService.addProjectRecord(projectId, recordData));
     }
 
-    @RequestMapping(path="/{recordId}", method= RequestMethod.PUT)
+    @RequestMapping(path="/{recordId}", method= RequestMethod.PATCH)
     public @ResponseBody ApiQueryResult<ProjectRecordDataDTO> updateProjectRecord(
-            @PathVariable Integer projectId, @PathVariable Integer recordId)
+            @PathVariable Integer projectId,
+            @PathVariable Integer recordId,
+            @RequestBody ProjectRecordDataRow recordData)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter addProjectRecord - [projectId : %d, recordId: %d]", projectId, recordId));
+            LOGGER.debug(String.format("Enter updateProjectRecord - [projectId : %d, recordId: %d]", projectId, recordId));
 
-        return createEmptyQueryResult();
+        return new ApiQueryResult<ProjectRecordDataDTO>(projectRecordService.updateProjectRecord(projectId, recordId, recordData));
     }
 
     @RequestMapping(path="/{recordId}", method= RequestMethod.DELETE)
     public @ResponseBody ApiQueryResult<Integer> deleteProjectRecord(
-            @PathVariable Integer projectId, @PathVariable Integer recordId)
+            @PathVariable Integer projectId,
+            @PathVariable Integer recordId)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter deleteProjectRecord - [projectId : %d, recordId: %d]", projectId, recordId));

@@ -30,7 +30,7 @@ public class ProjectColumn extends BaseEntity
     private String columnDataExample;
     private String columnId;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date updateTime;
 
     // default column length would be used if not set

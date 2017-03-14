@@ -58,15 +58,19 @@ public class ProjectColumnApiController extends BaseController
         throw new ServiceException("Invalid column id: " + columnId);
     }
 
-    @RequestMapping(path="", method= RequestMethod.PUT)
+    @RequestMapping(path="/{columnId}", method= RequestMethod.PATCH)
     public @ResponseBody ApiQueryResult<ProjectColumn> updateProjectColumn(
             @PathVariable Integer projectId,
+            @PathVariable Integer columnId,
             @RequestBody ProjectColumn projectColumn)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter updateProjectColumn - [projectId: %d, projectColumn: %s]", projectId, projectColumn));
 
-        return new ApiQueryResult<ProjectColumn>(projectColumnService.updateProjectColumn(projectId, projectColumn));
+        //projectColumn.setId(columnId);
+        //projectColumn.setProjectId(projectId);
+
+        return new ApiQueryResult<ProjectColumn>(projectColumnService.updateProjectColumn(projectId, columnId, projectColumn));
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)

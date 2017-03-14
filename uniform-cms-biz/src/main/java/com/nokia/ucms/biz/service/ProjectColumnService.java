@@ -50,7 +50,7 @@ public class ProjectColumnService extends BaseService
         throw new ServiceException("Failed to get project column by project name: " + projectName);
     }
 
-    public List<ProjectColumn> getProjectColumnsByName (String columnName) throws ServiceException
+    public List<ProjectColumn> getProjectColumnsByName (Integer projectId, String columnName) throws ServiceException
     {
         return null;
     }
@@ -88,26 +88,26 @@ public class ProjectColumnService extends BaseService
         if (projectColumn != null)
         {
             ProjectInfo projectInfo = projectInfoService.getProjectById(projectColumn.getProjectId());
-            if (projectInfo != null)
+            Integer result = projectColumnRepository.deleteProjectColumn(projectColumnId);
+            if (result != null)
             {
-                Integer result = projectColumnRepository.deleteProjectColumn(projectColumnId);
-                if (result != null)
+                try
                 {
-                    try
-                    {
-                        projectTraceService.addProjectTrace(projectInfo.getId(),
-                                EOperationType.OPERATION_DEL, getServiceDomain(),
-                                String.valueOf(projectColumn.getProjectId()), getServiceCategory(),
-                                String.format("Remove project column '%s'", projectColumn.getColumnName()),
-                                projectColumn, null);
-                    }
-                    catch (Exception ex)
-                    {
-                        LOGGER.error("Failed to trace when removing project column: " + ex);
-                    }
+                    projectTraceService.addProjectTrace(projectInfo.getId(),
+                            EOperationType.OPERATION_DEL, getServiceDomain(),
+                            String.valueOf(projectColumn.getProjectId()), getServiceCategory(),
+                            String.format("Remove project column '%s'", projectColumn.getColumnName()),
+                            projectColumn, null);
 
-                    return dbAdminRepository.removeTableColumn(projectInfo.getTableName(), projectColumn.getColumnId());
+                    // update lastUpdateTime in project
+                    projectInfoService.updateProject(projectInfo.getId(), projectInfo);
                 }
+                catch (Exception ex)
+                {
+                    LOGGER.error("Failed to trace when removing project column: " + ex);
+                }
+
+                return dbAdminRepository.removeTableColumn(projectInfo.getTableName(), projectColumn.getColumnId());
             }
         }
 
@@ -115,43 +115,41 @@ public class ProjectColumnService extends BaseService
     }
 
     @Transactional
-    public ProjectColumn updateProjectColumn (Integer projectId, ProjectColumn projectColumn) throws ServiceException
+    public ProjectColumn updateProjectColumn (Integer projectId, Integer projectColumnId, ProjectColumn projectColumn) throws ServiceException
     {
-        if (projectColumn != null && projectColumn.getId() != null &&
-                projectColumn.getColumnName() != null && !"".equals(projectColumn.getColumnName()))
+        if (projectColumn != null && !"".equals(projectColumn.getColumnName()))
         {
+            ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
+            ProjectColumn entityById = this.getProjectColumnById(projectColumnId);
             ProjectColumn entityByName = projectColumnRepository.getColumnsByColumnName(projectColumn.getColumnName(), projectId);
-            if (entityByName == null || entityByName.getId().equals(projectColumn.getId()))
+            if (entityByName == null || entityByName.getId().equals(entityById.getId()))
             {
-                ProjectColumn entityById = projectColumnRepository.getColumnById(projectColumn.getId());
-                if (entityById != null)
+                projectColumn.setUpdateTime(new Date());
+                projectColumn.setProjectId(projectInfo.getId());
+                projectColumn.setId(projectColumnId);
+                if (projectColumnRepository.updateProjectColumn(projectColumn) > 0)
                 {
-                    projectColumn.setUpdateTime(new Date());
-                    if (projectColumnRepository.updateProjectColumn(projectColumn) > 0)
+                    try
                     {
-                        try
-                        {
-                            projectTraceService.addProjectTrace(projectId,
-                                    EOperationType.OPERATION_UPDATE, getServiceDomain(),
-                                    String.valueOf(projectColumn.getProjectId()), getServiceCategory(),
-                                    String.format("Update project column from '%s' to '%s'", entityById.getColumnName(), projectColumn.getColumnName()),
-                                    entityById, projectColumn);
-                        }
-                        catch (Exception ex)
-                        {
-                            LOGGER.error("Failed to trace when updating project column: " + ex);
-                        }
+                        projectTraceService.addProjectTrace(projectId,
+                                EOperationType.OPERATION_UPDATE, getServiceDomain(),
+                                String.valueOf(projectColumn.getProjectId()), getServiceCategory(),
+                                String.format("Update project column from '%s' to '%s'", entityById.getColumnName(), projectColumn.getColumnName()),
+                                entityById, projectColumn);
 
-                        return projectColumn;
+                        // update the lastUpdateTime in project
+                        projectInfoService.updateProject(projectId, projectInfo);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        throw new ServiceException(String.format("Project column (%s) update failed", projectColumn));
+                        LOGGER.error("Failed to trace when updating project column: " + ex);
                     }
+
+                    return projectColumn;
                 }
                 else
                 {
-                    throw new ServiceException(String.format("Project column (%s) does not exist", projectColumn));
+                    throw new ServiceException(String.format("Project column (%s) update failed", projectColumn));
                 }
             }
             else
@@ -159,8 +157,10 @@ public class ProjectColumnService extends BaseService
                 throw new ServiceException(String.format("Conflicted with another column with same name (%s)", entityByName));
             }
         }
-
-        throw new ServiceException("Invalid project column: " + projectColumn);
+        else
+        {
+            throw new ServiceException("Invalid project column: " + projectColumn);
+        }
     }
 
     @Transactional
@@ -168,45 +168,44 @@ public class ProjectColumnService extends BaseService
     {
         if (projectColumn != null && projectColumn.getColumnName() != null && !"".equals(projectColumn.getColumnName().trim()))
         {
-            // Steps
-            // 1. generate column field id
-            // 2. insert column entry in `t_project_column`
-            // 3. create column filed in the data table of project
             ProjectInfo projectInfo = projectInfoService.getProjectById(projectColumn.getProjectId());
-            if (projectInfo != null)
+            String columnName = projectColumn.getColumnName();
+            ProjectColumn entity = projectColumnRepository.getColumnsByColumnName(columnName, projectInfo.getId());
+            if (entity == null)
             {
-                String columnName = projectColumn.getColumnName();
-                ProjectColumn entity = projectColumnRepository.getColumnsByColumnName(columnName, projectInfo.getId());
-                if (entity == null)
+                projectColumn.setColumnId(makeProjectColumnFieldId());
+                projectColumn.setUpdateTime(new Date());
+                Integer result = projectColumnRepository.addProjectColumn(projectColumn);
+                if (result > 0)
                 {
-                    // generate one random column id
-                    projectColumn.setColumnId(makeProjectColumnFieldId());
-                    projectColumn.setUpdateTime(new Date());
-                    Integer result = projectColumnRepository.addProjectColumn(projectColumn);
-                    if (result > 0)
+                    dbAdminRepository.addTableColumn(projectInfo.getTableName(),
+                            projectColumn.getColumnId(), projectColumn.getColumnLength());
+                    try
                     {
-                        dbAdminRepository.addTableColumn(projectInfo.getTableName(),
-                                projectColumn.getColumnId(), projectColumn.getColumnLength());
-                        try
-                        {
-                            projectTraceService.addProjectTrace(projectColumn.getProjectId(),
-                                    EOperationType.OPERATION_ADD, getServiceDomain(),
-                                    String.valueOf(projectColumn.getProjectId()), getServiceCategory(),
-                                    String.format("Create project column '%s'", projectColumn.getColumnName()),
-                                    null, projectColumn);
-                        }
-                        catch (Exception ex)
-                        {
-                            LOGGER.error("Failed to trace when updating project column: " + ex);
-                        }
+                        projectTraceService.addProjectTrace(projectColumn.getProjectId(),
+                                EOperationType.OPERATION_ADD, getServiceDomain(),
+                                String.valueOf(projectColumn.getProjectId()), getServiceCategory(),
+                                String.format("Create project column '%s'", projectColumn.getColumnName()),
+                                null, projectColumn);
 
-                        return projectColumn.getId();
+                        // update the lastUpdateTime in project
+                        projectInfoService.updateProject(projectInfo.getId(), projectInfo);
                     }
+                    catch (Exception ex)
+                    {
+                        LOGGER.error("Failed to trace when updating project column: " + ex);
+                    }
+
+                    return projectColumn.getId();
                 }
                 else
                 {
-                    throw new ServiceException(String.format("Project column '%s' already exists", columnName));
+                    throw new ServiceException("Failed to add project column: " + projectColumn);
                 }
+            }
+            else
+            {
+                throw new ServiceException(String.format("Project column '%s' already exists", columnName));
             }
         }
 

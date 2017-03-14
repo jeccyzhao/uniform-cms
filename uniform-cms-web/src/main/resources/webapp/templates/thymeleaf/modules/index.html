@@ -3,6 +3,7 @@
       layout:decorator="layout/default/layout">
 	
 <th:block layout:fragment="content">
+    <!--
     <div class="col-md-2">
         <div>
             <div style="margin-bottom: 10px">
@@ -14,14 +15,15 @@
                     <li>
                         <span class="item">NetAct Component Directory Component DIrectory</span>
                         <span class="star" style="width: 23%">
-                            <!--<svg aria-hidden="true" class="octicon octicon-star" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74z"></path></svg>-->
+                            <svg aria-hidden="true" class="octicon octicon-star" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74z"></path></svg>
                         </span>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="col-md-10">
+    -->
+    <div class="col-md-12">
         <div class="panel panel-shadow panel-blue-cap">
             <div class="panel-heading panel-heading-transparent"><h1>Project showcases</h1></div>
             <div class="panel-body" style="padding: 0 10px 20px 10px;">
@@ -32,63 +34,48 @@
     </div>
 
     <script type="text/javascript" th:inline="javascript">
-		/*<![CDATA[*/
-		$(function () {
-		    loadData("table-filter");
-		});
+        /*<![CDATA[*/
+        var tableColumns = constructTableColumns();
+        $(function () {
+            loadData("table-filter");
+        });
 
         function loadData(container_id) {
-            $.ajax(openApiContextPath + "/projects/", {
-				data: {},
-				type: 'GET',
-				success: function(rsp) {
-					var ret = eval(rsp);
-					if (ret.data != null) {
-						polishTable(container_id, rebuildData(ret.data));
-					}
-
-					disableAjaxLoading();
-				},
-				beforeSend: function(){
-					enableAjaxLoading("Loading Data...");
-				},
-				error: function(rsp) {
-					disableAjaxLoading();
-				}
-			});
+            sendAjaxRequest("projects/", 'GET', {}, function(data) {
+                initJqxTable(container_id, tableColumns, rebuildColumnData(data));
+            });
         }
 
-        function rebuildData (data) {
+        function rebuildColumnData (data) {
             if (data != null) {
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].creationTime != null) {
-                        var date = new Date();
-                        date.setTime(data[i].creationTime);
-                        data[i].creationTime = date.Format('yyyy-MM-dd hh:mm:ss');
-
-                        // updateTime must be replaced with valid property
-                        data[i].updateTime = data[i].creationTime;
-
-                    } else {
-                        data[i].creationTime = "---";
-                        data[i].updateTime = "---";
-                    }
+                    data[i].creationTime = reformatDate(data[i].creationTime);
+                    data[i].lastUpdateTime = reformatDate(data[i].lastUpdateTime);
                     data[i].name = "<a target='_self' href='" + ctxPath + "/projects/" + data[i].name + "'>" + data[i].name + "</a>";
                 }
             }
             return data;
         }
 
-        function polishTable (container_id, data) {
+        function constructTableColumns () {
             var columns = [
+                {
+                  text: 'No.', sortable: false, filterable: false, editable: false,
+                  groupable: false, draggable: false, resizable: false,
+                  datafield: '', columntype: 'number', width: 40, cellsalign: 'center',
+                  cellsrenderer: function (row, column, value) {
+                      return "<div style='margin:4px;'>" + (value + 1) + "</div>";
+                  }
+                },
                 {text: 'ID', datafield: 'id', hidden: true},
                 {text: 'Project Name', datafield: 'name', align: 'center', filterable: true},
                 {text: 'Project Description', datafield: 'description', align: 'center'},
                 {text: 'Project Owner', datafield: 'owner', align: 'center', width: 180},
                 {text: 'Creation Time', datafield: 'creationTime', width: 180, cellsalign:'center', align: 'center'},
-                {text: 'Last Update Time', datafield: 'updateTime', width: 180, cellsalign:'center', align: 'center'}
+                {text: 'Last Update Time', datafield: 'lastUpdateTime', width: 180, cellsalign:'center', align: 'center'}
             ];
-            initJqxTable(container_id, columns, data);
+
+            return columns;
         }
 		/*]]>*/
     </script>

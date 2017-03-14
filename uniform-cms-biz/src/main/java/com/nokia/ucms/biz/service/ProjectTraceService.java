@@ -33,12 +33,7 @@ public class ProjectTraceService extends BaseService
     public List<ProjectTrace> getProjectTraces (Integer projectId)
     {
         ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
-        if (projectInfo != null)
-        {
-            return projectTraceRepository.getTraceByProjectId(projectId);
-        }
-
-        throw new ServiceException(String.format("Invalid project id (%d) or project does not exist.", projectId));
+        return projectTraceRepository.getTraceByProjectId(projectInfo.getId());
     }
 
     public ProjectTrace addProjectTrace (
@@ -47,46 +42,41 @@ public class ProjectTraceService extends BaseService
             Object oldData, Object newData)
     {
         ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
-        if (projectInfo != null)
+        ProjectTrace projectTrace = new ProjectTrace();
+        projectTrace.setEventTime(new Date());
+        projectTrace.setProjectId(projectId);
+
+        // TODO replace with logon user
+        projectTrace.setOperator("Change It");
+        projectTrace.setEventType(operationType.getCode());
+        projectTrace.setMessage(message);
+        projectTrace.setCategory(serviceCategory);
+        projectTrace.setIdentifier(identifier);
+
+        if (serviceDomain != null)
         {
-            ProjectTrace projectTrace = new ProjectTrace();
-            projectTrace.setEventTime(new Date());
-            projectTrace.setProjectId(projectId);
-
-            // TODO replace with logon user
-            projectTrace.setOperator("Change It");
-            projectTrace.setEventType(operationType.getCode());
-            projectTrace.setMessage(message);
-            projectTrace.setCategory(serviceCategory);
-            projectTrace.setIdentifier(identifier);
-
-            if (serviceDomain != null)
-            {
-                projectTrace.setDomain(serviceDomain);
-            }
-
-            if (newData != null)
-            {
-                projectTrace.setNewData(newData.toString());
-            }
-
-            if (oldData != null)
-            {
-                projectTrace.setOldData(oldData.toString());
-            }
-
-            Integer result = projectTraceRepository.addProjectTrace(projectTrace);
-            if (result > 0)
-            {
-                return projectTrace;
-            }
-            else
-            {
-                throw new ServiceException(String.format("Failed to add project trace: %s", projectTrace));
-            }
+            projectTrace.setDomain(serviceDomain);
         }
 
-        throw new ServiceException(String.format("Invalid project id (%d) or project does not exist.", projectId));
+        if (newData != null)
+        {
+            projectTrace.setNewData(newData.toString());
+        }
+
+        if (oldData != null)
+        {
+            projectTrace.setOldData(oldData.toString());
+        }
+
+        Integer result = projectTraceRepository.addProjectTrace(projectTrace);
+        if (result > 0)
+        {
+            return projectTrace;
+        }
+        else
+        {
+            throw new ServiceException(String.format("Failed to add project trace: %s", projectTrace));
+        }
     }
 
     public boolean removeProjectTraceById (Integer projectTraceId)
@@ -103,12 +93,7 @@ public class ProjectTraceService extends BaseService
     public boolean removeProjectTraces (Integer projectId)
     {
         ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
-        if (projectInfo != null)
-        {
-            return projectTraceRepository.deleteProjectTrace(projectId) != null;
-        }
-
-        throw new ServiceException(String.format("Invalid project id (%d) or project does not exist.", projectId));
+        return projectTraceRepository.deleteProjectTrace(projectInfo.getId()) != null;
     }
 
     protected String getServiceCategory ()
