@@ -33,6 +33,22 @@ public class ExcelSheetDataDTO extends BaseDTO
         }
     }
 
+    public int getHeaderColumnIndexByName (String columnName)
+    {
+        if (headerColumns != null && !"".equals(columnName))
+        {
+            for (HeaderColumn headerColumn : headerColumns)
+            {
+                if (headerColumn.getColumnName().equals(columnName))
+                {
+                    return headerColumn.getColumnIndex();
+                }
+            }
+        }
+
+        return -1;
+    }
+
     @Data
     @ToString
     public static class HeaderColumn
@@ -69,6 +85,16 @@ public class ExcelSheetDataDTO extends BaseDTO
             {
                 cells.add(cell);
             }
+        }
+
+        public Object getCellValue (int cellIndex)
+        {
+            if (cells != null && cells.size() > cellIndex)
+            {
+                return cells.get(cellIndex).getCellValue();
+            }
+
+            return null;
         }
 
     }

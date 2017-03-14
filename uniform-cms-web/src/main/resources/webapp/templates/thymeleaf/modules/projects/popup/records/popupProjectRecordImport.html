@@ -15,10 +15,17 @@
                 <h1 class="modal-title" id="labelImportRecord">Import Record</h1>
                 <h2 class="modal-title-subheading" id="labelImportRecordInstruction">It will import all data from file to this project</h2>
             </div>
-            <form class="form-horizontal">
-                <div class="modal-body" style="overflow-y: auto; overflow-x: hidden; max-height: 550px; margin-right: 5px; padding-top: 0px;">message</div>
+            <form class="form-horizontal" enctype="multipart/form-data" method="post" th:action="@{'/projects/' + ${project.name} + '/categories/' + ${category.id} + '/import'}">
+                <div class="modal-body" style="overflow-y: auto; overflow-x: hidden; max-height: 550px; margin-right: 5px; padding-top: 0px;">
+                    <div class="form-group n-login-textfields n-login-dynfields"  style="margin-top: 15px; ">
+                        <label class="col-sm-3 control-label">Choose File:</label>
+                        <div class="col-sm-9  has-feedback">
+                            <input name="file" id="filename" type="file" />
+                        </div>
+                    </div>
+                </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-standard btn-defaultBlue" id="dialogSubmitImport" tabindex='2'>OK</button>
+                    <button type="submit" class="btn btn-standard btn-defaultBlue" id="dialogSubmitImport" tabindex='2'>OK</button>
                     <button type="button" class="btn btn-standard" data-dismiss="modal" id="dialogCancelImport" tabindex='3' >Close</button>
                 </div>
             </form>

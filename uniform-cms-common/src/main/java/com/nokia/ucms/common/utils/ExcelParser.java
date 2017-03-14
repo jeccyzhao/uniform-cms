@@ -40,29 +40,32 @@ public class ExcelParser
 
     public ExcelSheetDataDTO parseFile (String excelFile, int sheetIndex) throws FileNotFoundException, IOException
     {
-        LOGGER.info("Start parsing excel file: " + excelFile);
-
-        ExcelSheetDataDTO sheetDataDTO = new ExcelSheetDataDTO();
-
-        XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(excelFile));
-        XSSFSheet sheet = workbook.getSheetAt(sheetIndex);
-
-        sheetDataDTO.setSheetIndex(sheetIndex);
-
-        // build header columns
-        Map<Integer, String> headerColumns = getColumns(sheet.getRow(DEFAULT_HEADER_ROW_INDEX));
-        sheetDataDTO.setHeaderColumns(constructHeaderColumns(headerColumns));
-
-        for (int i = sheet.getFirstRowNum() + 1; i < sheet.getPhysicalNumberOfRows(); i++)
+        LOGGER.info(String.format("Start parsing excel file (%s) in sheet-%d", excelFile, sheetIndex));
+        ExcelSheetDataDTO sheetDataDTO = null;
+        if (sheetIndex > -1)
         {
-            Row row = constructRow(sheet.getRow(i));
-            if (row != null)
-            {
-                sheetDataDTO.addRow(row);
-            }
-        }
+            sheetDataDTO = new ExcelSheetDataDTO();
 
-        LOGGER.info("By total " + sheetDataDTO.getRows().size() + " number of rows been parsed.");
+            XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(excelFile));
+            XSSFSheet sheet = workbook.getSheetAt(sheetIndex);
+
+            sheetDataDTO.setSheetIndex(sheetIndex);
+
+            // build header columns
+            Map<Integer, String> headerColumns = getColumns(sheet.getRow(DEFAULT_HEADER_ROW_INDEX));
+            sheetDataDTO.setHeaderColumns(constructHeaderColumns(headerColumns));
+
+            for (int i = sheet.getFirstRowNum() + 1; i < sheet.getPhysicalNumberOfRows(); i++)
+            {
+                Row row = constructRow(sheet.getRow(i));
+                if (row != null)
+                {
+                    sheetDataDTO.addRow(row);
+                }
+            }
+
+            LOGGER.info("By total " + sheetDataDTO.getRows().size() + " number of rows been parsed.");
+        }
 
         return sheetDataDTO;
     }

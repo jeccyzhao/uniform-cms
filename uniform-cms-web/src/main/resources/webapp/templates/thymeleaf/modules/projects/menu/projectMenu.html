@@ -3,7 +3,7 @@
         <dt class="n-list-group-item">Project</dt>
         <a href="#" th:href="@{'/projects/' + ${project.name}}">
             <dd class="n-list-group-item" th:classappend="${menu == 'data'} ? selected : ''" style="border-radius:0px">
-                <span class="icon icon-data icon-subnav"></span><span>Data</span>
+                <span class="icon icon-data icon-subnav"></span><span>Records</span>
             </dd>
         </a>
         <a href="#" th:href="@{'/projects/' + ${project.name} + '/categories'}">

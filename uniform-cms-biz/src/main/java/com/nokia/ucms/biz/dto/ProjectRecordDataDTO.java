@@ -19,7 +19,6 @@ import java.util.*;
 public class ProjectRecordDataDTO<T> extends BaseDTO
 {
     private ProjectInfo project;
-    //private List<ProjectRecordDataRow> rows;
     private List<ProjectColumn> columns;
     private List<LinkedHashMap<String, Object>> rowData;
 
@@ -40,6 +39,16 @@ public class ProjectRecordDataDTO<T> extends BaseDTO
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
         private Date updateTime;
+
+        public void addProperty (String name, String value)
+        {
+            if (props == null)
+            {
+                props = new ArrayList<ProjectColumnProperty>();
+            }
+
+            props.add(new ProjectColumnProperty(name, value));
+        }
 
         private String buildDataTableTemplateColumns ()
         {
@@ -163,6 +172,12 @@ public class ProjectRecordDataDTO<T> extends BaseDTO
 
         public ProjectColumnProperty ()
         {
+        }
+
+        public ProjectColumnProperty (String name, String value)
+        {
+            this.name = name;
+            this.value = value;
         }
 
         public ProjectColumnProperty (String id, String name, String value)

@@ -11,4 +11,5 @@ public final class Constants
     public static final String DYNAMIC_COLUMN_NAME_PREFIX = "c_";
     public static final String KEYWORD_SPLITTER = "_";
     public static final String NOT_AVAILABLE = "N/A";
+    public static final String DEFAULT_UPLOAD_FOLDER = "d:/"; // "/tmp"
 }
