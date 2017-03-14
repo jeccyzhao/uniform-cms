@@ -188,11 +188,11 @@ public class ProjectController extends BaseController
             }
             catch (ServiceException ex)
             {
-                ex.printStackTrace();
+                LOGGER.error("Failed to import project record data:  " + ex.getMessage());
             }
             catch (Exception ex)
             {
-                ex.printStackTrace();
+                LOGGER.error("Failed to import project record data:  " + ex.getMessage());
             }
         }
         else
@@ -255,7 +255,7 @@ public class ProjectController extends BaseController
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            LOGGER.error("Failed to save to file: " + e);
         }
         finally
         {
@@ -267,7 +267,7 @@ public class ProjectController extends BaseController
                 }
                 catch (IOException e)
                 {
-                    e.printStackTrace();
+                    // do nothing
                 }
             }
         }
