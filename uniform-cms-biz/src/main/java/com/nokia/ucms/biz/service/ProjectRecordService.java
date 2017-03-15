@@ -144,6 +144,7 @@ public class ProjectRecordService extends BaseService
                     try
                     {
                         this.addProjectRecord(projectInfo.getId(), recordData, false);
+                        recordData = null;
                     }
                     catch (Exception ex)
                     {

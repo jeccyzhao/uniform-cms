@@ -31,8 +31,11 @@ public class ProjectInfoService extends BaseService
     @Autowired
     private ProjectInfoRepository projectInfoRepository;
 
+    //@Autowired
+    //private ProjectColumnRepository projectColumnRepository;
+
     @Autowired
-    private ProjectColumnRepository projectColumnRepository;
+    private ProjectColumnService projectColumnService;
 
     @Autowired
     private ProjectCategoryRepository projectCategoryRepository;
@@ -93,22 +96,72 @@ public class ProjectInfoService extends BaseService
         throw new ServiceException("Invalid project name: " + projectName);
     }
 
-    public boolean updateProject (Integer projectId, ProjectInfo projectInfo) throws ServiceException
+    public List<ProjectInfo> getProjectsByOwner (String userId, boolean showAll)
+    {
+        return projectInfoRepository.getProjectInfoByOwner(userId, showAll ? null : ProjectInfo.P_PUBLIC);
+    }
+
+    public ProjectInfo updateProject (Integer projectId, ProjectInfo projectInfo) throws ServiceException
     {
         if (projectInfo != null && !"".equals(projectInfo.getName()))
         {
-            ProjectInfo entity = this.getProjectById(projectId);
-            if (entity != null)
+            ProjectInfo entityById = this.getProjectById(projectId);
+            if (entityById != null)
             {
-                projectInfo.setLastUpdateTime(new Date());
-                Integer result = projectInfoRepository.updateProjectInfo(projectInfo);
-                return result > 0;
+                ProjectInfo entityByName = this.projectInfoRepository.getProjectInfoByName(projectInfo.getName());
+                if (entityByName == null || entityById.getId().equals(entityByName.getId()))
+                {
+                    projectInfo.setLastUpdateTime(new Date());
+                    projectInfo.setOwner(entityById.getOwner());
+                    projectInfo.setCreationTime(entityById.getCreationTime());
+
+                    Integer result = projectInfoRepository.updateProjectInfo(projectInfo);
+                    if (result != null && result > 0)
+                    {
+                        return projectInfo;
+                    }
+
+                    throw new ServiceException("Failed to update project: " + projectInfo);
+                }
+                else
+                {
+                    throw new ServiceException(String.format("Conflicted with another project with same name (%s)", entityByName));
+                }
             }
 
             throw new ServiceException(String.format("Project '%s' does not exist", projectInfo));
         }
 
         throw new ServiceException("Invalid project info: " + projectInfo);
+    }
+
+    @Transactional
+    public Integer removeProject (Integer projectId)
+    {
+        ProjectInfo projectInfo = this.getProjectById(projectId);
+        if (projectInfo != null)
+        {
+            // remove project entry
+            Integer result = this.projectInfoRepository.removeProjectInfo(projectId);
+            if (result != null)
+            {
+                try
+                {
+                    // remove project columns
+                    this.projectColumnService.removeProjectColumns(projectId);
+
+                    // remove project categories
+                    // remove project raw data
+                    // remove project traces
+                }
+                catch (Exception ex)
+                {
+                    LOGGER.error(String.format("Failed to remove project (id: %d) due to (%s)", projectId, ex));
+                }
+            }
+        }
+
+        return null;
     }
 
     @Transactional
@@ -127,6 +180,8 @@ public class ProjectInfoService extends BaseService
                 throw new ServiceException(String.format("Project '%s' already exists", projectName));
             }
 
+            // TODO: please replace the logon user.
+            projectInfo.setOwner("marco");
             projectInfo.setTableName(makeProjectDataTableName(projectName));
             projectInfo.setCreationTime(new Date());
             projectInfo.setLastUpdateTime(projectInfo.getCreationTime());
@@ -148,8 +203,6 @@ public class ProjectInfoService extends BaseService
 
         throw new ServiceException("Empty project cannot be created");
     }
-
-
 
     /**
      * Clone project from another

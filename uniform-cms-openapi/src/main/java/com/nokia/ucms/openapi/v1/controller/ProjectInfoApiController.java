@@ -47,9 +47,7 @@ public class ProjectInfoApiController extends BaseController
 
         // set id with path variable
         // projectInfo.setId(projectId);
-
-        boolean result = projectInfoService.updateProject(projectId, projectInfo);
-        return new ApiQueryResult<ProjectInfo>(result);
+        return new ApiQueryResult<ProjectInfo>(projectInfoService.updateProject(projectId, projectInfo));
     }
 
     @RequestMapping(path="/", method= RequestMethod.GET)
@@ -74,12 +72,11 @@ public class ProjectInfoApiController extends BaseController
         return new ApiQueryResult<Object>(result > 0, result);
     }
 
-    @RequestMapping(path="", method= RequestMethod.DELETE)
-    public @ResponseBody ApiQueryResult<Object> deleteProject(
-            @RequestParam String projectName)
+    @RequestMapping(path="/{projectId}", method= RequestMethod.DELETE)
+    public @ResponseBody ApiQueryResult<Object> deleteProject(@PathVariable Integer projectId)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter deleteProject - [projectName: %s]", projectName));
+            LOGGER.debug(String.format("Enter deleteProject - [projectId: %d]", projectId));
 
         // TODO
         // 1. remove project data

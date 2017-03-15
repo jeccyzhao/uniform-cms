@@ -81,6 +81,19 @@ public class ProjectColumnService extends BaseService
 
         throw new ServiceException("Failed to get project column by project id: " + projectId);
     }
+
+    @Transactional
+    public Integer removeProjectColumns (Integer projectId) throws ServiceException
+    {
+        ProjectInfo projectInfo = this.projectInfoService.getProjectById(projectId);
+        if (projectInfo != null)
+        {
+            return this.projectColumnRepository.deleteProjectColumnsByProjectId(projectId);
+        }
+
+        return null;
+    }
+
     @Transactional
     public Integer removeProjectColumn (Integer projectColumnId) throws ServiceException
     {

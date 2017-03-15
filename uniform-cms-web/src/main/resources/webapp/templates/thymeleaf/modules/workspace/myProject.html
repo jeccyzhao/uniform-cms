@@ -1,0 +1,134 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/default/layout" th:with="menu='projects'">
+	
+<th:block layout:fragment="content">
+    <div class="col-md-2">
+        <th:block layout:include="modules/workspace/menu/workspaceMenu"/>
+    </div>
+    <div class="col-md-10">
+        <div class="panel panel-shadow panel-blue-cap">
+            <div class="panel-heading panel-heading-transparent" style="">
+                <h1 style="line-height: 30px">My Projects</h1>
+            </div>
+            <div class="panel-body" style="padding: 0 10px 20px 10px;">
+                <div class="pannel-toolbar" style="overflow: hidden">
+                    <div style="float: left;">
+                        <a href="#" class="btn btn-icon-button"
+                           data-backdrop="true" data-toggle="modal" id="op_add">
+                            <span class="icon icon-add"></span><span>Add</span>
+                        </a>
+                    </div>
+                </div>
+                <div id="table-filter" class="grid-alternating-rows n-table-hover n-jqxgrid-table n-grid-paging "></div>
+            </div>
+        </div>
+    </div>
+
+    <div th:include="modules/workspace/popup/popupProjectForm"></div>
+
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        var tableColumns = constructTableColumns();
+        var uid = /*[[${uid}]]*/;
+        $(function () {
+            loadData("table-filter");
+            $("#op_add").click(function() {
+                showPopupDialog('m_projectForm');
+            });
+        });
+
+        function loadData(container_id) {
+            sendAjaxRequest("users/" + uid + "/projects", 'GET', {}, function(data) {
+                initJqxTable(container_id, tableColumns, rebuildColumnData(data), true);
+            });
+        }
+
+        function constructTableColumns () {
+            var columns = [
+                {text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false},
+                {text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false},
+                {
+                  text: 'No.', sortable: false, filterable: false, editable: false,
+                  groupable: false, draggable: false, resizable: false,
+                  datafield: '', columntype: 'number', width: 40, cellsalign: 'center',
+                  cellsrenderer: function (row, column, value) {
+                      return "<div style='margin:4px;'>" + (value + 1) + "</div>";
+                  }
+                },
+                {text: 'ID', datafield: 'id', hidden: true},
+                {text: 'Public', datafield: 'publicity', align: 'center',cellsalign:'center',  width: 80, columntype: "checkbox"},
+                {text: 'Project Name', datafield: 'name', align: 'center', filterable: true},
+                {text: 'Project Description', datafield: 'description', align: 'center'},
+                {text: 'Project Owner', datafield: 'owner', editable: false, align: 'center', cellsalign:'center', width: 180},
+                {text: 'Creation Time', datafield: 'creationTime', editable: false, width: 180, cellsalign:'center', align: 'center'},
+                {text: 'Last Update Time', datafield: 'lastUpdateTime', editable: false, width: 180, cellsalign:'center', align: 'center'}
+            ];
+            return columns;
+        }
+
+        function rebuildColumnData (dataList) {
+            if (dataList != null) {
+                for (var i = 0; i < dataList.length; i++) {
+                    rebuildSingleColumnData(dataList[i]);
+                }
+            }
+            return dataList;
+        }
+
+        function rebuildSingleColumnData (data) {
+            if (data != null) {
+                data.creationTime = reformatDate(data.creationTime);
+                data.lastUpdateTime = reformatDate(data.lastUpdateTime);
+                data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';
+                data.delete = '<div class="n-row-indicated" onclick="reviseColumn(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';
+            }
+
+            return data;
+        }
+
+        function reviseColumn (operationType) {
+            var rowData = getCurrentGridRowData("table-filter");
+            if (rowData != null) {
+                switch (operationType) {
+                    case "update":
+                        updateRowWithConfirmation("Do you want to update this project?",
+                            "Project would be updated to," + constructColumnInstructions(rowData),
+                            function() {
+                                // remove some unnecessary attribute from row data
+                                rowData = removeObjectAttribute(rowData, ['delete', 'edit', 'uid', 'undo', 'uniqueid', 'visibleindex', 'boundindex', 'owner', 'creationTime', 'lastUpdateTime']);
+                                sendAjaxRequest("projects/" + rowData.id, 'PATCH', JSON.stringify(rowData), function(data) {
+                                    updateGridRowData("table-filter", rebuildSingleColumnData(data));
+                                }, "application/json; charset=utf-8");
+                            }
+                        );
+                        break;
+                    case "delete":
+                        updateRowWithConfirmation("Do you want to delete this project?",
+                            "It would remove all project data, including raw data, columns and revision histories" + constructColumnInstructions(rowData),
+                            function() {
+                                sendAjaxRequest("projects/" + rowData.id, 'DELETE', {}, function(data) {
+                                    removeGridRowData("table-filter");
+                                });
+                            }
+                        );
+                        break;
+                    default:
+                        showErrorDialog("Operation (" + operationType + ") is not supported!");
+                }
+            }
+        }
+
+        function constructColumnInstructions (rowData, join) {
+            var dataInstructions = "<table class='tbl-instructions' style=''>";
+            dataInstructions += "<tr><th>Property Name</th><th>Property Value</th></tr>";
+            dataInstructions += "<tr><td>Project Name</td><td><font>" + rowData.name + "</font></td></tr>";
+            dataInstructions += "<tr><td>Project Description</td><td><font>" + rowData.description + "</font></td></tr>";
+            dataInstructions += "<tr><td>Project Public</td><td><font>" + (rowData.publicity == 1 ? "Yes" : "No") + "</font></td></tr>";
+            dataInstructions += "</table>";
+            return dataInstructions;
+        }
+        /*]]>*/
+    </script>
+</th:block>
+</html>

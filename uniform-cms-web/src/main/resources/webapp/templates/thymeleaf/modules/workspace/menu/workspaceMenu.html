@@ -1,0 +1,15 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <dl class="n-list-group">
+        <dt class="n-list-group-item">Dashboard</dt>
+        <a href="#" th:href="@{'/workspace/marco/projects'}">
+            <dd class="n-list-group-item" th:classappend="${menu == 'projects'} ? selected : ''" style="border-radius:0px">
+                <span class="icon icon-manage icon-subnav"></span><span>My Projects</span>
+            </dd>
+        </a>
+        <a href="#" th:href="@{'/workspace/marco/records'}">
+            <dd class="n-list-group-item" th:classappend="${menu == 'records'} ? selected : ''" style="border-top-left-radius:0px; border-top-right-radius:0px;">
+                <span class="icon icon-data icon-subnav"></span><span>My Records</span>
+            </dd>
+        </a>
+    </dl>
+</div>

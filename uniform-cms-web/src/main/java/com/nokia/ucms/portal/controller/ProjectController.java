@@ -109,6 +109,13 @@ public class ProjectController extends BaseController
         return getModulePage("projectCategory");
     }
 
+    @RequestMapping("/{projectName}")
+    public String showProjectDefaultPage(@PathVariable String projectName, Model model)
+    {
+        setBasicInfoInModel(projectName, model);
+        return getModulePage("projectCategory");
+    }
+
     @RequestMapping("/{projectName}/columns")
     public String showProjectColumns(@PathVariable String projectName, Model model)
     {
