@@ -1,9 +1,7 @@
 package com.nokia.ucms.biz.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nokia.ucms.common.entity.BaseEntity;
-import com.sun.istack.internal.NotNull;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
