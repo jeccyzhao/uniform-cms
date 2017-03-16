@@ -13,10 +13,23 @@
                 </div>
                 <i role="button" class="icon icon-close-rounded" data-dismiss="modal" aria-label="Close dialog" tabindex='4' id="ir-dialog-plaindialogcloseicon"></i>
                 <h1 class="modal-title" id="labelImportRecord">Import Record</h1>
-                <h2 class="modal-title-subheading" id="labelImportRecordInstruction">It will import all data from file to this project</h2>
+                <h2 class="modal-title-subheading" id="labelImportRecordInstruction" style="color: #FF6E00">All project records in this category will be emptied before import.</h2>
             </div>
-            <form class="form-horizontal">
-                <div class="modal-body" style="overflow-y: auto; overflow-x: hidden; max-height: 550px; margin-right: 5px; padding-top: 0px;">message</div>
+            <form class="form-horizontal" enctype="multipart/form-data" id="importForm" method="post" th:action="@{'/openapi/v1/projects/' + ${project.id} + '/records/import?categoryId=' + ${category.id}}">
+                <div class="modal-body" style="overflow-y: auto; overflow-x: hidden; max-height: 550px; margin-right: 5px; padding-top: 0px;">
+                    <div class="form-group n-login-textfields n-login-dynfields"  style="margin-top: 10px;">
+                        <label class="col-sm-12 control-label" style=" color: #1A70A5; padding: 0 18px;">Please ensure the sheet where contains the data be first sheet in excel.</label>
+                    </div>
+                    <div class="form-group n-login-textfields n-login-dynfields"  style="margin-top: 15px; ">
+                        <label class="col-sm-3 control-label">Choose File:</label>
+                        <div class="col-sm-9  has-feedback" style="padding-top: 6px;">
+                            <input name="file" id="fileInput" type="file" accept=".xlsx, .xls"/>
+                        </div>
+                    </div>
+                    <div class="form-group n-login-textfields n-login-dynfields"  style="margin-top: 10px;">
+                        <label class="col-sm-12 control-label" style=" color:#9A9A9A; padding: 0 18px;">Note: The header columns in sheet must comply to the project columns.</label>
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-standard btn-defaultBlue" id="dialogSubmitImport" tabindex='2'>OK</button>
                     <button type="button" class="btn btn-standard" data-dismiss="modal" id="dialogCancelImport" tabindex='3' >Close</button>
@@ -25,3 +38,58 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    var projectId = /*[[${project.id}]]*/;
+    var categoryId =  /*[[${category.id}]]*/;
+    $(function(){
+
+        $("#dialogSubmitImport").click(function(){
+            if ($("#fileInput").val() != "") {
+                $.ajax({
+                    url: openApiContextPath + '/projects/' + projectId + '/records/import?categoryId=' + categoryId,
+                    type: "POST",
+                    data: new FormData($("#importForm")[0]),
+                    enctype: 'multipart/form-data',
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success: function (response) {
+                        var reload = false;
+                        var jsonResult = eval(response);
+                        var returnCode = jsonResult.data;
+                        if (jsonResult.success) {
+                            reload = true;
+                        } else {
+                            if (returnCode > -1) {
+                                reload = true;
+                            }
+                            showErrorDialog(jsonResult.error);
+                            $("#m_projectRecordDataImport").css("z-index", 1049);
+                        }
+
+                        // re-load if needed
+                        if (reload) {
+                            loadData("table-filter");
+                        }
+
+                        disableAjaxLoading();
+                    },
+                    beforeSend: function() {
+                        $("#m_projectRecordDataImport").css("z-index", 999);
+                        enableAjaxLoading("Importing Data...");
+                    },
+                    error: function (response) {
+                        showErrorDialog(response);
+                        $("#m_projectRecordDataImport").css("z-index", 1049);
+                        disableAjaxLoading();
+                    }
+                });
+            } else {
+                showErrorDialog("Please choose one file first before import");
+            }
+        });
+    });
+     /*]]>*/
+</script>

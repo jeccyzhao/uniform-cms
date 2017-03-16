@@ -68,7 +68,7 @@
                     data[i].eventTime = reformatDate(data[i].eventTime);
                     if (data[i].eventType != null) {
                         var opTypeCode = parseInt(data[i].eventType);
-                        var opTypeDesc = opTypeCode == 0 ? "Add" : (opTypeCode == 1 ? "Update" : "Delete");
+                        var opTypeDesc = opTypeCode == 0 ? "Add" : (opTypeCode == 1 ? "Update" : (opTypeCode == 2 ? "Delete" : "Import"));
                         data[i].operationType = opTypeDesc;
                     }
                 }

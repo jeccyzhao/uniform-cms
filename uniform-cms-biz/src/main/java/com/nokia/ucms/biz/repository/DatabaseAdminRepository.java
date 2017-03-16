@@ -64,6 +64,12 @@ public interface DatabaseAdminRepository
             @Param("tableName") String tableName,
             @Param("id") Integer recordId);
 
-    Integer empty(@Param("tableName") String tableName);
+    Integer empty(
+            @Param("tableName") String tableName);
+
+    Integer updateColumnLength (
+            @Param("tableName") String tableName,
+            @Param("columnId") String columnId,
+            @Param("columnLength") Integer columnLength);
 
 }

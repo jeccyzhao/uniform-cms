@@ -13,6 +13,7 @@ public interface ProjectInfoRepository
     List<ProjectInfo> getAllProject();
     ProjectInfo getProjectInfoByName(@Param("projectName") String projectName);
     ProjectInfo getProjectInfoById(@Param("projectId") Integer projectId);
+    List<ProjectInfo> getProjectInfoByOwner (@Param("owner") String owner, @Param("publicity") Integer publicity);
     ProjectInfo getProjectInfoByTableName (@Param("tableName") String tableName);
     Integer addProjectInfo (final ProjectInfo projectInfo);
     Integer updateProjectInfo (final ProjectInfo projectInfo);

@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.nokia.ucms.biz.repository.ProjectInfoRepository">
 
+    <cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
+
     <resultMap type="ProjectInfo" id="rs_project">
         <id property="id" column="id"/>
         <result property="name" column="p_name"/>
@@ -23,16 +25,26 @@
     </select>
 
     <select id="getAllProject" resultMap="rs_project">
-        SELECT * FROM `t_project` ORDER BY `p_creationTime` DESC
+        SELECT * FROM `t_project` WHERE `p_public` = 1 ORDER BY `p_updateTime` DESC
     </select>
 
     <select id="getProjectInfoByTableName" resultMap="rs_project">
         SELECT * FROM `t_project` WHERE `p_tablename` = #{tableName}
     </select>
 
+    <select id="getProjectInfoByOwner" resultMap="rs_project">
+        SELECT * FROM `t_project`
+        <where>
+            1 = 1
+            <if test="publicity != null"> AND `p_public` = #{publicity}</if>
+            <if test="owner != null"> AND `p_owner` = #{owner}</if>
+        </where>
+        ORDER BY `p_updateTime` DESC
+    </select>
+
     <insert id="addProjectInfo" parameterType="ProjectInfo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_project` (`p_name`, `p_description`, `p_owner`, `p_tablename`, `p_public`, `p_state`, `p_creationTime`)
-            VALUES (#{name}, #{description}, #{owner}, #{tableName}, #{publicity}, #{state}, #{creationTime})
+        INSERT INTO `t_project` (`p_name`, `p_description`, `p_owner`, `p_tablename`, `p_public`, `p_state`, `p_creationTime`, `p_updateTime`)
+            VALUES (#{name}, #{description}, #{owner}, #{tableName}, #{publicity}, #{state}, #{creationTime}, #{lastUpdateTime})
     </insert>
 
     <update id="updateProjectInfo">
@@ -42,6 +54,7 @@
             <if test="description != null and description !=''">`p_description` = #{description},</if>
             <if test="state != null and state > -1">`p_state` = #{state},</if>
             <if test="lastUpdateTime != null">`p_updateTime` = #{lastUpdateTime},</if>
+            <if test="publicity != null">`p_public` = #{publicity},</if>
             `id` = `id`
         </set>
         WHERE `id` = #{id}

@@ -1,4 +1,4 @@
-package com.nokia.ucms.common.util;
+package com.nokia.ucms.common.utils;
 
 import java.util.UUID;
 

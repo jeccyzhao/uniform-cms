@@ -7,6 +7,7 @@ import com.nokia.ucms.common.controller.BaseController;
 import com.nokia.ucms.common.entity.ApiQueryResult;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class ProjectInfoApiController extends BaseController
     }
 
     @RequestMapping(path="/{projectId}", method= RequestMethod.PATCH)
+    //@PreAuthorize("hasRole('')")
     public @ResponseBody ApiQueryResult<ProjectInfo> updateProject(
             @PathVariable Integer projectId,
             @RequestBody ProjectInfo projectInfo)
@@ -45,9 +47,7 @@ public class ProjectInfoApiController extends BaseController
 
         // set id with path variable
         // projectInfo.setId(projectId);
-
-        boolean result = projectInfoService.updateProject(projectId, projectInfo);
-        return new ApiQueryResult<ProjectInfo>(result);
+        return new ApiQueryResult<ProjectInfo>(projectInfoService.updateProject(projectId, projectInfo));
     }
 
     @RequestMapping(path="/", method= RequestMethod.GET)
@@ -72,12 +72,11 @@ public class ProjectInfoApiController extends BaseController
         return new ApiQueryResult<Object>(result > 0, result);
     }
 
-    @RequestMapping(path="", method= RequestMethod.DELETE)
-    public @ResponseBody ApiQueryResult<Object> deleteProject(
-            @RequestParam String projectName)
+    @RequestMapping(path="/{projectId}", method= RequestMethod.DELETE)
+    public @ResponseBody ApiQueryResult<Object> deleteProject(@PathVariable Integer projectId)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter deleteProject - [projectName: %s]", projectName));
+            LOGGER.debug(String.format("Enter deleteProject - [projectId: %d]", projectId));
 
         // TODO
         // 1. remove project data

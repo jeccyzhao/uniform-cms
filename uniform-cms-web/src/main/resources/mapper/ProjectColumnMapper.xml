@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.nokia.ucms.biz.repository.ProjectColumnRepository">
 
+    <cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
+
     <resultMap type="ProjectColumn" id="rs_projectColumn">
         <id property="id" column="id"/>
         <result property="projectId" column="p_id"/>
@@ -50,6 +52,10 @@
 
     <delete id="deleteProjectColumn" parameterType="java.lang.Integer">
         DELETE FROM `t_project_column` WHERE `id` = #{id}
+    </delete>
+
+    <delete id="deleteProjectColumnsByProjectId" parameterType="java.lang.Integer">
+        DELETE FROM `t_project_column` WHERE `p_id` = #{projectId}
     </delete>
 
 </mapper>

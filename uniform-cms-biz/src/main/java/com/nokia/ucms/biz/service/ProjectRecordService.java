@@ -1,5 +1,6 @@
 package com.nokia.ucms.biz.service;
 
+import com.nokia.ucms.biz.constants.EOperationType;
 import com.nokia.ucms.biz.constants.EServiceDomain;
 import com.nokia.ucms.biz.constants.ETemplateColumnProperty;
 import com.nokia.ucms.biz.dto.ProjectRecordDataDTO;
@@ -10,8 +11,11 @@ import com.nokia.ucms.biz.repository.DatabaseAdminRepository;
 import com.nokia.ucms.biz.repository.ProjectCategoryRepository;
 import com.nokia.ucms.biz.repository.ProjectColumnRepository;
 import com.nokia.ucms.biz.repository.ProjectInfoRepository;
+import com.nokia.ucms.common.dto.ExcelSheetDataDTO;
+import com.nokia.ucms.common.entity.ApiQueryResult;
 import com.nokia.ucms.common.exception.ServiceException;
 import com.nokia.ucms.common.service.BaseService;
+import com.nokia.ucms.common.utils.ExcelParser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +32,9 @@ import static com.nokia.ucms.biz.dto.ProjectRecordDataDTO.*;
 public class ProjectRecordService extends BaseService
 {
     private static Logger LOGGER = Logger.getLogger(ProjectRecordService.class);
+    public static int IMPORT_PARTIAL_SUCCESS = 1;
+    public static int IMPORT_COMPLETE_SUCCESS = 0;
+    public static int IMPORT_FAILURE = -1;
 
     @Autowired
     private ProjectInfoService projectInfoService;
@@ -43,6 +50,7 @@ public class ProjectRecordService extends BaseService
 
     @Autowired
     private ProjectTraceService projectTraceService;
+
 
     public ProjectRecordDataDTO getProjectRecordsByCategory (Integer projectId, Integer categoryId)
     {
@@ -108,6 +116,95 @@ public class ProjectRecordService extends BaseService
         }
     }
 
+    private Integer truncateProjectRecords (Integer projectId)
+    {
+        ProjectInfo projectInfo = this.projectInfoService.getProjectById(projectId);
+        return this.databaseAdminRepository.empty(projectInfo.getTableName());
+    }
+
+    public Integer batchAddProjectRecordsFromExcelFile (Integer projectId, Integer categoryId, String excelFile)
+    {
+        try
+        {
+            // truncate project records before importing
+            this.truncateProjectRecords(projectId);
+
+            boolean partialSuccess = false;
+            ExcelParser parser = new ExcelParser();
+            ExcelSheetDataDTO sheetData = parser.parseFile(excelFile);
+            if (sheetData != null)
+            {
+                ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
+                ProjectCategory projectCategory = projectCategoryService.getProjectCategoryById(categoryId);
+                List<ProjectColumn> projectColumns = this.projectColumnService.getProjectColumnsByProjectId(projectId);
+                List<ProjectRecordDataRow> recordDataList = constructProjectRecordData(sheetData, projectColumns);
+                for (ProjectRecordDataRow recordData : recordDataList)
+                {
+                    recordData.setCategoryId(projectCategory.getId());
+                    try
+                    {
+                        this.addProjectRecord(projectInfo.getId(), recordData, false);
+                        recordData = null;
+                    }
+                    catch (Exception ex)
+                    {
+                        LOGGER.error(String.format("Failed to add project record data (%s) due to %s", recordData, ex));
+                        partialSuccess = true;
+                    }
+                }
+
+                try
+                {
+                    projectTraceService.addProjectTrace(projectId,
+                            EOperationType.OPERATION_IMPORT, getServiceDomain(),
+                            String.valueOf(projectId), projectCategory.getName(),
+                            "Import project record", null, null);
+
+                    // update lastUpdateTime in project
+                    projectInfoService.updateProject(projectId, projectInfo);
+                }
+                catch (Exception ex)
+                {
+                    LOGGER.error("Exception raised during tracing and updating project last update time: " + ex);
+                }
+
+                return partialSuccess ? IMPORT_PARTIAL_SUCCESS : IMPORT_COMPLETE_SUCCESS;
+            }
+            else
+            {
+                LOGGER.error("No data been found from the given upload file");
+            }
+        }
+        catch (Exception ex)
+        {
+            LOGGER.error("Failed to import project record data:  " + ex.getMessage());
+        }
+
+        return IMPORT_FAILURE;
+    }
+
+    private List<ProjectRecordDataRow> constructProjectRecordData (final ExcelSheetDataDTO sheetData, final List<ProjectColumn> projectColumns)
+    {
+        List<ProjectRecordDataRow> recordDataList = new ArrayList<ProjectRecordDataRow>();
+        for (ExcelSheetDataDTO.Row row : sheetData.getRows())
+        {
+            ProjectRecordDataRow recordData = new ProjectRecordDataRow();
+            for (ProjectColumn projectColumn : projectColumns)
+            {
+                int columnIndex = sheetData.getHeaderColumnIndexByName(projectColumn.getColumnName());
+                if (columnIndex > -1)
+                {
+                    Object cellValue = row.getCellValue(columnIndex);
+                    recordData.addProperty(projectColumn.getColumnName(), cellValue != null ? cellValue.toString() : null);
+                }
+            }
+
+            recordDataList.add(recordData);
+        }
+
+        return recordDataList;
+    }
+
     private LinkedHashMap<String, Object> constructRowData (final Map<String, Object> row, final List<ProjectColumn> projectColumns)
     {
         if (row != null && projectColumns != null)
@@ -146,23 +243,35 @@ public class ProjectRecordService extends BaseService
         if (recordId != null && recordId > 0)
         {
             ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
-            Integer result = this.databaseAdminRepository.delete(projectInfo.getTableName(), recordId);
-            if (result != null && result > 0)
+            ProjectRecordDataDTO recordDataDTO = this.getProjectRecordById(projectId, recordId);
+            if (recordDataDTO != null && recordDataDTO.getRowData() != null && recordDataDTO.getRowData().size() > 0)
             {
-                try
+                Integer result = this.databaseAdminRepository.delete(projectInfo.getTableName(), recordId);
+                if (result != null && result > 0)
                 {
-                    // update lastUpdateTime in project
-                    projectInfoService.updateProject(projectId, projectInfo);
-                }
-                catch (Exception ex)
-                {
-                    LOGGER.error("Exception raised during tracing and updating project last update time: " + ex);
+                    try
+                    {
+                        LinkedHashMap<String, Object> rowEntry = (LinkedHashMap<String, Object>) recordDataDTO.getRowData().get(0);
+                        String categoryName = rowEntry.get(ETemplateColumnProperty.TEMPLATE_COLUMN_CATEGORY_NAME.getColumnName()).toString();
+                        projectTraceService.addProjectTrace(projectId,
+                                EOperationType.OPERATION_DEL, getServiceDomain(),
+                                String.valueOf(projectId), categoryName,
+                                "Delete project record",
+                                recordDataDTO.getRowData(), null);
+
+                        // update lastUpdateTime in project
+                        projectInfoService.updateProject(projectId, projectInfo);
+                    }
+                    catch (Exception ex)
+                    {
+                        LOGGER.error("Exception raised during tracing and updating project last update time: " + ex);
+                    }
+
+                    return result;
                 }
 
-                return result;
+                throw new ServiceException("Failed to delete project record: " + recordId);
             }
-
-            throw new ServiceException("Failed to delete project record: " + recordId);
         }
 
         throw new ServiceException("Invalid project record id: " + recordId);
@@ -192,6 +301,15 @@ public class ProjectRecordService extends BaseService
                     {
                         try
                         {
+                            LinkedHashMap<String, Object> rowEntry = (LinkedHashMap<String, Object>) entityById.getRowData().get(0);
+                            String categoryName = rowEntry.get(ETemplateColumnProperty.TEMPLATE_COLUMN_CATEGORY_NAME.getColumnName()).toString();
+
+                            projectTraceService.addProjectTrace(projectId,
+                                    EOperationType.OPERATION_UPDATE, getServiceDomain(),
+                                    String.valueOf(projectId), categoryName,
+                                    "Update project record",
+                                    entityById, recordDataRow);
+
                             // update lastUpdateTime in project
                             projectInfoService.updateProject(projectId, projectInfoService.getProjectById(projectId));
                         }
@@ -225,6 +343,11 @@ public class ProjectRecordService extends BaseService
 
     public Integer addProjectRecord (Integer projectId, ProjectRecordDataRow projectData)
     {
+        return addProjectRecord(projectId, projectData, true);
+    }
+
+    public Integer addProjectRecord (Integer projectId, ProjectRecordDataRow projectData, boolean trace)
+    {
         if (projectData != null)
         {
             ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
@@ -246,8 +369,18 @@ public class ProjectRecordService extends BaseService
                 {
                     try
                     {
-                        // update lastUpdateTime in project
+                        if (trace)
+                        {
+                            projectTraceService.addProjectTrace(projectId,
+                                    EOperationType.OPERATION_ADD, getServiceDomain(),
+                                    String.valueOf(projectId), projectCategory.getName(),
+                                    "Add project record",
+                                    null, projectData);
+                        }
+
+                        // update the lastUpdateTime in project
                         projectInfoService.updateProject(projectId, projectInfo);
+
                     }
                     catch (Exception ex)
                     {

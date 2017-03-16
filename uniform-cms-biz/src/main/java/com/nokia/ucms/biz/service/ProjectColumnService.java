@@ -8,7 +8,7 @@ import com.nokia.ucms.biz.repository.DatabaseAdminRepository;
 import com.nokia.ucms.biz.repository.ProjectColumnRepository;
 import com.nokia.ucms.common.exception.ServiceException;
 import com.nokia.ucms.common.service.BaseService;
-import com.nokia.ucms.common.util.UUIDGenerator;
+import com.nokia.ucms.common.utils.UUIDGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,6 +81,19 @@ public class ProjectColumnService extends BaseService
 
         throw new ServiceException("Failed to get project column by project id: " + projectId);
     }
+
+    @Transactional
+    public Integer removeProjectColumns (Integer projectId) throws ServiceException
+    {
+        ProjectInfo projectInfo = this.projectInfoService.getProjectById(projectId);
+        if (projectInfo != null)
+        {
+            return this.projectColumnRepository.deleteProjectColumnsByProjectId(projectId);
+        }
+
+        return null;
+    }
+
     @Transactional
     public Integer removeProjectColumn (Integer projectColumnId) throws ServiceException
     {
@@ -129,6 +142,13 @@ public class ProjectColumnService extends BaseService
                 projectColumn.setId(projectColumnId);
                 if (projectColumnRepository.updateProjectColumn(projectColumn) > 0)
                 {
+                    if (entityById.getColumnLength() != projectColumn.getColumnLength())
+                    {
+                        // update table column length in case any update happens
+                        dbAdminRepository.updateColumnLength(projectInfo.getTableName(),
+                                projectColumn.getColumnId(), projectColumn.getColumnLength());
+                    }
+
                     try
                     {
                         projectTraceService.addProjectTrace(projectId,

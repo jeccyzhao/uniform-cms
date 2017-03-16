@@ -25,7 +25,7 @@
                         </a>
                     </div>
                 </div>
-                <div style="text-align:right; margin: 5px 0; line-height: 16px; font-size: 9pt">
+                <div style="text-align:right; margin: 5px 0; line-height: 16px; font-size: 9pt" th:if="${category != null}">
                     Export:
                     <img title="Export to XLS" th:src="@{/assets/img/export2excel_small.gif}" class="icon-export" id="excelExport"/>
                     <img title="Export to PDF" th:src="@{/assets/img/export2pdf.gif}" class="icon-export" id="pdfExport" />
@@ -38,24 +38,30 @@
 
     <div th:include="modules/projects/popup/records/popupProjectRecordForm"></div>
     <div th:include="modules/projects/popup/records/popupProjectRecordData"></div>
-    <div th:include="modules/projects/popup/records/popupProjectRecordImport"></div>
+    <div th:include="modules/projects/popup/records/popupProjectRecordImport" th:if="${category != null}"></div>
 
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
         var projectId = /*[[${project.id}]]*/;
+        var projectName = /*[[${project.name}]]*/;
         var categoryId = /*[[${category != null ? category.id : null}]]*/
+        var categoryName = /*[[${category != null ? category.id : null}]]*/
         var excludedColumns = ["id", "edit", "delete", "undo", "seq", "updateTime", "columnLength", "visible"];
         var dataColumns = [];
         $(function () {
             loadData("table-filter");
             $("#excelExport").click(function(){
-                export2File("table-filter", "xls", "jqxGrid", ctxPath + "/export", excludedColumns);
+                export2File("table-filter", "xls", "jqxGrid", ctxPath + "/projects/" + projectName + "/categories/" + categoryId + "/export", excludedColumns);
             });
             $("#pdfExport").click(function(){
-                export2File("table-filter", "pdf", "jqxGrid", ctxPath + "/export", excludedColumns);
+                export2File("table-filter", "pdf", "jqxGrid", ctxPath + "/projects/" + projectName + "/categories/" + categoryId + "/export", excludedColumns);
             });
             $("#op_add").click(function() {
                 showPopupDialog('m_projectRecord');
+            });
+
+            $("#op_import").click(function() {
+                showPopupDialog('m_projectRecordDataImport');
             });
         });
 

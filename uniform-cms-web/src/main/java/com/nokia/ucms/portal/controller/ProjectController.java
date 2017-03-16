@@ -1,18 +1,32 @@
 package com.nokia.ucms.portal.controller;
 
+import static com.nokia.ucms.biz.dto.ProjectRecordDataDTO.*;
+
 import com.nokia.ucms.biz.entity.ProjectCategory;
+import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.biz.service.ProjectCategoryService;
 import com.nokia.ucms.biz.service.ProjectColumnService;
 import com.nokia.ucms.biz.service.ProjectInfoService;
+import com.nokia.ucms.biz.service.ProjectRecordService;
 import com.nokia.ucms.common.controller.BaseController;
+import com.nokia.ucms.common.dto.ExcelSheetDataDTO;
+import com.nokia.ucms.common.exception.ServiceException;
+import com.nokia.ucms.common.utils.ExcelParser;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +36,8 @@ import java.util.List;
 @RequestMapping("/projects")
 public class ProjectController extends BaseController
 {
+    private static Logger LOGGER = Logger.getLogger(ProjectController.class);
+
     @Autowired
     private ProjectInfoService projectService;
 
@@ -30,6 +46,12 @@ public class ProjectController extends BaseController
 
     @Autowired
     private ProjectCategoryService projectCategoryService;
+
+    @Autowired
+    private ProjectRecordService projectRecordService;
+
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     private ProjectInfo setBasicInfoInModel (String projectName, Model model)
     {
@@ -49,9 +71,8 @@ public class ProjectController extends BaseController
         return null;
     }
 
-    @RequestMapping("/{projectName}")
-    public String showProjectRecords(@PathVariable String projectName,
-                                     @RequestParam (required = false) String category, Model model)
+    @RequestMapping("/{projectName}/records")
+    public String showProjectRecords(@PathVariable String projectName, @RequestParam (required = false) String category, Model model)
     {
         ProjectInfo projectInfo = setBasicInfoInModel(projectName, model);
         model.addAttribute("columns", projectColumnService.getProjectColumnsByProjectName(projectName));
@@ -88,6 +109,13 @@ public class ProjectController extends BaseController
         return getModulePage("projectCategory");
     }
 
+    @RequestMapping("/{projectName}")
+    public String showProjectDefaultPage(@PathVariable String projectName, Model model)
+    {
+        setBasicInfoInModel(projectName, model);
+        return getModulePage("projectCategory");
+    }
+
     @RequestMapping("/{projectName}/columns")
     public String showProjectColumns(@PathVariable String projectName, Model model)
     {
@@ -108,6 +136,26 @@ public class ProjectController extends BaseController
         setBasicInfoInModel(projectName, model);
         return getModulePage("projectAuthorization");
     }
+
+    @RequestMapping("/{projectName}/categories/{categoryId}/export")
+    public void exportProjectRecords (@PathVariable String projectName,
+                                      @PathVariable Integer categoryId,
+                                      HttpServletRequest request,
+                                      HttpServletResponse response) throws IOException
+    {
+        String content = request.getParameter("content");
+        String fileName = request.getParameter("filename");
+        String format = request.getParameter("format");
+
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-disposition", String.format("attachment;filename=%s.%s", fileName, format));
+        PrintWriter printWriter = response.getWriter();
+        printWriter.print(content);
+        printWriter.flush();
+        printWriter.close();
+    }
+
+
 
     protected String getModulePath ()
     {
