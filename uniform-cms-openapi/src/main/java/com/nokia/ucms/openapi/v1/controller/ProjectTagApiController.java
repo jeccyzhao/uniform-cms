@@ -57,6 +57,18 @@ public class ProjectTagApiController extends BaseController
         return new ApiQueryResult<List<ProjectTag>>(tags);
     }
 
+    @RequestMapping(path="/{tagId}", method= RequestMethod.PATCH)
+    public @ResponseBody ApiQueryResult<ProjectTag> updateProjectTag(
+            @PathVariable Integer projectId,
+            @PathVariable Integer tagId,
+            @RequestBody ProjectTag projectTag)
+    {
+        if (LOGGER.isDebugEnabled())
+            LOGGER.debug(String.format("Enter updateProjectTag - [projectId: %d, projectTag: %s]", projectId, projectTag));
+
+        return new ApiQueryResult<ProjectTag>(projectTagService.updateProjectTag(projectId, projectTag));
+    }
+
     @RequestMapping(path="/{tagId}", method= RequestMethod.GET)
     public @ResponseBody ApiQueryResult<ProjectTag> getProjectTag(
             @PathVariable Integer projectId,
@@ -65,7 +77,7 @@ public class ProjectTagApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter getProjectTag - [projectId: %d, tagId: %d]", projectId, tagId));
 
-        ProjectTag tag = this.projectTagService.getProjectTagById(tagId);
+        ProjectTag tag = this.projectTagService.getProjectTagById(projectId, tagId);
         return new ApiQueryResult<ProjectTag>(tag);
     }
 
@@ -77,7 +89,7 @@ public class ProjectTagApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter deleteProjectTag - [projectId: %d, tagId: %d]", projectId, tagId));
 
-        boolean result = this.projectTagService.removeProjectTag(tagId);
+        boolean result = this.projectTagService.removeProjectTag(projectId, tagId);
         return new ApiQueryResult<Object>(result, null);
     }
 

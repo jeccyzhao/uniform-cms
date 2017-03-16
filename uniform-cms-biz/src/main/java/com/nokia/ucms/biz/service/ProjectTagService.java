@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 import static com.nokia.ucms.biz.constants.Constants.*;
@@ -36,41 +37,46 @@ public class ProjectTagService extends BaseService
     public ProjectTag addProjectTag(Integer projectId, ProjectTag tag) throws ServiceException {
 
         ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
-        if (projectInfo != null){
-            if (tag != null){
-                tag.setProjectId(projectId);
+        if (projectInfo != null)
+        {
+            if (tag != null && tag.getTagName() != null)
+            {
+                if (! tag.getTagName().trim().equals("")) {
+                    ProjectTag projectTag = projectTagRepository.getProjectTagByName(projectId, tag.getTagName());
+                    if (projectTag == null) {
+                        tag.setProjectId(projectId);
+                        Integer result = projectTagRepository.addTag(tag);
+                        if (result != null) {
+                            try {
+                                projectTraceService.addProjectTrace(projectId,
+                                        EOperationType.OPERATION_ADD, getServiceDomain(),
+                                        String.valueOf(tag.getId()),
+                                        getServiceCategory(),
+                                        String.format("Add project tag '%s'", tag.getTagName()),
+                                        null, tag);
+                            } catch (Exception ex) {
+                                LOGGER.error("Failed to trace when adding project tag: " + ex);
+                            }
 
-                Integer result = projectTagRepository.addTag(tag);
-                if (result != null)
-                {
-                    try
-                    {
-                        projectTraceService.addProjectTrace(projectId,
-                                EOperationType.OPERATION_ADD, getServiceDomain(),
-                                String.valueOf(tag.getId()),
-                                getServiceCategory(),
-                                String.format("Add project tag '%s'", tag.getTagName()),
-                                null, tag);
+                            return tag;
+                        }
+                        throw new ServiceException("Failed to add project tag: " + tag);
+                    } else {
+                        throw new ServiceException(String.format(
+                                "Conflicted with another tag with same name (tag name: %s, tag id: %d), ", projectTag.getTagName(), projectTag.getId()));
                     }
-                    catch (Exception ex)
-                    {
-                        LOGGER.error("Failed to trace when adding project tag: " + ex);
-                    }
-
-                    return tag;
+                } else {
+                    throw new ServiceException("Invalid tag name");
                 }
-                throw new ServiceException("Failed to add project tag: " + tag);
-            }
-            else {
+            } else {
                 throw new ServiceException("Invalid tag: " + tag);
             }
-        }
-        else {
+        } else {
             throw new ServiceException(String.format("Project (id: %d) does not exist", projectId));
         }
     }
 
-    public List<ProjectTag> getProjectTags (Integer projectId)
+    public List<ProjectTag> getProjectTags (Integer projectId) throws ServiceException
     {
         ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
         if (projectInfo != null)
@@ -81,9 +87,9 @@ public class ProjectTagService extends BaseService
         throw new ServiceException("Failed to get project tags by project id: " + projectId);
     }
 
-    public ProjectTag getProjectTagById (Integer tagId)
+    public ProjectTag getProjectTagById (Integer projectId, Integer tagId) throws ServiceException
     {
-        ProjectTag tag = projectTagRepository.getTagById(tagId);
+        ProjectTag tag = projectTagRepository.getProjectTagById(projectId, tagId);
         if (tag != null)
         {
             return tag;
@@ -92,9 +98,9 @@ public class ProjectTagService extends BaseService
         throw new ServiceException(String.format("Project tag (id: %d) does not exist", tagId));
     }
 
-    public ProjectTag getProjectTagByName (String tagName)
+    public ProjectTag getProjectTagByName (Integer projectId, String tagName)throws ServiceException
     {
-        ProjectTag tag = projectTagRepository.getTagByName(tagName);
+        ProjectTag tag = projectTagRepository.getProjectTagByName(projectId, tagName);
         if (tag != null)
         {
             return tag;
@@ -103,30 +109,68 @@ public class ProjectTagService extends BaseService
         throw new ServiceException(String.format("Project tag (name: %s) does not exist", tagName));
     }
 
-    public boolean removeProjectTag (Integer tagId)
+    public ProjectTag updateProjectTag(Integer projectId, ProjectTag projectTag) throws ServiceException
     {
-        ProjectTag projectTag = this.projectTagRepository.getTagById(tagId);
+        if (projectTag != null && projectTag.getId() != null && projectTag.getTagName()!= null)
+        {
+            ProjectTag entityById = projectTagRepository.getProjectTagById(projectId, projectTag.getId());
+            if (entityById != null)
+            {
+                ProjectTag entityByName = projectTagRepository.getProjectTagByName(projectId, projectTag.getTagName());
+                if (entityByName == null || entityByName.getId() == projectTag.getId())
+                {
+                    int result = projectTagRepository.updateProjectTag(projectTag);
+                    if (result > 0)
+                    {
+                        try
+                        {
+                            projectTraceService.addProjectTrace(projectId,
+                                    EOperationType.OPERATION_UPDATE, getServiceDomain(),
+                                    String.valueOf(projectTag.getProjectId()), getServiceCategory(),
+                                    String.format("Update project tag from '%s' to '%s'",
+                                            entityById.getTagName(), projectTag.getTagName()),
+                                    entityById, projectTag);
+                        }
+                        catch (Exception ex) {
+                            LOGGER.error("Failed to trace when updating project column: " + ex);
+                        }
+
+                        return projectTag;
+                    } else {
+                        throw new ServiceException(String.format("Project tag (%s) update failed", projectTag));
+                    }
+                } else {
+                    throw new ServiceException(String.format(
+                            "Conflicted with another tag with same name (%s)", projectTag.getTagName()));
+                }
+            } else {
+                throw new ServiceException(String.format("Project tag (id: %d) does not exist", projectTag.getId()));
+            }
+        } else {
+            throw new ServiceException("Invalid project tag: " + projectTag);
+        }
+    }
+
+    public boolean removeProjectTag (Integer projectId, Integer tagId) throws ServiceException
+    {
+        ProjectTag projectTag = this.projectTagRepository.getProjectTagById(projectId, tagId);
         if (projectTag != null)
         {
-            Integer result = this.projectTagRepository.removeTagById(tagId);
+            Integer result = this.projectTagRepository.removeProjectTagById(projectId, tagId);
             if (result != null)
             {
-                try
-                {
+                try {
                     projectTraceService.addProjectTrace(projectTag.getProjectId(),
                             EOperationType.OPERATION_DEL, getServiceDomain(),
                             String.valueOf(projectTag.getId()), getServiceCategory(),
                             String.format("Delete project tag '%s'", projectTag.getTagName()),
                             projectTag, null);
-                } catch (Exception ex)
-                {
+                } catch (Exception ex) {
                     LOGGER.error("Failed to trace when removing project tag: " + ex);
                 }
 
                 return true;
-            }
-            else
-            {
+            } else {
                 throw new ServiceException(String.format("Project tag (%s) deletion failed", projectTag));
             }
         }

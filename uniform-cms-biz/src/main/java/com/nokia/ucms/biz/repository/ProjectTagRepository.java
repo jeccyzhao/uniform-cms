@@ -10,9 +10,10 @@ import java.util.List;
  */
 public interface ProjectTagRepository
 {
-    ProjectTag getTagByName (@Param("name") String tagName);
-    ProjectTag getTagById (@Param("id") Integer tagId);
+    ProjectTag getProjectTagByName (@Param("projectId") Integer projectId, @Param("name") String tagName);
+    ProjectTag getProjectTagById (@Param("projectId") Integer projectId, @Param("id") Integer tagId);
     Integer addTag (final ProjectTag projectTag);
-    Integer removeTagById(@Param("id") Integer tagId);
+    Integer updateProjectTag(final ProjectTag projectTag);
+    Integer removeProjectTagById(@Param("projectId") Integer projectId, @Param("id") Integer tagId);
     List<ProjectTag> getTagsByProjectId(@Param("projectId") Integer projectId);
 }
