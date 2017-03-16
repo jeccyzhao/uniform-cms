@@ -9,12 +9,12 @@
         <result property="tagDesc" column="tag_desc"/>
     </resultMap>
 
-    <select id="getTagByName" parameterType="java.lang.String" resultMap="rs_projectTag">
-        SELECT * FROM `t_project_tag` WHERE `tag_name` = #{name}
+    <select id="getProjectTagByName"  resultMap="rs_projectTag">
+        SELECT * FROM `t_project_tag` WHERE `tag_name` = #{name} AND `p_id` = #{projectId}
     </select>
 
-    <select id="getTagById" parameterType="java.lang.Integer" resultMap="rs_projectTag">
-        SELECT * FROM `t_project_tag` WHERE `id` = #{id}
+    <select id="getProjectTagById"  resultMap="rs_projectTag">
+        SELECT * FROM `t_project_tag` WHERE `id` = #{id} AND `p_id` = #{projectId}
     </select>
 
     <insert id="addTag" parameterType="ProjectTag" useGeneratedKeys="true" keyProperty="id">
@@ -22,8 +22,19 @@
             VALUES (#{projectId}, #{tagName}, #{tagDesc})
     </insert>
 
-    <delete id="removeTagById" parameterType="java.lang.Integer">
-        DELETE FROM `t_project_tag` WHERE `id` = #{id}
+    <delete id="removeProjectTagById" >
+        DELETE FROM `t_project_tag` WHERE `id` = #{id} AND `p_id` = #{projectId}
     </delete>
+
+    <select id="getTagsByProjectId" parameterType="java.lang.Integer" resultMap="rs_projectTag">
+        SELECT * FROM `t_project_tag` WHERE `p_id` = #{projectId}
+    </select>
+
+    <update id="updateProjectTag" parameterType="ProjectTag">
+        UPDATE `t_project_tag` SET
+            `tag_name` = #{tagName},
+            `tag_desc` = #{tagDesc}
+        WHERE `id` = #{id}
+    </update>
 
 </mapper>
