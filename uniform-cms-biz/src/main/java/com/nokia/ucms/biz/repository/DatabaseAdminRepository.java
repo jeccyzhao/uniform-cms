@@ -72,4 +72,7 @@ public interface DatabaseAdminRepository
             @Param("columnId") String columnId,
             @Param("columnLength") Integer columnLength);
 
+    Integer deleteTable(
+            @Param("tableName") String tableName);
+
 }

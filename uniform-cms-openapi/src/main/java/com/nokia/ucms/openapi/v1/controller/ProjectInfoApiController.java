@@ -73,16 +73,13 @@ public class ProjectInfoApiController extends BaseController
     }
 
     @RequestMapping(path="/{projectId}", method= RequestMethod.DELETE)
-    public @ResponseBody ApiQueryResult<Object> deleteProject(@PathVariable Integer projectId)
+    public @ResponseBody ApiQueryResult<Integer> deleteProject(@PathVariable Integer projectId)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter deleteProject - [projectId: %d]", projectId));
 
-        // TODO
-        // 1. remove project data
-        // 2. remove project columns
-        // 3. remove project entry
-        return createEmptyQueryResult();
+        Integer result = this.projectInfoService.removeProject(projectId);
+        return new ApiQueryResult<Integer>(result != null);
     }
 
     protected String getModulePath ()

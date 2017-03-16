@@ -1,5 +1,6 @@
 package com.nokia.ucms.biz.service;
 
+import com.nokia.ucms.biz.constants.EOperationType;
 import com.nokia.ucms.biz.constants.EServiceDomain;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.biz.repository.DatabaseAdminRepository;
@@ -31,14 +32,14 @@ public class ProjectInfoService extends BaseService
     @Autowired
     private ProjectInfoRepository projectInfoRepository;
 
-    //@Autowired
-    //private ProjectColumnRepository projectColumnRepository;
-
     @Autowired
     private ProjectColumnService projectColumnService;
 
     @Autowired
-    private ProjectCategoryRepository projectCategoryRepository;
+    private ProjectCategoryService projectCategoryService;
+
+    @Autowired
+    private ProjectTraceService projectTraceService;
 
     public List<ProjectInfo> getProject(String projectName) throws ServiceException
     {
@@ -118,6 +119,19 @@ public class ProjectInfoService extends BaseService
                     Integer result = projectInfoRepository.updateProjectInfo(projectInfo);
                     if (result != null && result > 0)
                     {
+                        try
+                        {
+                            projectTraceService.addProjectTrace(projectInfo.getId(),
+                                    EOperationType.OPERATION_UPDATE, getServiceDomain(),
+                                    String.valueOf(projectInfo.getId()), getServiceCategory(),
+                                    String.format("Update project from '%s' to '%s'", entityById.getName(), projectInfo.getName()),
+                                    entityById, projectInfo);
+                        }
+                        catch (Exception ex)
+                        {
+                            LOGGER.error("Failed to trace when updating project: " + ex);
+                        }
+
                         return projectInfo;
                     }
 
@@ -138,27 +152,41 @@ public class ProjectInfoService extends BaseService
     @Transactional
     public Integer removeProject (Integer projectId)
     {
+        Integer result = null;
         ProjectInfo projectInfo = this.getProjectById(projectId);
         if (projectInfo != null)
         {
-            // remove project entry
-            Integer result = this.projectInfoRepository.removeProjectInfo(projectId);
-            if (result != null)
+            try
             {
-                try
-                {
-                    // remove project columns
-                    this.projectColumnService.removeProjectColumns(projectId);
+                // remove project columns
+                this.projectColumnService.removeProjectColumns(projectId);
 
-                    // remove project categories
-                    // remove project raw data
-                    // remove project traces
-                }
-                catch (Exception ex)
-                {
-                    LOGGER.error(String.format("Failed to remove project (id: %d) due to (%s)", projectId, ex));
-                }
+                // remove project categories
+                this.projectCategoryService.removeProjectCategoriesByProjectId(projectId);
+
+                // remove project data table
+                this.databaseAdminRepository.deleteTable(projectInfo.getTableName());
+
+                // remove project traces
+                this.projectTraceService.removeProjectTraces(projectInfo.getId());
+
+                // remove project info
+                result = this.projectInfoRepository.removeProjectInfo(projectId);
+
+                projectTraceService.addProjectTrace(projectInfo.getId(),
+                        EOperationType.OPERATION_DEL, getServiceDomain(),
+                        String.valueOf(projectInfo.getId()), getServiceCategory(),
+                        String.format("Remove project '%s'", projectInfo.getName()),
+                        projectInfo, null);
+
+                projectInfo = null;
             }
+            catch (Exception ex)
+            {
+                LOGGER.error(String.format("Failed to remove project (id: %d) due to (%s)", projectId, ex));
+            }
+
+            return result;
         }
 
         return null;
@@ -189,6 +217,19 @@ public class ProjectInfoService extends BaseService
             if (result > 0)
             {
                 databaseAdminRepository.createTableIfNotExist(projectInfo.getTableName());
+
+                try
+                {
+                    projectTraceService.addProjectTrace(projectInfo.getId(),
+                            EOperationType.OPERATION_ADD, getServiceDomain(),
+                            String.valueOf(projectInfo.getId()), getServiceCategory(),
+                            String.format("Create new project with name '%s'", projectInfo.getName()),
+                            null, projectInfo);
+                }
+                catch (Exception ex)
+                {
+                    LOGGER.error("Failed to trace when creating project: " + ex);
+                }
 
                 if (fromProject != null)
                 {

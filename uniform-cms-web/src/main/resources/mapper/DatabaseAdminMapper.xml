@@ -72,6 +72,10 @@
         DELETE FROM `${tableName}` WHERE `id` = ${id}
     </delete>
 
+    <delete id="deleteTable" parameterType="java.lang.String">
+        DROP TABLE `${tableName}`
+    </delete>
+
     <delete id="deleteByCategory">
         DELETE FROM `${tableName}` WHERE `c_id` = ${categoryId}
     </delete>
