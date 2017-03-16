@@ -9,6 +9,8 @@ import lombok.ToString;
  */
 @Data
 @ToString(exclude = "id")
-public class Role extends BaseEntity
+public class UserRole extends BaseEntity
 {
+    private int userId;
+    private String role;
 }

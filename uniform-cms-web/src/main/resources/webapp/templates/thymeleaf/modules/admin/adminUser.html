@@ -1,0 +1,33 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/default/layout" th:with="menu='users'">
+
+	<th:block layout:fragment="content">
+		<div class="col-md-2">
+			<th:block layout:include="modules/admin/menu/adminMenu"/>
+		</div>
+		<div class="col-md-10">
+			<div class="panel panel-shadow panel-blue-cap">
+				<div class="panel-heading panel-heading-transparent">
+					<h1>User and Roles Management</h1>
+				</div>
+				<div class="panel-body" style="padding: 0 10px 20px 10px;">
+					<div class="pannel-toolbar">
+						<!-- sec:authorize="hasRole('ROLE_DEFAULT')" -->
+						<a href="javascript:void(0);" class="btn btn-icon-button" disabled="true" id="btnUpdate">
+							<span class="icon icon-edit"></span><span>Update</span>
+						</a>
+					</div>
+					<div id="table-filter" class="grid-alternating-rows n-table-hover n-jqxgrid-table n-grid-paging "></div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" th:inline="javascript">
+			/*<![CDATA[*/
+			$(function(){
+				// loadData();
+			});
+			/*]]>*/
+		</script>
+	</th:block>
+</html>

@@ -1,0 +1,20 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <dl class="n-list-group">
+        <dt class="n-list-group-item">Admin Dashboard</dt>
+        <a href="#" th:href="@{'/admin/users'}">
+            <dd class="n-list-group-item" th:classappend="${menu == 'users'} ? selected : ''" style="border-radius:0px">
+                <span class="icon icon-list icon-subnav"></span><span>Users</span>
+            </dd>
+        </a>
+        <a href="#" th:href="@{'/admin/users'}">
+            <dd class="n-list-group-item" th:classappend="${menu == 'database'} ? selected : ''" style="border-radius:0px">
+                <span class="icon icon-data icon-subnav"></span><span>Database</span>
+            </dd>
+        </a>
+        <a href="#" th:href="@{'/admin/settings'}">
+            <dd class="n-list-group-item" th:classappend="${menu == 'settings'} ? selected : ''" style="border-top-left-radius:0px; border-top-right-radius:0px;">
+                <span class="icon icon-settings icon-subnav"></span><span>Settings</span>
+            </dd>
+        </a>
+    </dl>
+</div>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nokia.ucms.biz.repository.SystemConfigRepository">
+    
+	<cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
+	
+    <resultMap type="com.nokia.ucms.biz.entity.SystemConfig" id="result_sysConf">
+        <id property="id" column="id"/>  
+        <result property="propertyName" column="prop_name"/>  
+        <result property="propertyValue" column="prop_value"/>
+        <result property="propertyDescription" column="prop_desc"/>
+    </resultMap>
+    
+    <select id="getConfigByName" parameterType="java.lang.String" resultMap="result_sysConf">
+		SELECT * FROM `t_sys_config` WHERE `prop_name` = #{name}
+	</select>
+	
+    <select id="getConfigById" parameterType="java.lang.Integer" resultMap="result_sysConf">
+        SELECT * FROM `t_sys_config` WHERE `id` = #{id}
+	</select>
+	
+    <insert id="insertConfig" parameterType="SystemConfig" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `t_sys_config` (prop_name, prop_value, prop_desc)
+			VALUES(#{propertyName}, #{propertyValue}, #{propertyDescription})
+    </insert>
+	
+    <update id="updateConfig" parameterType="SystemConfig">
+        UPDATE `t_sys_config` SET prop_name = #{propertyName}, prop_value = #{propertyValue}, prop_desc = #{propertyDescription}
+        	where id = #{id};
+    </update>
+    
+    <select id="getAllConfigs" resultMap="result_sysConf">
+		SELECT * FROM `t_sys_config`
+	</select>
+    
+    <update id="deleteConfigById" parameterType="java.lang.Integer">
+        DELETE FROM `t_sys_config` WHERE `id` = #{id};
+    </update>
+    
+    <update id="deleteConfigByName" parameterType="java.lang.String">
+        DELETE FROM `t_sys_config` WHERE `prop_name` = #{name};
+    </update>
+    
+</mapper>
