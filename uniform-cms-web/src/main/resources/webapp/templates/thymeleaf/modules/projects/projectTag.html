@@ -58,10 +58,18 @@
 
         function constructTableTags () {
             var tags = [
-                {text: 'ID', datafield: 'id', hidden: false},
+                {text: 'ID', datafield: 'id', hidden: true},
                 {text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false},
                 {text: 'C', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false},
                 {text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false},
+                {
+                  text: 'No.', sortable: false, filterable: false, editable: false,
+                  groupable: false, draggable: false, resizable: false,
+                  datafield: '', columntype: 'number', width: 40, cellsalign: 'center',
+                  cellsrenderer: function (row, column, value) {
+                      return "<div style='margin:4px;'>" + (value + 1) + "</div>";
+                  }
+                },
                 {text: 'Tag Name', datafield: 'tagName', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Tag Description', datafield: 'tagDesc', cellsalign: 'left', align: 'center', filterable: true}
             ];
