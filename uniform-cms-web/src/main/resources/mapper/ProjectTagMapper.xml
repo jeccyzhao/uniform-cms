@@ -30,6 +30,10 @@
         SELECT * FROM `t_project_tag` WHERE `p_id` = #{projectId}
     </select>
 
+    <select id="getTagsByName" resultMap="rs_projectTag">
+        SELECT * FROM `t_project_tag` WHERE `p_id` = #{projectId} AND `tag_name` LIKE "%"#{name}"%"
+    </select>
+
     <update id="updateProjectTag" parameterType="ProjectTag">
         UPDATE `t_project_tag` SET
             `tag_name` = #{tagName},

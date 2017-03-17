@@ -2,6 +2,7 @@ package com.nokia.ucms.biz.repository;
 
 import com.nokia.ucms.biz.entity.ProjectTag;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.access.method.P;
 
 import java.util.List;
 
@@ -16,4 +17,5 @@ public interface ProjectTagRepository
     Integer updateProjectTag(final ProjectTag projectTag);
     Integer removeProjectTagById(@Param("projectId") Integer projectId, @Param("id") Integer tagId);
     List<ProjectTag> getTagsByProjectId(@Param("projectId") Integer projectId);
+    List<ProjectTag> getTagsByName(@Param("projectId") Integer projectId, @Param("name") String tagName);
 }

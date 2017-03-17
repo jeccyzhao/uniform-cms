@@ -34,6 +34,12 @@ public class ProjectTagService extends BaseService
     @Autowired
     private ProjectTraceService projectTraceService;
 
+    public List<ProjectTag> findTagsByName (Integer projectId, String tagName)
+    {
+        ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
+        return projectTagRepository.getTagsByName(projectId, tagName);
+    }
+
     public ProjectTag addProjectTag(Integer projectId, ProjectTag tag) throws ServiceException {
 
         ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);

@@ -5,6 +5,7 @@ import com.nokia.ucms.biz.service.ProjectInfoService;
 import com.nokia.ucms.biz.service.ProjectTagService;
 import com.nokia.ucms.common.controller.BaseController;
 import com.nokia.ucms.common.entity.ApiQueryResult;
+import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -48,12 +49,13 @@ public class ProjectTagApiController extends BaseController
 
     @RequestMapping(path="", method= RequestMethod.GET)
     public @ResponseBody ApiQueryResult<List<ProjectTag>> getProjectTags(
-            @PathVariable Integer projectId)
+            @PathVariable Integer projectId,
+            @RequestParam(value = "name", required = false) String tagName)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter getProjectTags - [projectId: %d", projectId));
+            LOGGER.debug(String.format("Enter getProjectTags - [projectId: %d, tagName: %s]", projectId, tagName));
 
-        List<ProjectTag> tags = this.projectTagService.getProjectTags(projectId);
+        List<ProjectTag> tags = tagName == null ? this.projectTagService.getProjectTags(projectId) : this.projectTagService.findTagsByName(projectId, tagName);
         return new ApiQueryResult<List<ProjectTag>>(tags);
     }
 
