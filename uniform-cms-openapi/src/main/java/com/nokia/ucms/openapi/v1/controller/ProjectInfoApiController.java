@@ -6,6 +6,8 @@ import com.nokia.ucms.biz.entity.User;
 import com.nokia.ucms.biz.service.ProjectInfoService;
 import com.nokia.ucms.common.controller.BaseController;
 import com.nokia.ucms.common.entity.ApiQueryResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/openapi/v1/projects")
+@Api(value = "ProjectController", description = "Project API")
 public class ProjectInfoApiController extends BaseController
 {
     private static Logger LOGGER = Logger.getLogger(ProjectInfoApiController.class);
@@ -25,6 +28,7 @@ public class ProjectInfoApiController extends BaseController
     @Autowired
     private ProjectInfoService projectInfoService;
 
+    @ApiOperation(value="Get Project", notes="")
     @RequestMapping(path="/{projectId}", method= RequestMethod.GET)
     public @ResponseBody ApiQueryResult<ProjectInfo> getProject(
             @PathVariable Integer projectId)
