@@ -1,10 +1,12 @@
 package com.nokia.ucms.portal.controller;
 
+import static com.nokia.ucms.biz.constants.Constants.*;
 import com.nokia.ucms.biz.entity.SystemConfig;
 import com.nokia.ucms.biz.service.SystemConfigService;
 import com.nokia.ucms.common.controller.BaseController;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +34,7 @@ public class AdminController extends BaseController
     }
 
     @RequestMapping("/settings")
+    @PreAuthorize("hasRole('" + ROLE_ADMIN + "')")
     public String showAdminSettings(Model model)
     {
         setBasicInfoInModel(model);
@@ -52,6 +55,7 @@ public class AdminController extends BaseController
     }
 
     @RequestMapping("/saveSettings")
+    @PreAuthorize("hasRole('" + ROLE_ADMIN + "')")
     public String saveAdminSettings(HttpServletRequest request)
     {
         Map<String, List<String>> params = getAllRequestParameters(request);
@@ -74,12 +78,14 @@ public class AdminController extends BaseController
     }
 
     @RequestMapping("")
+    @PreAuthorize("hasRole('" + ROLE_ADMIN + "')")
     public String showAdminDefaultPage(Model model)
     {
         return showAdminUsers(model);
     }
 
     @RequestMapping("/users")
+    @PreAuthorize("hasRole('" + ROLE_ADMIN + "')")
     public String showAdminUsers(Model model)
     {
         setBasicInfoInModel(model);
@@ -87,6 +93,7 @@ public class AdminController extends BaseController
     }
 
     @RequestMapping("/database")
+    @PreAuthorize("hasRole('" + ROLE_ADMIN + "')")
     public String showAdminDatabase(Model model)
     {
         setBasicInfoInModel(model);

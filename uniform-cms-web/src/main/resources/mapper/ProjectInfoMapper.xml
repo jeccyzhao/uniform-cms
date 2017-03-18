@@ -8,12 +8,14 @@
         <id property="id" column="id"/>
         <result property="name" column="p_name"/>
         <result property="description" column="p_description"/>
-        <result property="owner" column="p_owner"/>
+        <!-- <result property="owner" column="p_owner"/> -->
         <result property="tableName" column="p_tablename"/>
         <result property="state" column="p_state"/>
         <result property="creationTime" column="p_creationTime" />
         <result property="lastUpdateTime" column="p_updateTime" />
         <result property="publicity" column="p_public" />
+        
+        <association property="owner" javaType="User" column="p_owner" select="com.nokia.ucms.biz.repository.UserRepository.getUserById" />
     </resultMap>
 
     <select id="getProjectInfoByName" parameterType="java.lang.String" resultMap="rs_project">
@@ -37,14 +39,14 @@
         <where>
             1 = 1
             <if test="publicity != null"> AND `p_public` = #{publicity}</if>
-            <if test="owner != null"> AND `p_owner` = #{owner}</if>
+            <if test="userName != null"> AND `p_owner` = (SELECT id FROM `t_user` WHERE `u_shortname` = #{userName})</if>
         </where>
         ORDER BY `p_updateTime` DESC
     </select>
 
     <insert id="addProjectInfo" parameterType="ProjectInfo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `t_project` (`p_name`, `p_description`, `p_owner`, `p_tablename`, `p_public`, `p_state`, `p_creationTime`, `p_updateTime`)
-            VALUES (#{name}, #{description}, #{owner}, #{tableName}, #{publicity}, #{state}, #{creationTime}, #{lastUpdateTime})
+            VALUES (#{name}, #{description}, #{owner.id}, #{tableName}, #{publicity}, #{state}, #{creationTime}, #{lastUpdateTime})
     </insert>
 
     <update id="updateProjectInfo">

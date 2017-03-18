@@ -1,8 +1,10 @@
 package com.nokia.ucms.biz.service;
 
+import com.nokia.ucms.biz.constants.Constants;
 import com.nokia.ucms.biz.constants.EOperationType;
 import com.nokia.ucms.biz.constants.EServiceDomain;
 import com.nokia.ucms.biz.entity.ProjectInfo;
+import com.nokia.ucms.biz.entity.User;
 import com.nokia.ucms.biz.repository.DatabaseAdminRepository;
 import com.nokia.ucms.biz.repository.ProjectCategoryRepository;
 import com.nokia.ucms.biz.repository.ProjectColumnRepository;
@@ -11,6 +13,8 @@ import com.nokia.ucms.common.exception.ServiceException;
 import com.nokia.ucms.common.service.BaseService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -208,8 +212,8 @@ public class ProjectInfoService extends BaseService
                 throw new ServiceException(String.format("Project '%s' already exists", projectName));
             }
 
-            // TODO: please replace the logon user.
-            projectInfo.setOwner("marco");
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            projectInfo.setOwner(user);
             projectInfo.setTableName(makeProjectDataTableName(projectName));
             projectInfo.setCreationTime(new Date());
             projectInfo.setLastUpdateTime(projectInfo.getCreationTime());

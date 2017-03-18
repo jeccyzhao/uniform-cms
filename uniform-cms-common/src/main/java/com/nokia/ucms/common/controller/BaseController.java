@@ -2,6 +2,7 @@ package com.nokia.ucms.common.controller;
 
 import com.nokia.ucms.common.entity.ApiQueryResult;
 import com.nokia.ucms.common.utils.StringUtil;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -44,6 +45,17 @@ public abstract class BaseController
     protected Map<String, List<String>> getAllRequestParameters (HttpServletRequest request)
     {
         return this.getAllRequestParameters(request, null);
+    }
+
+    protected Object getAuthenticatedPrinciple()
+    {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal != null)
+        {
+            return principal;
+        }
+
+        return null;
     }
 
     /**

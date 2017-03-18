@@ -34,6 +34,12 @@ public class UserService extends BaseService
             User user = this.userRepository.getUserById(userId);
             if (user != null)
             {
+                UserRole userRole = this.userRoleRepository.getUserRoleByUserId(user.getId());
+                if (userRole != null)
+                {
+                    user.setRole(userRole.getRole());
+                    user.addRole(userRole);
+                }
                 return user;
             }
 
@@ -54,6 +60,7 @@ public class UserService extends BaseService
                 if (userRole != null)
                 {
                     user.setRole(userRole.getRole());
+                    user.addRole(userRole);
                 }
             }
         }
@@ -72,12 +79,11 @@ public class UserService extends BaseService
                 if (userRole != null)
                 {
                     user.setRole(userRole.getRole());
+                    user.addRole(userRole);
                 }
-
-                return user;
             }
 
-            throw new ServiceException(String.format("User (name: %s) does not exist", userName));
+            return user;
         }
 
         throw new ServiceException("Invalid user name: " + userName);

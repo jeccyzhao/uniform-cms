@@ -4,6 +4,7 @@ import com.nokia.ucms.biz.dto.ProjectRecordDataDTO;
 import com.nokia.ucms.biz.entity.ProjectCategory;
 import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.entity.ProjectInfo;
+import com.nokia.ucms.biz.entity.User;
 import com.nokia.ucms.biz.service.ProjectCategoryService;
 import com.nokia.ucms.biz.service.ProjectColumnService;
 import com.nokia.ucms.biz.service.ProjectInfoService;
@@ -16,6 +17,7 @@ import com.nokia.ucms.common.utils.ExcelParser;
 import com.nokia.ucms.common.utils.FileUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.nokia.ucms.biz.dto.ProjectRecordDataDTO.*;
@@ -72,6 +74,7 @@ public class ProjectRecordApiController extends BaseController
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
+    @PreAuthorize("isAuthenticated()")
     public @ResponseBody ApiQueryResult<Integer> addProjectRecord(
             @PathVariable Integer projectId,
             @RequestParam(required = false) Integer categoryId,
@@ -84,6 +87,7 @@ public class ProjectRecordApiController extends BaseController
     }
 
     @RequestMapping(path="/{recordId}", method= RequestMethod.PATCH)
+    @PreAuthorize("isAuthenticated()")
     public @ResponseBody ApiQueryResult<ProjectRecordDataDTO> updateProjectRecord(
             @PathVariable Integer projectId,
             @PathVariable Integer recordId,
@@ -96,6 +100,7 @@ public class ProjectRecordApiController extends BaseController
     }
 
     @RequestMapping(path="/{recordId}", method= RequestMethod.DELETE)
+    @PreAuthorize("isAuthenticated()")
     public @ResponseBody ApiQueryResult<Integer> deleteProjectRecord(
             @PathVariable Integer projectId,
             @PathVariable Integer recordId)
@@ -103,39 +108,56 @@ public class ProjectRecordApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter deleteProjectRecord - [projectId : %d, recordId: %d]", projectId, recordId));
 
-        Integer result = this.projectRecordService.deleteProjectRecord(projectId, recordId);
-        return new ApiQueryResult<Integer>(result != null, result);
+        ProjectInfo entity = this.projectInfoService.getProjectById(projectId);
+        if (entity.getOwner() != null && entity.getOwner().getId().equals(((User)getAuthenticatedPrinciple()).getId()))
+        {
+            Integer result = this.projectRecordService.deleteProjectRecord(projectId, recordId);
+            return new ApiQueryResult<Integer>(result != null, result);
+        }
+        else
+        {
+            return new ApiQueryResult<Integer>(false, null, "No permission to delete this record");
+        }
     }
 
     @RequestMapping(path="/import", method = RequestMethod.POST, headers = "content-type=multipart/form-data")
+    @PreAuthorize("isAuthenticated()")
     public @ResponseBody ApiQueryResult<Integer> importProjectRecord (
             @PathVariable Integer projectId, @RequestParam ("categoryId") Integer categoryId, @RequestParam("file") MultipartFile file)
     {
-        if (file.isEmpty())
+        ProjectInfo entity = this.projectInfoService.getProjectById(projectId);
+        if (entity.getOwner() != null && entity.getOwner().getId().equals(((User)getAuthenticatedPrinciple()).getId()))
         {
-            return new ApiQueryResult<Integer>("The uploaded file for import is empty");
-        }
-
-        String targetFile = FileUtil.saveMultipartFile(file);
-        if (targetFile != null)
-        {
-            int result = this.projectRecordService.batchAddProjectRecordsFromExcelFile(projectId, categoryId, targetFile);
-            if (result == ProjectRecordService.IMPORT_COMPLETE_SUCCESS)
+            if (file.isEmpty())
             {
-                return new ApiQueryResult<Integer>(true);
+                return new ApiQueryResult<Integer>("The uploaded file for import is empty");
             }
-            else if (result == ProjectRecordService.IMPORT_PARTIAL_SUCCESS)
+
+            String targetFile = FileUtil.saveMultipartFile(file);
+            if (targetFile != null)
             {
-                return new ApiQueryResult<Integer>("Import is partial successful and probably some properties exceeds the column length in database");
+                int result = this.projectRecordService.batchAddProjectRecordsFromExcelFile(projectId, categoryId, targetFile);
+                if (result == ProjectRecordService.IMPORT_COMPLETE_SUCCESS)
+                {
+                    return new ApiQueryResult<Integer>(true);
+                }
+                else if (result == ProjectRecordService.IMPORT_PARTIAL_SUCCESS)
+                {
+                    return new ApiQueryResult<Integer>("Import is partial successful and probably some properties exceeds the column length in database");
+                }
+                else
+                {
+                    return new ApiQueryResult<Integer>("Import is failed");
+                }
             }
             else
             {
-                return new ApiQueryResult<Integer>("Import is failed");
+                return new ApiQueryResult<Integer>("Failed to handle the input file");
             }
         }
         else
         {
-            return new ApiQueryResult<Integer>("Failed to handle the input file");
+            return new ApiQueryResult<Integer>(false, null, "No permission to import records in this project");
         }
     }
 

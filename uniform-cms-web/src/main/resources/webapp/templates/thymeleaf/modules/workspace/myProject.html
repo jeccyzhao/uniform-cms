@@ -60,7 +60,7 @@
                 {text: 'Public', datafield: 'publicity', align: 'center',cellsalign:'center',  width: 80, columntype: "checkbox"},
                 {text: 'Project Name', datafield: 'name', align: 'center', filterable: true},
                 {text: 'Project Description', datafield: 'description', align: 'center'},
-                {text: 'Project Owner', datafield: 'owner', editable: false, align: 'center', cellsalign:'center', width: 180},
+                {text: 'Project Owner', datafield: 'ownerName', editable: false, align: 'center', cellsalign:'center'},
                 {text: 'Creation Time', datafield: 'creationTime', editable: false, width: 180, cellsalign:'center', align: 'center'},
                 {text: 'Last Update Time', datafield: 'lastUpdateTime', editable: false, width: 180, cellsalign:'center', align: 'center'}
             ];
@@ -80,6 +80,7 @@
             if (data != null) {
                 data.creationTime = reformatDate(data.creationTime);
                 data.lastUpdateTime = reformatDate(data.lastUpdateTime);
+                data.ownerName = data.owner.userDisplayName;
                 data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-edit"></span></div>';
                 data.delete = '<div class="n-row-indicated" onclick="reviseColumn(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';
             }

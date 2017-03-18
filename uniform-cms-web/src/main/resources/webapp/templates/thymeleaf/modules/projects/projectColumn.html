@@ -9,7 +9,7 @@
     <div class="col-md-10">
         <div class="panel panel-shadow panel-blue-cap">
             <div class="panel-heading panel-heading-transparent" >
-                <div style="color: #C8C9D1; padding: 3px 0; float:right;" th:text="${'Owner - ' + project.owner}">Owner</div>
+                <div style="color: #C8C9D1; padding: 3px 0; float:right;" th:text="${'Owner - ' + project.owner.userDisplayName}">Owner</div>
                 <h1 th:text="'\'' + ${project.name} + '\' - Columns'" style="line-height: 30px"></h1>
             </div>
             <div class="panel-body" style="padding: 0 10px 20px 10px;">
@@ -48,16 +48,16 @@
 
         function loadData(container_id) {
             sendAjaxRequest("projects/" + projectId + "/columns", 'GET', {}, function(data) {
-                initJqxTable(container_id, tableColumns, rebuildColumnData(data), true);
+                initJqxTable(container_id, tableColumns, rebuildColumnData(data), principal != null);
             });
         }
 
         function constructTableColumns () {
             var columns = [
                 {text: 'ID', datafield: 'id', hidden: true},
-                {text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false},
-                //{text: 'C', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false},
-                {text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false},
+                {text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false, hidden: principal == null},
+                //{text: 'C', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false, hidden: principal == null},
+                {text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false, hidden: principal == null},
                 {text: 'Visible', datafield: 'visible', cellsalign:'center', align: 'center', width: 70, columntype: "checkbox"},
                 {text: 'Column Name', datafield: 'columnName', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Column Remark', datafield: 'columnRemark', cellsalign: 'left', align: 'center', filterable: true},

@@ -65,9 +65,9 @@ public class MyAuthenticationProvider implements AuthenticationProvider
                     user.setUserPassword(password);
 
                     String role = ROLE_DEFAULT;
-                    if (user.getId() != null && user.getRoles() != null)
+                    if (user.getId() != null && user.getRole() != null)
                     {
-                        role = user.getRoles().get(0).getRole();
+                        role = user.getRole();  // user.getRoles().get(0).getRole();
                     }
 
                     userService.saveOrUpdate(user, role);

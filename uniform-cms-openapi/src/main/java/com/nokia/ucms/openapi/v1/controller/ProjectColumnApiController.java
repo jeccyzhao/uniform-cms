@@ -1,6 +1,8 @@
 package com.nokia.ucms.openapi.v1.controller;
 
 import com.nokia.ucms.biz.entity.ProjectColumn;
+import com.nokia.ucms.biz.entity.ProjectInfo;
+import com.nokia.ucms.biz.entity.User;
 import com.nokia.ucms.biz.service.ProjectColumnService;
 import com.nokia.ucms.biz.service.ProjectInfoService;
 import com.nokia.ucms.common.controller.BaseController;
@@ -8,9 +10,9 @@ import com.nokia.ucms.common.entity.ApiQueryResult;
 import com.nokia.ucms.common.exception.ServiceException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,6 +26,9 @@ public class ProjectColumnApiController extends BaseController
 
     @Autowired
     private ProjectColumnService projectColumnService;
+
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     @RequestMapping(path="", method= RequestMethod.GET)
     public @ResponseBody ApiQueryResult<List<ProjectColumn>> getProjectColumns(
@@ -59,6 +64,7 @@ public class ProjectColumnApiController extends BaseController
     }
 
     @RequestMapping(path="/{columnId}", method= RequestMethod.PATCH)
+    @PreAuthorize("isAuthenticated()")
     public @ResponseBody ApiQueryResult<ProjectColumn> updateProjectColumn(
             @PathVariable Integer projectId,
             @PathVariable Integer columnId,
@@ -67,13 +73,19 @@ public class ProjectColumnApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter updateProjectColumn - [projectId: %d, projectColumn: %s]", projectId, projectColumn));
 
-        //projectColumn.setId(columnId);
-        //projectColumn.setProjectId(projectId);
-
-        return new ApiQueryResult<ProjectColumn>(projectColumnService.updateProjectColumn(projectId, columnId, projectColumn));
+        ProjectInfo entity = this.projectInfoService.getProjectById(projectId);
+        if (entity.getOwner() != null && entity.getOwner().getId().equals(((User)getAuthenticatedPrinciple()).getId()))
+        {
+            return new ApiQueryResult<ProjectColumn>(projectColumnService.updateProjectColumn(projectId, columnId, projectColumn));
+        }
+        else
+        {
+            return new ApiQueryResult<ProjectColumn>(false, null, "No permission to update this column");
+        }
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
+    @PreAuthorize("isAuthenticated()")
     public @ResponseBody ApiQueryResult<Integer> createProjectColumn(
             @PathVariable Integer projectId,
             @RequestBody ProjectColumn projectColumn)
@@ -81,14 +93,23 @@ public class ProjectColumnApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter createProjectColumn - [projectId: %d, projectColumn: %s]", projectId, projectColumn));
 
-        // use path variable as property
-        projectColumn.setProjectId(projectId);
+        ProjectInfo entity = this.projectInfoService.getProjectById(projectId);
+        if (entity.getOwner() != null && entity.getOwner().getId().equals(((User)getAuthenticatedPrinciple()).getId()))
+        {
+            // use path variable as property
+            projectColumn.setProjectId(projectId);
 
-        Integer result = projectColumnService.createProjectColumn(projectColumn);
-        return new ApiQueryResult<Integer>(result > 0, result);
+            Integer result = projectColumnService.createProjectColumn(projectColumn);
+            return new ApiQueryResult<Integer>(result > 0, result);
+        }
+        else
+        {
+            return new ApiQueryResult<Integer>(false, null, "No permission to create column in this project");
+        }
     }
 
     @RequestMapping(path="/{projectColumnId}", method= RequestMethod.DELETE)
+    @PreAuthorize("isAuthenticated()")
     public @ResponseBody ApiQueryResult<Integer> deleteProjectColumn(
             @PathVariable Integer projectId,
             @PathVariable Integer projectColumnId)
@@ -96,8 +117,16 @@ public class ProjectColumnApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter deleteProjectColumn - [projectId: %d, projectColumnId: %d]", projectId, projectColumnId));
 
-        Integer result = projectColumnService.removeProjectColumn(projectColumnId);
-        return new ApiQueryResult<Integer>(result);
+        ProjectInfo entity = this.projectInfoService.getProjectById(projectId);
+        if (entity.getOwner() != null && entity.getOwner().getId().equals(((User)getAuthenticatedPrinciple()).getId()))
+        {
+            Integer result = projectColumnService.removeProjectColumn(projectColumnId);
+            return new ApiQueryResult<Integer>(result);
+        }
+        else
+        {
+            return new ApiQueryResult<Integer>(false, null, "No permission to delete the project column");
+        }
     }
 
     protected String getModulePath ()

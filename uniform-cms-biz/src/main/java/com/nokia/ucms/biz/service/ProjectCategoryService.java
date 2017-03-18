@@ -5,12 +5,14 @@ import com.nokia.ucms.biz.constants.EServiceDomain;
 import com.nokia.ucms.biz.entity.ProjectCategory;
 import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.entity.ProjectInfo;
+import com.nokia.ucms.biz.entity.User;
 import com.nokia.ucms.biz.repository.DatabaseAdminRepository;
 import com.nokia.ucms.biz.repository.ProjectCategoryRepository;
 import com.nokia.ucms.common.exception.ServiceException;
 import com.nokia.ucms.common.service.BaseService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import static com.nokia.ucms.biz.constants.Constants.*;
 
@@ -97,8 +99,8 @@ public class ProjectCategoryService extends BaseService
                 category.setCreationTime(new Date());
                 category.setUpdateTime(category.getCreationTime());
 
-                // TODO replace with logon user
-                category.setOwner("Change It");
+                User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                category.setOwner(user.getUserDisplayName());
 
                 Integer result = projectCategoryRepository.addCategory(category);
                 if (result != null)

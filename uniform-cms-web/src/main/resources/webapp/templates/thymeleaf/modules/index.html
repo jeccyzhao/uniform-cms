@@ -52,6 +52,7 @@
                     data[i].creationTime = reformatDate(data[i].creationTime);
                     data[i].lastUpdateTime = reformatDate(data[i].lastUpdateTime);
                     data[i].name = "<a target='_self' href='" + ctxPath + "/projects/" + data[i].name + "'>" + data[i].name + "</a>";
+                    data[i].ownerName = data[i].owner.userDisplayName;
                 }
             }
             return data;
@@ -70,7 +71,7 @@
                 {text: 'ID', datafield: 'id', hidden: true},
                 {text: 'Project Name', datafield: 'name', align: 'center', filterable: true},
                 {text: 'Project Description', datafield: 'description', align: 'center'},
-                {text: 'Project Owner', datafield: 'owner', align: 'center', width: 180},
+                {text: 'Project Owner', datafield: 'ownerName', align: 'center', width: 200},
                 {text: 'Creation Time', datafield: 'creationTime', width: 180, cellsalign:'center', align: 'center'},
                 {text: 'Last Update Time', datafield: 'lastUpdateTime', width: 180, cellsalign:'center', align: 'center'}
             ];

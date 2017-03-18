@@ -3,10 +3,10 @@
 		<li class="n-banner-3Link" th:classappend="${mod == null} ? active : ''"  id="nav_download">
 			<a href="#" th:href="@{/}" target="_self" data-item="item2"><span>Explore</span></a>
 		</li>
-		<li class="n-banner-3Link" th:classappend="${mod == 'workspace'} ? active : ''" id="nav_get_started">
-			<a href="#" th:href="@{/workspace/marco}" target="_self" data-item="item3"><span>My Workspace</span></a>
+		<li class="n-banner-3Link" th:classappend="${mod == 'workspace'} ? active : ''" id="nav_get_started" sec:authorize="isAuthenticated()">
+			<a href="#" th:href="@{'/workspace/' + ${#authentication.principal.userName}}" target="_self" data-item="item3"><span>My Workspace</span></a>
 		</li>
-		<li class="n-banner-3Link" th:classappend="${mod == 'admin'} ? active : ''" id="nav_admin">
+		<li class="n-banner-3Link" th:classappend="${mod == 'admin'} ? active : ''" id="nav_admin" sec:authorize="hasAnyRole('ROLE_ADMIN')">
 			<a href="#" th:href="@{/admin}" target="_self" data-item="item3"><span>Administer</span></a>
 		</li>
 	</ul>

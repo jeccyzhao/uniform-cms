@@ -35,7 +35,7 @@
             function constructTableColumns() {
                 var columns = [
                     {text: 'ID', datafield: 'id', hidden: true, align: 'center', editable: false},
-                    {text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false},
+                    //{text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false},
                     {
                       text: 'No.', sortable: false, filterable: false, editable: false,
                       groupable: false, draggable: false, resizable: false,
@@ -45,15 +45,16 @@
                       }
                     },
 					{text: 'UID', datafield: 'userIdNumber', align: 'center', cellsalign: 'center', width: 120, editable: false},
+					{text: 'User Name', datafield: 'userName', align: 'center', cellsalign: 'center', width: 120, editable: false},
 					{text: 'User Display Name', datafield: 'userDisplayName', align: 'center', editable: false},
 					{text: 'User Mail', datafield: 'userMail', align: 'center', editable: false},
 					{text: 'User Role', datafield: 'role', width: 190, columntype: 'custom', align: 'center', cellsalign: 'center',
 						cellsrenderer: $.grid.dropdownlistCellsrenderer,
-						createeditor: $.grid.dropdownlistEditor(['ROLE_GUEST', 'ROLE_ADMIN', 'ROLE_ROOT']),
+						createeditor: $.grid.dropdownlistEditor(['ROLE_DEFAULT', 'ROLE_ADMIN']),
 						initeditor: $.grid.dropdownlistInitEditor,
 						geteditorvalue: $.grid.dropdownlistEditorValue
 					},
-					{text: 'Last Logon Time', datafield: 'lastLogonTime', width: 160, align: 'center', cellsalign: 'center', editable: false}
+					{text: 'Last Logon Time', datafield: 'lastLoginTime', width: 160, align: 'center', cellsalign: 'center', editable: false}
 				];
 
                 return columns;
@@ -72,7 +73,7 @@
             function rebuildSingleColumnData (data) {
                 if (data != null) {
                     data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-edit"></span></div>';
-                    data.lastLogonTime = reformatDate(data.lastLogonTime);
+                    data.lastLoginTime = reformatDate(data.lastLoginTime);
                 }
 
                 return data;

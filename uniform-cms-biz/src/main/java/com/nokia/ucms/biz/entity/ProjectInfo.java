@@ -26,8 +26,10 @@ public class ProjectInfo extends BaseEntity
     private String name;
     private String description;
 
-    @NotEmpty
-    private String owner;
+    //@NotEmpty
+    //private String owner;
+
+    private User owner;
 
     // table name is generated dynamically and update by operator not allowed
     private String tableName;

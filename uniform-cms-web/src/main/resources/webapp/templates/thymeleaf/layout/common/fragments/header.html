@@ -23,6 +23,7 @@
 		var ctxPath = [[${#httpServletRequest.contextPath}]];
 		var openApiVersion = "v1";
 		var openApiContextPath = ctxPath + "/openapi/" + openApiVersion;
+		var principal = /*[[${#authentication.principal != 'anonymousUser' ? #authentication.principal.userName : null}]]*/;
 		/*]]>*/
 	</script>
     

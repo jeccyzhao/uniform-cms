@@ -1,35 +1,41 @@
 <div xmlns:th="http://www.thymeleaf.org">
     <div class="row n-banner-1st">
-    <div class="n-banner-right n-banner-logo-img hidden-xs" style="padding-left:12px">
-        <img alt="Nokia" th:src="@{/plugins/wulfdist/img/logo.png}" />
-    </div>
-    <div class="n-banner-right n-banner-1st-gray-to-white hidden-xs">
-        <div class="gray-mask"></div>
-        <div class="white-mask"></div>
-        <div class="gray-corner"></div>
-        <div class="white-corner"></div>
-    </div>
-    
-    <ul class="nav n-banner-right n-banner-nav n-banner-controls">
-        <li class="hidden-xs"><p>|</p></li>
-        <li id="wulf_logout" >
-            <a href="#" th:href="@{/logout}" data-toggle="modal">Log Out</a>
-        </li>
-    </ul>
-    
-    <ul class="nav n-banner-right n-banner-nav n-banner-controls">
-        <li id="wulf_login">
-            <a href="login" th:href="@{/login}">
-                <i class="icon icon-profile"></i>Login
-            </a>
-        </li>
-    </ul>
+        <div class="n-banner-right n-banner-logo-img hidden-xs" style="padding-left:12px">
+            <img alt="Nokia" th:src="@{/plugins/wulfdist/img/logo.png}" />
+        </div>
+        <div class="n-banner-right n-banner-1st-gray-to-white hidden-xs">
+            <div class="gray-mask"></div>
+            <div class="white-mask"></div>
+            <div class="gray-corner"></div>
+            <div class="white-corner"></div>
+        </div>
 
-    <div class="n-banner-right n-banner-1st-blue-to-gray hidden-xs">
-        <div class="blue-mask"></div>
-        <div class="gray-mask"></div>
-        <div class="blue-corner"></div>
-        <div class="gray-corner"></div>
+        <ul class="nav n-banner-right n-banner-nav n-banner-controls" sec:authorize="isAuthenticated()">
+            <li id="wulf_logout" >
+                <a href="javascript:void(0);" style="cursor:default">
+                    <i class="icon icon-profile"></i>
+                    <span th:text="${#authentication.principal.userDisplayName}">Username</span>
+                </a>
+            </li>
+            <li class="hidden-xs"><p>|</p></li>
+            <li id="wulf_logout" >
+                <a href="#" th:href="@{/logout}" data-toggle="modal">Log Out</a>
+            </li>
+        </ul>
+
+        <ul class="nav n-banner-right n-banner-nav n-banner-controls" sec:authorize="isAnonymous()">
+            <li id="wulf_login">
+                <a href="login" th:href="@{/login}">
+                    <i class="icon icon-profile"></i>Login
+                </a>
+            </li>
+        </ul>
+
+        <div class="n-banner-right n-banner-1st-blue-to-gray hidden-xs">
+            <div class="blue-mask"></div>
+            <div class="gray-mask"></div>
+            <div class="blue-corner"></div>
+            <div class="gray-corner"></div>
+        </div>
     </div>
-</div>
 </div>

@@ -7,6 +7,7 @@ import com.nokia.ucms.biz.dto.ProjectRecordDataDTO;
 import com.nokia.ucms.biz.entity.ProjectCategory;
 import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.entity.ProjectInfo;
+import com.nokia.ucms.biz.entity.User;
 import com.nokia.ucms.biz.repository.DatabaseAdminRepository;
 import com.nokia.ucms.biz.repository.ProjectCategoryRepository;
 import com.nokia.ucms.biz.repository.ProjectColumnRepository;
@@ -18,6 +19,7 @@ import com.nokia.ucms.common.service.BaseService;
 import com.nokia.ucms.common.utils.ExcelParser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.sql.rowset.serial.SerialException;
@@ -358,9 +360,9 @@ public class ProjectRecordService extends BaseService
                 projectData.setCreationTime(new Date());
                 projectData.setUpdateTime(new Date());
 
-                // TODO replace with valid user
-                projectData.setOwner("Change It");
-                projectData.setLastUpdateUser("Change It");
+                User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                projectData.setOwner(user.getUserDisplayName());
+                projectData.setLastUpdateUser(user.getUserDisplayName());
 
                 Integer result = this.databaseAdminRepository.insertByProps(projectInfo.getTableName(),
                         projectData.getInsertedColumnIdsByNames(projectColumns), projectData.getInsertedColumnValues());

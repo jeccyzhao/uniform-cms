@@ -4,11 +4,13 @@ import com.nokia.ucms.biz.constants.EOperationType;
 import com.nokia.ucms.biz.constants.EServiceDomain;
 import com.nokia.ucms.biz.entity.ProjectInfo;
 import com.nokia.ucms.biz.entity.ProjectTrace;
+import com.nokia.ucms.biz.entity.User;
 import com.nokia.ucms.biz.repository.ProjectTraceRepository;
 import com.nokia.ucms.common.exception.ServiceException;
 import com.nokia.ucms.common.service.BaseService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,8 +48,8 @@ public class ProjectTraceService extends BaseService
         projectTrace.setEventTime(new Date());
         projectTrace.setProjectId(projectId);
 
-        // TODO replace with logon user
-        projectTrace.setOperator("Change It");
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        projectTrace.setOperator(user.getUserDisplayName());
         projectTrace.setEventType(operationType.getCode());
         projectTrace.setMessage(message);
         projectTrace.setCategory(serviceCategory);

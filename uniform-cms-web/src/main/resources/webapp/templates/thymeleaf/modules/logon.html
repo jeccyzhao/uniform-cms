@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Nokia Content Management System - Logon</title>
+		<link th:href="@{/plugins/wulfdist/css/wulf.basic.min.css}" rel="stylesheet"/>
+		<link th:href="@{/plugins/wulfdist/css/wulf.buttons.min.css}" rel="stylesheet"/>
+		<link th:href="@{/plugins/wulfdist/css/wulf.inputfield.min.css}" rel="stylesheet"/>
+		<link th:href="@{/plugins/wulfdist/css/wulf.login.min.css}" rel="stylesheet"/>
+		<link th:href="@{/plugins/wulfdist/css/wulf.links.min.css}" rel="stylesheet"/>
+		<link th:href="@{/plugins/wulfdist/css/wulf.panel.min.css}" rel="stylesheet"/>
+		<link th:href="@{/plugins/wulfdist/css/wulf.alert.min.css}" rel="stylesheet"/>
+		<link th:href="@{/plugins/wulfdist/css/demo.css}" rel="stylesheet"/>
+		<link th:href="@{/assets/favicon.ico}" rel="shortcut icon" />
+		<script type="text/javascript" th:inline="javascript">
+			/*<![CDATA[*/
+			var ctxPath = [[${#httpServletRequest.contextPath}]];
+			/*]]>*/
+		</script>
+	</head>
+	<body class="demo-body-content">
+		<div class="n-login-wrapper">
+			<div class="n-login n-login-legal-copy">
+			    <div class="n-login-logo">
+			        <img src="plugins/wulfdist/img/logo.png" width="110" height="19" alt="Nokia logo"/>
+			    </div>
+			    <div class="panel panel-shadow panel-blue-cap">
+			        <h1 class="n-login-title">Nokia <span class="n-product-name-blue">Content Management System</span></h1>
+			        <div class="panel-body">
+			            <div class="n-login-panel-fields">
+			                <form class="form-horizontal" action="login" method="post">
+			                	<div th:if="${param.error != null}" class="alert-error" style="display: block;">
+		                            <span class="icon icon-error"></span><span th:text="${session[SPRING_SECURITY_LAST_EXCEPTION].message}"></span>
+		                        </div>
+			                    <div class="form-group n-login-textfields">
+			                        <div class="col-sm-6 input-required">
+			                            <input name="username" type="text" tabindex="110" class="form-control n-inputfield" id="applicationLoginUsername" placeholder="Username" />
+			                            <a class="form-control-feedback"><span class="icon icon-mandatory"></span></a>
+			                        </div>
+			                        <div class="col-sm-6 input-required">
+			                            <input name="password" type="password" tabindex="120" class="form-control n-inputfield" id="applicationLoginPassword" placeholder="Password" />
+			                            <a class="form-control-feedback form-control-feedback"><span class="icon icon-mandatory"></span></a>
+			                        </div>
+			                    </div>
+			                    <div class="n-login-action">
+			                        <button type="submit" class="btn btn-defaultBlue btn-standard n-login-button" id="applicationLoginButton">Log In</button>
+			                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			                    </div>
+			                </form>
+			            </div>
+			        </div>
+			        <div class="n-login-legal-copy-text">
+		                You are about to access a private system. This system is for the use of authorized users towards permitted operations. All connections are logged. Any unauthorized access or attempts may be punished to the fullest extent possible under the applicable local legislation.
+		            </div>
+			    </div>
+			</div>
+		</div>
+		<div class="small n-login-copyright">
+		  @2017 Nokia. All rights reserved.
+		</div>
+		<script src="plugins/assets/js/require.js"></script>
+		<script src="plugins/assets/js/require-config.js"></script>
+		<script>
+		    require(['wulf/inputfield']);
+		</script>
+	</body>
+</html>

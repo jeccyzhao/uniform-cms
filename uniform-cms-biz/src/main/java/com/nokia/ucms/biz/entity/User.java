@@ -1,5 +1,6 @@
 package com.nokia.ucms.biz.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nokia.ucms.common.entity.BaseEntity;
 import lombok.Data;
 import lombok.ToString;
@@ -13,6 +14,7 @@ import java.util.List;
  */
 @Data
 @ToString(exclude = "id")
+@JsonIgnoreProperties(value = { "id" })
 public class User extends BaseEntity
 {
     private String userName;
@@ -23,7 +25,7 @@ public class User extends BaseEntity
     private Date lastLoginTime;
 
     private String role;
-    private List<UserRole> roles = new ArrayList<UserRole>();
+    private List<UserRole> roles;
 
     public User()
     {
@@ -43,4 +45,18 @@ public class User extends BaseEntity
             this.roles.add(role);
         }
     }
+
+    public void addRole (final UserRole userRole)
+    {
+        if (userRole != null)
+        {
+            if (roles == null)
+            {
+                roles = new ArrayList<UserRole>();
+            }
+
+            roles.add(userRole);
+        }
+    }
+
 }

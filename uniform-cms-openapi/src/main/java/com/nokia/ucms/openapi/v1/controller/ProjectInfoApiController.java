@@ -2,6 +2,7 @@ package com.nokia.ucms.openapi.v1.controller;
 
 import com.nokia.ucms.biz.dto.ProjectRecordDataDTO;
 import com.nokia.ucms.biz.entity.ProjectInfo;
+import com.nokia.ucms.biz.entity.User;
 import com.nokia.ucms.biz.service.ProjectInfoService;
 import com.nokia.ucms.common.controller.BaseController;
 import com.nokia.ucms.common.entity.ApiQueryResult;
@@ -35,7 +36,7 @@ public class ProjectInfoApiController extends BaseController
     }
 
     @RequestMapping(path="/{projectId}", method= RequestMethod.PATCH)
-    //@PreAuthorize("hasRole('')")
+    @PreAuthorize("isAuthenticated()")
     public @ResponseBody ApiQueryResult<ProjectInfo> updateProject(
             @PathVariable Integer projectId,
             @RequestBody ProjectInfo projectInfo)
@@ -43,11 +44,17 @@ public class ProjectInfoApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter updateProject - [projectId: %d, projectInfo: %s]", projectId, projectInfo));
 
-        // TODO Validation must be added before update
-
-        // set id with path variable
-        // projectInfo.setId(projectId);
-        return new ApiQueryResult<ProjectInfo>(projectInfoService.updateProject(projectId, projectInfo));
+        ProjectInfo entity = this.projectInfoService.getProjectById(projectId);
+        if (entity.getOwner() != null && entity.getOwner().getId().equals(((User)getAuthenticatedPrinciple()).getId()))
+        {
+            // set id with path variable
+            // projectInfo.setId(projectId);
+            return new ApiQueryResult<ProjectInfo>(projectInfoService.updateProject(projectId, projectInfo));
+        }
+        else
+        {
+            return new ApiQueryResult<ProjectInfo>(false, null, "No permission to update this project");
+        }
     }
 
     @RequestMapping(path="/", method= RequestMethod.GET)
@@ -61,6 +68,7 @@ public class ProjectInfoApiController extends BaseController
     }
 
     @RequestMapping(path="", method= RequestMethod.POST)
+    @PreAuthorize("isAuthenticated()")
     public @ResponseBody ApiQueryResult<Object> createProject(
             @RequestBody ProjectInfo projectInfo,
             @RequestParam(value = "from", required = false) Integer fromProject)
@@ -73,13 +81,22 @@ public class ProjectInfoApiController extends BaseController
     }
 
     @RequestMapping(path="/{projectId}", method= RequestMethod.DELETE)
+    @PreAuthorize("isAuthenticated()")
     public @ResponseBody ApiQueryResult<Integer> deleteProject(@PathVariable Integer projectId)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter deleteProject - [projectId: %d]", projectId));
 
-        Integer result = this.projectInfoService.removeProject(projectId);
-        return new ApiQueryResult<Integer>(result != null);
+        ProjectInfo projectInfo = this.projectInfoService.getProjectById(projectId);
+        if (projectInfo.getOwner() != null && projectInfo.getOwner().getId().equals(((User)getAuthenticatedPrinciple()).getId()))
+        {
+            Integer result = this.projectInfoService.removeProject(projectId);
+            return new ApiQueryResult<Integer>(result != null);
+        }
+        else
+        {
+            return new ApiQueryResult<Integer>(false, null, "No permission to delete this project");
+        }
     }
 
     protected String getModulePath ()
