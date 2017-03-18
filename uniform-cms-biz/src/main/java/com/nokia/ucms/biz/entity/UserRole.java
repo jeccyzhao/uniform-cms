@@ -1,5 +1,6 @@
 package com.nokia.ucms.biz.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nokia.ucms.common.entity.BaseEntity;
 import lombok.Data;
 import lombok.ToString;
@@ -9,6 +10,7 @@ import lombok.ToString;
  */
 @Data
 @ToString(exclude = "id")
+@JsonIgnoreProperties(value= { "id", "userId" } )
 public class UserRole extends BaseEntity
 {
     private int userId;

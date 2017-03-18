@@ -29,7 +29,7 @@ public class Swagger2Config
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Nokia Conent Management System Restful API")
+                .title("Restful API Doc")
                 .version("1.0")
                 .build();
     }

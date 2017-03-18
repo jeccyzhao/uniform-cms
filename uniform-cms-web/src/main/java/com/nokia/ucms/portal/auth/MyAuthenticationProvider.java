@@ -62,7 +62,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider
                     }
 
                     user.setLastLoginTime(new Date());
-                    user.setUserPassword(password);
+                    //user.setUserPassword(password);
 
                     String role = ROLE_DEFAULT;
                     if (user.getId() != null && user.getRole() != null)

@@ -43,7 +43,7 @@ public class MyUserDetails implements UserDetails
 
     public String getPassword ()
     {
-        return user.getUserPassword();
+        return null; //user.getUserPassword();
     }
 
     public String getUsername ()

@@ -14,14 +14,14 @@ import java.util.List;
  */
 @Data
 @ToString(exclude = "id")
-@JsonIgnoreProperties(value = { "id" })
+@JsonIgnoreProperties(value = { "id", "userPassword", "role", "roles"})
 public class User extends BaseEntity
 {
     private String userName;
     private String userDisplayName;
     private String userIdNumber;
     private String userMail;
-    private String userPassword;
+    //private String userPassword;
     private Date lastLoginTime;
 
     private String role;

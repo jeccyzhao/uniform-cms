@@ -18,9 +18,9 @@ import java.util.List;
 /**
  * Created by x36zhao on 2017/3/5.
  */
+@Api(value = "Project Info", description = "Project Basic API")
 @RestController
 @RequestMapping("/openapi/v1/projects")
-@Api(value = "ProjectController", description = "Project API")
 public class ProjectInfoApiController extends BaseController
 {
     private static Logger LOGGER = Logger.getLogger(ProjectInfoApiController.class);
