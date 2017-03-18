@@ -9,17 +9,17 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 @Getter
-public class BaseEntity implements Serializable 
+public class BaseEntity implements Serializable
 {
-	private static final long serialVersionUID = -2488885189931569213L;
-	
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    private static final long serialVersionUID = -2488885189931569213L;
 
-	public void setId(Integer id) 
-	{
-		this.id = (id == null || id <= 0) ? null : id;
-	}
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    public void setId (Integer id)
+    {
+        this.id = (id == null || id <= 0) ? null : id;
+    }
 }

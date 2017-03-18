@@ -1,7 +1,9 @@
 package com.nokia.ucms.openapi.v1.controller;
 
 import com.nokia.ucms.biz.entity.ProjectInfo;
+import com.nokia.ucms.biz.entity.User;
 import com.nokia.ucms.biz.service.ProjectInfoService;
+import com.nokia.ucms.biz.service.UserService;
 import com.nokia.ucms.common.entity.ApiQueryResult;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +23,26 @@ public class UserApiController
     @Autowired
     private ProjectInfoService projectInfoService;
 
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping(path="", method= RequestMethod.GET)
+    public @ResponseBody ApiQueryResult<List<User>> getAllUsers()
+    {
+        if (LOGGER.isDebugEnabled())
+            LOGGER.debug(String.format("Enter getAllUsers"));
+
+        return new ApiQueryResult<List<User>>(userService.getAllUsers());
+    }
+
     @RequestMapping(path="/{userId}", method= RequestMethod.GET)
-    public @ResponseBody ApiQueryResult<List<ProjectInfo>> getUser(
-            @PathVariable String userId)
+    public @ResponseBody ApiQueryResult<User> getUser(
+            @PathVariable Integer userId)
     {
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter getUser - [userId : %s]", userId));
 
-        return null;
+        return new ApiQueryResult<User>(userService.findById(userId));
     }
 
     @RequestMapping(path="/{userId}/projects", method= RequestMethod.GET)

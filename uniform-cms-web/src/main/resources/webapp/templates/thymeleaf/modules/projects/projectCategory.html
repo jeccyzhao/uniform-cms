@@ -51,7 +51,7 @@
             var columns = [
                 {text: 'ID', datafield: 'id', hidden: true},
                 {text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false},
-                {text: 'C', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false},
+                //{text: 'C', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false},
                 {text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false},
                 {text: 'Category Name', datafield: 'name', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Category Description', datafield: 'description', cellsalign: 'left', align: 'center', filterable: true},
@@ -77,7 +77,7 @@
                 data.creationTime = reformatDate(data.creationTime);
                 data.updateTime = reformatDate(data.updateTime);
                 data.undo = '<div class="n-row-indicated" onclick="reviseCategory(\'clean\');" title="Cleanup"><span class="icon icon-undo"></span></div>';
-                data.edit = '<div class="n-row-indicated" onclick="reviseCategory(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';
+                data.edit = '<div class="n-row-indicated" onclick="reviseCategory(\'update\');" title="Save"><span class="icon icon-edit"></span></div>';
                 data.delete = '<div class="n-row-indicated" onclick="reviseCategory(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';
                 data.go = '<div class="n-row-indicated" title="Goto"><a href="' + ctxPath + '/projects/' + projectName + '/records?category=' + data.name + '" target="_self"><span class="icon icon-goto"></span></a></div>';
             }

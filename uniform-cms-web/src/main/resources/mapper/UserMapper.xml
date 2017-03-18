@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nokia.ucms.biz.repository.UserRepository">
+
+    <cache eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />
+
+    <resultMap type="com.nokia.ucms.biz.entity.User" id="result_user">
+        <id property="id" column="id"/>  
+        <result property="userName" column="u_shortname"/>
+        <result property="userDisplayName" column="u_displayname"/>
+        <result property="userIdNumber" column="u_id"/>
+        <result property="userMail" column="u_mail"/>
+        <result property="lastLoginTime" column="u_lastLoginTime"/>
+    </resultMap>
+    
+    <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `t_user` (u_shortname, u_displayname, u_id, u_mail, u_lastLoginTime)
+            VALUES(#{userName}, #{userDisplayName}, #{userIdNumber}, #{userMail}, #{lastLoginTime})
+    </insert>
+
+    <update id="updateUser" parameterType="User">
+        UPDATE `t_user` SET
+            u_lastLoginTime = #{lastLoginTime},
+            u_shortname = #{userName},
+            u_displayname = #{userDisplayName},
+            u_id = #{userIdNumber},
+            u_mail = #{userMail}
+        WHERE id = #{id};
+    </update>
+    
+    <select id="getUserByName" parameterType="java.lang.String" resultMap="result_user">
+        SELECT * FROM `t_user` where `u_shortname` = #{userName}
+    </select>
+
+    <select id="getUserById" parameterType="java.lang.Integer" resultMap="result_user">
+        SELECT * FROM `t_user` where `id` = #{id}
+    </select>
+    
+    <update id="deleteUserById" parameterType="java.lang.Integer">
+        DELETE FROM `t_user` WHERE `id` = #{id};
+    </update>
+    
+    <update id="deleteUserByName" parameterType="java.lang.String">
+        DELETE FROM `t_user` WHERE `u_shortname` = #{userName};
+    </update>
+    
+    <select id="getAllUsers" resultMap="result_user">
+        SELECT * FROM `t_user` order by `u_lastLoginTime` DESC
+    </select>
+    
+</mapper>

@@ -56,7 +56,7 @@
             var columns = [
                 {text: 'ID', datafield: 'id', hidden: true},
                 {text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false},
-                {text: 'C', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false},
+                //{text: 'C', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false},
                 {text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false},
                 {text: 'Visible', datafield: 'visible', cellsalign:'center', align: 'center', width: 70, columntype: "checkbox"},
                 {text: 'Column Name', datafield: 'columnName', cellsalign: 'left', align: 'center', filterable: true},
@@ -82,7 +82,7 @@
         function rebuildSingleColumnData (data) {
             if (data != null) {
                 data.undo = '<div class="n-row-indicated" onclick="reviseColumn(\'clean\');" title="Cleanup"><span class="icon icon-undo"></span></div>';
-                data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';
+                data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-edit"></span></div>';
                 data.delete = '<div class="n-row-indicated" onclick="reviseColumn(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';
                 data.updateTime = reformatDate(data.updateTime);
             }

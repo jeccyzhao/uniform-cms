@@ -13,4 +13,15 @@ public class UserRole extends BaseEntity
 {
     private int userId;
     private String role;
+
+    public UserRole()
+    {
+
+    }
+
+    public UserRole (int userId, String role)
+    {
+        this.userId = userId;
+        this.role = role;
+    }
 }

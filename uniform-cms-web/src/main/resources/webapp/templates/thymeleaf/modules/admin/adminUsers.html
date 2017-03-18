@@ -1,0 +1,84 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/default/layout" th:with="menu='users'">
+
+	<th:block layout:fragment="content">
+		<div class="col-md-2">
+			<th:block layout:include="modules/admin/menu/adminMenu"/>
+		</div>
+		<div class="col-md-10">
+			<div class="panel panel-shadow panel-blue-cap">
+				<div class="panel-heading panel-heading-transparent">
+					<h1>User and Roles Management</h1>
+				</div>
+				<div class="panel-body" style="padding: 0 10px 20px 10px;">
+					<div class="pannel-toolbar">
+						<!-- sec:authorize="hasRole('ROLE_DEFAULT')" -->
+					</div>
+					<div id="table-filter" class="grid-alternating-rows n-table-hover n-jqxgrid-table n-grid-paging "></div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" th:inline="javascript">
+			/*<![CDATA[*/
+			var tableColumns = constructTableColumns();
+			$(function(){
+				loadData("table-filter");
+			});
+
+            function loadData(container_id) {
+                sendAjaxRequest("users", 'GET', {}, function(data) {
+                    initJqxTable(container_id, tableColumns, rebuildColumnData(data), true);
+                });
+            }
+
+            function constructTableColumns() {
+                var columns = [
+                    {text: 'ID', datafield: 'id', hidden: true, align: 'center', editable: false},
+                    {text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false},
+                    {
+                      text: 'No.', sortable: false, filterable: false, editable: false,
+                      groupable: false, draggable: false, resizable: false,
+                      datafield: '', columntype: 'number', width: 40, cellsalign: 'center',
+                      cellsrenderer: function (row, column, value) {
+                          return "<div style='margin:4px;'>" + (value + 1) + "</div>";
+                      }
+                    },
+					{text: 'UID', datafield: 'userIdNumber', align: 'center', cellsalign: 'center', width: 120, editable: false},
+					{text: 'User Display Name', datafield: 'userDisplayName', align: 'center', editable: false},
+					{text: 'User Mail', datafield: 'userMail', align: 'center', editable: false},
+					{text: 'User Role', datafield: 'role', width: 190, columntype: 'custom', align: 'center', cellsalign: 'center',
+						cellsrenderer: $.grid.dropdownlistCellsrenderer,
+						createeditor: $.grid.dropdownlistEditor(['ROLE_GUEST', 'ROLE_ADMIN', 'ROLE_ROOT']),
+						initeditor: $.grid.dropdownlistInitEditor,
+						geteditorvalue: $.grid.dropdownlistEditorValue
+					},
+					{text: 'Last Logon Time', datafield: 'lastLogonTime', width: 160, align: 'center', cellsalign: 'center', editable: false}
+				];
+
+                return columns;
+            }
+
+            function rebuildColumnData(dataList) {
+                if (dataList != null) {
+                    for (var i = 0; i < dataList.length; i++) {
+                        rebuildSingleColumnData(dataList[i]);
+                    }
+                }
+
+                return dataList;
+            }
+
+            function rebuildSingleColumnData (data) {
+                if (data != null) {
+                    data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-edit"></span></div>';
+                    data.lastLogonTime = reformatDate(data.lastLogonTime);
+                }
+
+                return data;
+            }
+
+        /*]]>*/
+        </script>
+    </th:block>
+</html>

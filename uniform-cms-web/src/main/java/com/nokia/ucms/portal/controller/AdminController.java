@@ -76,7 +76,7 @@ public class AdminController extends BaseController
     @RequestMapping("")
     public String showAdminDefaultPage(Model model)
     {
-        return showAdminSettings(model);
+        return showAdminUsers(model);
     }
 
     @RequestMapping("/users")
