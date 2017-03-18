@@ -45,16 +45,17 @@
         var projectId = /*[[${project.id}]]*/;
         var projectName = /*[[${project.name}]]*/;
         var categoryId = /*[[${category != null ? category.id : null}]]*/
-        var categoryName = /*[[${category != null ? category.id : null}]]*/
-        var excludedColumns = ["id", "edit", "delete", "undo", "seq", "updateTime", "columnLength", "visible"];
+        var categoryName = /*[[${category != null ? category.name : null}]]*/
+        var excludedColumns = ["id", "edit", "delete", "undo", "seq", "Update Time", "Creation Time", "columnLength", "visible"];
+        var exportFileName = projectName + "+" + categoryName;
         var dataColumns = [];
         $(function () {
             loadData("table-filter");
             $("#excelExport").click(function(){
-                export2File("table-filter", "xls", "jqxGrid", ctxPath + "/projects/" + projectName + "/categories/" + categoryId + "/export", excludedColumns);
+                export2File("table-filter", "xls", exportFileName, ctxPath + "/projects/" + projectName + "/categories/" + categoryId + "/export", excludedColumns);
             });
             $("#pdfExport").click(function(){
-                export2File("table-filter", "pdf", "jqxGrid", ctxPath + "/projects/" + projectName + "/categories/" + categoryId + "/export", excludedColumns);
+                export2File("table-filter", "pdf", exportFileName, ctxPath + "/projects/" + projectName + "/categories/" + categoryId + "/export", excludedColumns);
             });
             $("#op_add").click(function() {
                 showPopupDialog('m_projectRecord');

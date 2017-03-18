@@ -59,6 +59,7 @@
                         var reload = false;
                         var jsonResult = eval(response);
                         var returnCode = jsonResult.data;
+                        var hasError = false;
                         if (jsonResult.success) {
                             reload = true;
                         } else {
@@ -66,6 +67,7 @@
                                 reload = true;
                             }
                             showErrorDialog(jsonResult.error);
+                            hasError = true;
                             $("#m_projectRecordDataImport").css("z-index", 1049);
                         }
 
@@ -75,6 +77,10 @@
                         }
 
                         disableAjaxLoading();
+                        $("#m_projectRecordDataImport").css("z-index", 1049);
+                        if (!hasError) {
+                            $("#m_projectRecordDataImport").modal("hide");
+                        }
                     },
                     beforeSend: function() {
                         $("#m_projectRecordDataImport").css("z-index", 999);
