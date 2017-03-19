@@ -113,7 +113,7 @@ public class ProjectColumnService extends BaseService
                             projectColumn, null);
 
                     // update lastUpdateTime in project
-                    projectInfoService.updateProject(projectInfo.getId(), projectInfo);
+                    projectInfoService.updateProject(projectInfo.getId(), projectInfo, false);
                 }
                 catch (Exception ex)
                 {
@@ -158,7 +158,7 @@ public class ProjectColumnService extends BaseService
                                 entityById, projectColumn);
 
                         // update the lastUpdateTime in project
-                        projectInfoService.updateProject(projectId, projectInfo);
+                        projectInfoService.updateProject(projectId, projectInfo, false);
                     }
                     catch (Exception ex)
                     {
@@ -209,7 +209,7 @@ public class ProjectColumnService extends BaseService
                                 null, projectColumn);
 
                         // update the lastUpdateTime in project
-                        projectInfoService.updateProject(projectInfo.getId(), projectInfo);
+                        projectInfoService.updateProject(projectInfo.getId(), projectInfo, false);
                     }
                     catch (Exception ex)
                     {

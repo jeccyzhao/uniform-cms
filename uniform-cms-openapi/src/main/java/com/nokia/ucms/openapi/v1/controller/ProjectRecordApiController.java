@@ -88,7 +88,7 @@ public class ProjectRecordApiController extends BaseController
 
     @RequestMapping(path="/{recordId}", method= RequestMethod.PATCH)
     @PreAuthorize("isAuthenticated()")
-    public @ResponseBody ApiQueryResult<ProjectRecordDataDTO> updateProjectRecord(
+    public @ResponseBody ApiQueryResult<Integer> updateProjectRecord(
             @PathVariable Integer projectId,
             @PathVariable Integer recordId,
             @RequestBody ProjectRecordDataRow recordData)
@@ -96,7 +96,7 @@ public class ProjectRecordApiController extends BaseController
         if (LOGGER.isDebugEnabled())
             LOGGER.debug(String.format("Enter updateProjectRecord - [projectId : %d, recordId: %d]", projectId, recordId));
 
-        return new ApiQueryResult<ProjectRecordDataDTO>(projectRecordService.updateProjectRecord(projectId, recordId, recordData));
+        return new ApiQueryResult<Integer>(projectRecordService.updateProjectRecord(projectId, recordId, recordData));
     }
 
     @RequestMapping(path="/{recordId}", method= RequestMethod.DELETE)

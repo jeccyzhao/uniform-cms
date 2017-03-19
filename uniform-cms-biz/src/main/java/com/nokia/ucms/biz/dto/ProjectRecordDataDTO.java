@@ -130,6 +130,9 @@ public class ProjectRecordDataDTO<T> extends BaseDTO
                 }
             }
 
+            updateColumnIds.put(ETemplateColumnProperty.TEMPLATE_COLUMN_UPDATE_TIME.getColumnId(), DateUtil.getFormatedDate(this.getUpdateTime()));
+            updateColumnIds.put(ETemplateColumnProperty.TEMPLATE_COLUMN_UPDATE_USER.getColumnId(), this.getLastUpdateUser());
+
             return updateColumnIds;
         }
 

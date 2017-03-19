@@ -54,7 +54,19 @@
             var projectId = $("#projectId").val();
             var formInputs = constructFormInputs();
             if (formInputs != null) {
-                sendAjaxRequest("projects/" + projectId + "/records", 'POST', JSON.stringify(formInputs), function(data){
+                var uri = "projects/" + projectId + "/records";
+                var method = "POST";
+                if ($(this).html() == "Update") {
+                    var rowData = getCurrentGridRowData("table-filter");
+                    if (rowData != null) {
+                        uri = uri + "/" + rowData.id;
+                        method = "PATCH";
+                    } else {
+                        showErrorDialog("No selected record to be updated!");
+                        return;
+                    }
+                }
+                sendAjaxRequest(uri, method, JSON.stringify(formInputs), function(data){
                     loadData("table-filter");
                     $('#m_projectRecord').modal('hide');
                     clearFormInputs("dialog-addProjectRecord");
@@ -62,6 +74,20 @@
             }
         });
     });
+
+    function initRecordForm (isNewRecord) {
+        if (isNewRecord == undefined || isNewRecord) {
+            $("#labelNewRecord").html("New Record");
+            $("#labelNewRecordInstruction").html("Add new project record");
+            $("div.n-login-dynfields").find("input").val("");
+            $("div.n-login-dynfields").find("textarea").val("");
+            $("#dialogSubmit").html("OK");
+        } else {
+            $("#labelNewRecord").html("Update Record");
+            $("#labelNewRecordInstruction").html("Update project record");
+            $("#dialogSubmit").html("Update");
+        }
+    }
 
     function constructFormInputs() {
         var data = { "props": [] };

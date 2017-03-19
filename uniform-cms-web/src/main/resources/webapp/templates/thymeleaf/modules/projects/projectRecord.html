@@ -58,6 +58,7 @@
                 export2File("table-filter", "pdf", exportFileName, ctxPath + "/projects/" + projectName + "/categories/" + categoryId + "/export", excludedColumns);
             });
             $("#op_add").click(function() {
+                initRecordForm();
                 showPopupDialog('m_projectRecord');
             });
 
@@ -90,8 +91,13 @@
                 data['Creation Time'] = reformatDate(data['Creation Time']);
                 data['Update Time'] = reformatDate(data['Update Time']);
                 //data.undo = '<div class="n-row-indicated" onclick="reviseColumn(\'clean\');" title="Cleanup"><span class="icon icon-undo"></span></div>';
-                //data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-save-as"></span></div>';
-                data.delete = '<div class="n-row-indicated" onclick="reviseColumn(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';
+
+                if (displayName != null)
+                {
+                    var isOwner = (displayName == data.Owner);
+                    data.delete = '<div class="n-row-indicated" ' + (isOwner ? 'onclick="reviseColumn(\'delete\');" title="Delete"' : 'title="You are not allowed to delete this record"') + '><span class="icon icon-' + (isOwner ? 'delete' : 'cancel') + '"></span></div>';
+                    data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Update"><span class="icon icon-edit"></span></div>';
+                }
             }
 
             return data;
@@ -102,16 +108,20 @@
             var columns = data.columns;
             var result = { data: [], columns: [] };
 
-            result.columns.push({text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false, hidden: principal == null});
+            if (principal != null) {
+                result.columns.push({text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false});
+                result.columns.push({text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false});
+            }
+
             //result.columns.push({text: 'C', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false, hidden: principal == null});
-            //result.columns.push({text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false, hidden: principal == null});
 
             result.columns.push({
               text: 'No.', sortable: false, filterable: false, editable: false,
               groupable: false, draggable: false, resizable: false,
               datafield: '', columntype: 'number', width: 38, cellsalign: 'center',
               cellsrenderer: function (row, column, value) {
-                  return "<div style='margin:4px;'><a href='javascript:void(0);' onclick='showRecord();' style='text-decoration: none;'>" + (value + 1) + "</a></div>";
+                  //return "<div style='margin:4px;'><a href='javascript:void(0);' onclick='showRecord();' style='text-decoration: none;'>" + (value + 1) + "</a></div>";
+                  return "<div style='margin:4px;'>" + (value + 1) + "</div>";
               }
             });
 
@@ -142,6 +152,12 @@
             if (rowData != null) {
                 switch (operationType) {
                     case "update":
+                        for (var colName in rowData) {
+                            $("#m_projectRecord").find("input[name='" + colName + "']").val(rowData[colName]);
+                        }
+                        initRecordForm(false);
+                        showPopupDialog('m_projectRecord');
+                        /*
                         updateRowWithConfirmation("Do you want to update this record?",
                             "Record would be updated to," + constructColumnInstructions(rowData),
                             function() {
@@ -152,6 +168,7 @@
                                 }, "application/json; charset=utf-8");
                             }
                         );
+                        */
                         break;
                     case "delete":
                         updateRowWithConfirmation("Do you want to delete this record?",

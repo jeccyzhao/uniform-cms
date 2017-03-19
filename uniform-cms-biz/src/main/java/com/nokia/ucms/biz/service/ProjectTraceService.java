@@ -1,5 +1,6 @@
 package com.nokia.ucms.biz.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nokia.ucms.biz.constants.EOperationType;
 import com.nokia.ucms.biz.constants.EServiceDomain;
 import com.nokia.ucms.biz.entity.ProjectInfo;
@@ -62,12 +63,12 @@ public class ProjectTraceService extends BaseService
 
         if (newData != null)
         {
-            projectTrace.setNewData(newData.toString());
+            projectTrace.setNewData(toJsonString(newData));
         }
 
         if (oldData != null)
         {
-            projectTrace.setOldData(oldData.toString());
+            projectTrace.setOldData(toJsonString(oldData));
         }
 
         Integer result = projectTraceRepository.addProjectTrace(projectTrace);
@@ -78,6 +79,20 @@ public class ProjectTraceService extends BaseService
         else
         {
             throw new ServiceException(String.format("Failed to add project trace: %s", projectTrace));
+        }
+    }
+
+    private String toJsonString (Object object)
+    {
+        try
+        {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(object);
+        }
+        catch (Exception ex)
+        {
+            LOGGER.error(String.format("Failed to convert object (%s) to json string", object));
+            return null;
         }
     }
 

@@ -19,4 +19,6 @@ public final class Constants
 
     public static final String ROLE_DEFAULT                 = "ROLE_DEFAULT";
     public static final String ROLE_ADMIN                   = "ROLE_ADMIN";
+
+    public static final String REDIRECT_URL_PARAMETER       = "redirect";
 }

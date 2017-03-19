@@ -106,7 +106,7 @@ public class ProjectInfoService extends BaseService
         return projectInfoRepository.getProjectInfoByOwner(userId, showAll ? null : ProjectInfo.P_PUBLIC);
     }
 
-    public ProjectInfo updateProject (Integer projectId, ProjectInfo projectInfo) throws ServiceException
+    public ProjectInfo updateProject (Integer projectId, ProjectInfo projectInfo, boolean trace) throws ServiceException
     {
         if (projectInfo != null && !"".equals(projectInfo.getName()))
         {
@@ -123,17 +123,21 @@ public class ProjectInfoService extends BaseService
                     Integer result = projectInfoRepository.updateProjectInfo(projectInfo);
                     if (result != null && result > 0)
                     {
-                        try
+                        // trace flag added to avoid huge number of user cases to update project time
+                        if (trace)
                         {
-                            projectTraceService.addProjectTrace(projectInfo.getId(),
-                                    EOperationType.OPERATION_UPDATE, getServiceDomain(),
-                                    String.valueOf(projectInfo.getId()), getServiceCategory(),
-                                    String.format("Update project from '%s' to '%s'", entityById.getName(), projectInfo.getName()),
-                                    entityById, projectInfo);
-                        }
-                        catch (Exception ex)
-                        {
-                            LOGGER.error("Failed to trace when updating project: " + ex);
+                            try
+                            {
+                                projectTraceService.addProjectTrace(projectInfo.getId(),
+                                        EOperationType.OPERATION_UPDATE, getServiceDomain(),
+                                        String.valueOf(projectInfo.getId()), getServiceCategory(),
+                                        String.format("Update project from '%s' to '%s'", entityById.getName(), projectInfo.getName()),
+                                        entityById, projectInfo);
+                            }
+                            catch (Exception ex)
+                            {
+                                LOGGER.error("Failed to trace when updating project: " + ex);
+                            }
                         }
 
                         return projectInfo;

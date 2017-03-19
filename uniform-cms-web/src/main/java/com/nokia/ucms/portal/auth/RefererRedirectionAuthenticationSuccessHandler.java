@@ -1,5 +1,6 @@
 package com.nokia.ucms.portal.auth;
 
+import com.nokia.ucms.biz.constants.Constants;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
@@ -12,6 +13,7 @@ public class RefererRedirectionAuthenticationSuccessHandler
     public RefererRedirectionAuthenticationSuccessHandler()
     {
         super();
-        //setUseReferer(true);
+        setTargetUrlParameter(Constants.REDIRECT_URL_PARAMETER);
+        setUseReferer(true);
     }
 }

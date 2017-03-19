@@ -45,6 +45,7 @@
 			                        <button type="submit" class="btn btn-defaultBlue btn-standard n-login-button" id="applicationLoginButton">Log In</button>
 			                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			                    </div>
+								<input type="hidden" name="redirect" th:value="${redirect != null ? redirect : '/'}"/>
 			                </form>
 			            </div>
 			        </div>

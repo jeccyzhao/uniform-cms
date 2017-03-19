@@ -18,6 +18,8 @@
         </div>
     </div>
 
+    <div th:include="modules/projects/popup/trace/popupTraceDiff"></div>
+
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
         var projectId = /*[[${project.id}]]*/;
@@ -45,21 +47,49 @@
                 {text: 'ID', datafield: 'id', hidden: true},
                 {text: 'Action', datafield: 'operationType', cellsalign: 'left', align: 'center', width: 80},
                 {text: 'Domain', datafield: 'domain', cellsalign: 'left', align: 'center', width: 140},
-                {text: 'Category', datafield: 'category', cellsalign: 'left', align: 'center', cellsalign: 'center', width: 140},
+                {text: 'Category', datafield: 'category', cellsalign: 'left', align: 'center', cellsalign: 'left', width: 140},
                 {text: 'Identifier', hidden: true, datafield: 'identifier', cellsalign: 'left', align: 'center', width: 80},
                 {text: 'Description', datafield: 'message', cellsalign:'left', align: 'center'},
-                {text: 'Operator', datafield: 'operator', cellsalign: 'left', align: 'center', width: 130},
+                {text: 'Operator', datafield: 'operator', cellsalign: 'left', align: 'center'},
                 {text: 'Time', datafield: 'eventTime', cellsalign: 'center', align: 'center', width: 170},
                 {text: 'oldData', hidden: true, datafield: 'oldData'},
                 {text: 'newData', hidden: true, datafield: 'newData'},
                 {
-                    text: 'Diffs', columntype: 'link', cellsalign:'center', align: 'center', width: 80,
+                    text: 'View', columntype: 'link', cellsalign:'center', align: 'center', width: 80,
                     cellsrenderer: function (row, column, value) {
-                        return "<a href='javascript:void(0);' style='margin:4px;display:block; text-align: center'>Diffs</a>";
+                        return "<a href='javascript:showDiffs();' style='margin:4px;display:block; text-align: center'>Diffs</a>";
                     }
                 }
             ];
             return columns;
+        }
+
+        function showDiffs() {
+            var rowData = getCurrentGridRowData("table-filter");
+            if (rowData != null) {
+                buildContent(rowData.oldData, "oldData");
+                buildContent(rowData.newData, "newData", rowData.oldData);
+                showPopupDialog('m_traceDiffDialog');
+            }
+        }
+
+        function buildContent (dataStr, containerId, baseStr) {
+            var dataObj = eval('(' + dataStr + ')');
+            var baseDataObj = baseStr != undefined ? eval('(' + baseStr + ')') : null;
+            var dataHtml = "";
+            for (var entry in dataObj) {
+                if (dataObj[entry] instanceof Object) {
+                    continue;
+                }
+                var changed = false;
+                if (baseDataObj != null && baseDataObj[entry] != null) {
+                    if (dataObj[entry] != baseDataObj[entry]) {
+                        changed = true;
+                    }
+                }
+                dataHtml += ("<font " + (changed ? "style='color: blue;'" : "") + ">" + entry + ": " + dataObj[entry] + "</font><br/>");
+            }
+            $("#" + containerId).html(dataHtml);
         }
 
         function rebuildColumnData(data) {

@@ -163,7 +163,7 @@ public class ProjectRecordService extends BaseService
                             "Import project record", null, null);
 
                     // update lastUpdateTime in project
-                    projectInfoService.updateProject(projectId, projectInfo);
+                    projectInfoService.updateProject(projectId, projectInfo, false);
                 }
                 catch (Exception ex)
                 {
@@ -262,7 +262,7 @@ public class ProjectRecordService extends BaseService
                                 recordDataDTO.getRowData(), null);
 
                         // update lastUpdateTime in project
-                        projectInfoService.updateProject(projectId, projectInfo);
+                        projectInfoService.updateProject(projectId, projectInfo, false);
                     }
                     catch (Exception ex)
                     {
@@ -279,22 +279,22 @@ public class ProjectRecordService extends BaseService
         throw new ServiceException("Invalid project record id: " + recordId);
     }
 
-    public ProjectRecordDataDTO updateProjectRecord (Integer projectId, Integer recordId, ProjectRecordDataRow recordDataRow)
+    public Integer updateProjectRecord (Integer projectId, Integer recordId, ProjectRecordDataRow recordDataRow)
     {
         if (recordDataRow != null)
         {
-            ProjectRecordDataDTO entityById = this.getProjectRecordById(projectId, recordId);
-            if (entityById != null)
+            ProjectRecordDataDTO oldEntityById = this.getProjectRecordById(projectId, recordId);
+            if (oldEntityById != null)
             {
-                // TODO: replace with right user id
-                recordDataRow.setLastUpdateUser("ci");
+                User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                recordDataRow.setLastUpdateUser(user.getUserDisplayName());
                 recordDataRow.setUpdateTime(new Date());
 
-                Map<String, Object> fieldMap = recordDataRow.getUpdatedColumnIdsByNames(entityById.getColumns());
+                Map<String, Object> fieldMap = recordDataRow.getUpdatedColumnIdsByNames(oldEntityById.getColumns());
                 if (fieldMap != null)
                 {
                     Map<String, Object> params = new HashMap<String, Object>();
-                    params.put("tableName", entityById.getProject().getTableName());
+                    params.put("tableName", oldEntityById.getProject().getTableName());
                     params.put("id", recordId);
                     params.put("fields", fieldMap);
 
@@ -303,24 +303,28 @@ public class ProjectRecordService extends BaseService
                     {
                         try
                         {
-                            LinkedHashMap<String, Object> rowEntry = (LinkedHashMap<String, Object>) entityById.getRowData().get(0);
+                            LinkedHashMap<String, Object> rowEntry = (LinkedHashMap<String, Object>) oldEntityById.getRowData().get(0);
                             String categoryName = rowEntry.get(ETemplateColumnProperty.TEMPLATE_COLUMN_CATEGORY_NAME.getColumnName()).toString();
 
+                            ProjectRecordDataDTO newEntityById = this.getProjectRecordById(projectId, recordId);
                             projectTraceService.addProjectTrace(projectId,
                                     EOperationType.OPERATION_UPDATE, getServiceDomain(),
                                     String.valueOf(projectId), categoryName,
                                     "Update project record",
-                                    entityById, recordDataRow);
+                                    oldEntityById.getRowData().get(0), newEntityById.getRowData().get(0));
 
                             // update lastUpdateTime in project
-                            projectInfoService.updateProject(projectId, projectInfoService.getProjectById(projectId));
+                            projectInfoService.updateProject(projectId, projectInfoService.getProjectById(projectId), false);
+
+                            oldEntityById = null;
+                            newEntityById = null;
                         }
                         catch (Exception ex)
                         {
                             LOGGER.error("Exception raised during tracing and updating project last update time: " + ex);
                         }
 
-                        return this.getProjectRecordById(projectId, recordId);
+                        return result;
                     }
                     else
                     {
@@ -381,7 +385,7 @@ public class ProjectRecordService extends BaseService
                         }
 
                         // update the lastUpdateTime in project
-                        projectInfoService.updateProject(projectId, projectInfo);
+                        projectInfoService.updateProject(projectId, projectInfo, false);
 
                     }
                     catch (Exception ex)

@@ -114,15 +114,12 @@ public class ProjectCategoryService extends BaseService
                                 null, category);
 
                         // update lastUpdateTime in project
-                        projectInfoService.updateProject(projectId, projectInfo);
+                        projectInfoService.updateProject(projectId, projectInfo, false);
                     }
                     catch (Exception ex)
                     {
                         LOGGER.error("Failed to trace when adding project category: " + ex);
                     }
-
-                    // update the lastUpdateTime in project
-                    projectInfoService.updateProject(projectId, projectInfo);
 
                     return category;
                 }
@@ -166,7 +163,7 @@ public class ProjectCategoryService extends BaseService
                                 entityById, projectCategory);
 
                         // update lastUpdateTime in project
-                        projectInfoService.updateProject(projectId, projectInfo);
+                        projectInfoService.updateProject(projectId, projectInfo, false);
                     }
                     catch (Exception ex)
                     {
@@ -214,7 +211,7 @@ public class ProjectCategoryService extends BaseService
                             projectCategory, null);
 
                     // update lastUpdateTime in project
-                    projectInfoService.updateProject(projectInfo.getId(), projectInfo);
+                    projectInfoService.updateProject(projectInfo.getId(), projectInfo, false);
                 }
                 catch (Exception ex)
                 {

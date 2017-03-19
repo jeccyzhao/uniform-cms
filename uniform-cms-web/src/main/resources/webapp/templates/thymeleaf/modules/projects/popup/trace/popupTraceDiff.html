@@ -1,0 +1,38 @@
+<div class="modal" id="m_traceDiffDialog" role="dialog" aria-labelledby="myModalDlgLabel-confirm" aria-hidden="true" tabindex='1'>
+    <div class="modal-dialog n-dialog-confirm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="n-dialog-header-fg-filler"></div>
+                <div class="n-dialog-header-bg-filler"></div>
+                <!-- -->
+                <div class="n-dialog-header-curve">
+                    <div class="fg-mask"></div>
+                    <div class="bg-mask"></div>
+                    <div class="fg-corner"></div>
+                    <div class="bg-corner"></div>
+                </div>
+                <i role="button" class="icon icon-close-rounded" data-dismiss="modal" aria-label="Close"  tabindex="3" id="TA-dialog-confirmation-content-close"></i>
+                <h1 class="modal-title" id="confirm_title">Diffs</h1>
+            </div>
+            <div class="modal-body" id="diffBody" style="max-height: 500px; overflow-y: auto; font-size: 9pt;">
+                <div style="float:left; width: 48%">
+                    <div style="border-bottom: 1px solid #999; text-align: center;">Base</div>
+                    <div id="oldData"></div>
+                </div>
+                <div style="margin-left: 50%;">
+                    <div style="border-bottom: 1px solid #999; text-align: center;">New</div>
+                    <div id="newData"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-standard" data-dismiss="modal" tabindex="4">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+
+    /*]]>*/
+</script>

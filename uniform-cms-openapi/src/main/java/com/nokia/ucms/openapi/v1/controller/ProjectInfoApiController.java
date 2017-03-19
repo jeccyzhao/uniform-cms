@@ -53,7 +53,7 @@ public class ProjectInfoApiController extends BaseController
         {
             // set id with path variable
             // projectInfo.setId(projectId);
-            return new ApiQueryResult<ProjectInfo>(projectInfoService.updateProject(projectId, projectInfo));
+            return new ApiQueryResult<ProjectInfo>(projectInfoService.updateProject(projectId, projectInfo, true));
         }
         else
         {

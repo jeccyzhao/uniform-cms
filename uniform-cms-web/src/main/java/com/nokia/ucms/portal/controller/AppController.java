@@ -1,11 +1,15 @@
 package com.nokia.ucms.portal.controller;
 
+import com.nokia.ucms.biz.constants.Constants;
 import com.nokia.ucms.common.controller.BaseController;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by x36zhao on 2017/3/3.
@@ -20,8 +24,9 @@ public class AppController extends BaseController
     }
 
     @RequestMapping("/login")
-    public String showLoginPage()
+    public String showLoginPage(HttpServletRequest request, Model model)
     {
+        model.addAttribute(Constants.REDIRECT_URL_PARAMETER, request.getHeader("Referer"));
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth instanceof AnonymousAuthenticationToken ? getModulePage("logon") : getModulePage("index");
     }
