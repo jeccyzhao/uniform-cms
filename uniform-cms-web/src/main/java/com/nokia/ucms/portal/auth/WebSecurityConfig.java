@@ -16,6 +16,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
+    @Autowired
+    private MyAuthenticationProvider authProvider;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
@@ -37,5 +40,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception
     {
+        auth.authenticationProvider(authProvider);
     }
 }
