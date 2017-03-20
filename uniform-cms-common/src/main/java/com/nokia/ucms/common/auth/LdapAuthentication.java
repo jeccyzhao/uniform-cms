@@ -16,12 +16,6 @@ public class LdapAuthentication
     public LdapUserEntity authenticate (String userName, String password,
                                         String ldapServer, String searchBase) throws NamingException
     {
-        boolean isDebug = false;
-        if (!isDebug)
-        {
-            return new LdapUserEntity();
-        }
-
         DirContext ctx = null;
         LdapUserEntity userEntry = null;
 
