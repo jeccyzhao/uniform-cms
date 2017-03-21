@@ -182,7 +182,10 @@ function sendAjaxRequest(uri, type, data, callback, contentType, loadingMessage)
         },
         error: function(response)
         {
-            showErrorDialog(response);
+            if (response.responseJSON != null)
+            {
+                showErrorDialog(response.responseJSON.error);
+            }
             disableAjaxLoading();
         }
     });

@@ -62,7 +62,8 @@
                 {text: 'Project Description', datafield: 'description', align: 'center'},
                 {text: 'Project Owner', datafield: 'ownerName', editable: false, align: 'center', cellsalign:'center'},
                 {text: 'Creation Time', datafield: 'creationTime', editable: false, width: 180, cellsalign:'center', align: 'center'},
-                {text: 'Last Update Time', datafield: 'lastUpdateTime', editable: false, width: 180, cellsalign:'center', align: 'center'}
+                {text: 'Last Update Time', datafield: 'lastUpdateTime', editable: false, width: 180, cellsalign:'center', align: 'center'},
+                {text: 'Goto', datafield: 'go', editable: false, cellsalign:'center', align: 'center', width: 48, filterable: true}
             ];
             return columns;
         }
@@ -83,6 +84,7 @@
                 data.ownerName = data.owner.userDisplayName;
                 data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-edit"></span></div>';
                 data.delete = '<div class="n-row-indicated" onclick="reviseColumn(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';
+                data.go = '<div class="n-row-indicated" title="Goto"><a href="' + ctxPath + '/projects/' + data.name + '" target="_self"><span class="icon icon-goto"></span></a></div>';
             }
 
             return data;

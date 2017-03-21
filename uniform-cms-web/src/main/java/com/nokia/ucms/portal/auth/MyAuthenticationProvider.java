@@ -30,7 +30,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider
     @Autowired
     private UserService userService;
 
-    @Override
+    //@Override
     public Authentication authenticate (Authentication authentication)
             throws AuthenticationException
     {
@@ -91,7 +91,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider
         }
     }
 
-    @Override
+    //@Override
     public boolean supports (Class<?> arg0)
     {
         return true;
