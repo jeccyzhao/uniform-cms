@@ -91,7 +91,7 @@
 
     function constructFormInputs() {
         var data = { "props": [] };
-        $(".n-login-dynfields").find("input").each(function(){
+        $("#m_projectRecord").find(".n-login-dynfields").find("input").each(function(){
             var inputName = $(this).attr("name");
             var inputValue = $(this).val();
             data.props.push( {"name": inputName, "value": inputValue} );
