@@ -72,7 +72,7 @@
             var uri = "projects/" + projectId + "/records" + (categoryId != null ? ("?categoryId=" + categoryId) : "");
             sendAjaxRequest(uri, 'GET', {}, function(data) {
                 var tableDataAndColumns = constructTableColumnsAndData(data);
-                initJqxTable(container_id, tableDataAndColumns.columns, rebuildData(tableDataAndColumns.data), false);
+                initJqxTable(container_id, tableDataAndColumns.columns, rebuildData(tableDataAndColumns.data), false, true);
             });
         }
 
@@ -109,14 +109,14 @@
             var result = { data: [], columns: [] };
 
             if (principal != null) {
-                result.columns.push({text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false});
-                result.columns.push({text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false});
+                result.columns.push({text: 'D', columntype: 'textbox', datafield: 'delete', width: 24, filterable: false, editable: false, sortable: false, enabletooltips: false});
+                result.columns.push({text: 'S', columntype: 'textbox', datafield: 'edit', width: 24, filterable: false, editable: false, sortable: false, enabletooltips: false});
             }
 
             //result.columns.push({text: 'C', columntype: 'textbox', datafield: 'undo', width: 24, filterable: false, editable: false, sortable: false, hidden: principal == null});
 
             result.columns.push({
-              text: 'No.', sortable: false, filterable: false, editable: false,
+              text: 'No.', sortable: false, filterable: false, editable: false, enabletooltips: false,
               groupable: false, draggable: false, resizable: false,
               datafield: '', columntype: 'number', width: 38, cellsalign: 'center',
               cellsrenderer: function (row, column, value) {
@@ -126,7 +126,7 @@
             });
 
             // result.columns.push({text: 'No.', datafield: 'id', hidden: false, width: 40, editable: false, align: 'center', cellsalign: 'center'});
-            result.columns.push({text: 'Category', datafield: 'Category Name', align: 'center', cellsalign: 'left', filterable: true, width: 120, editable: false});
+            result.columns.push({text: 'Category', datafield: 'Category Name', align: 'center', cellsalign: 'left', filterable: true, width: 120, editable: false, enabletooltips: false});
 
             dataColumns = [];
             for (var columnIndex in columns) {
@@ -154,6 +154,7 @@
                     case "update":
                         for (var colName in rowData) {
                             $("#m_projectRecord").find("input[name='" + colName + "']").val(rowData[colName]);
+                            $("#m_projectRecord").find("textarea[name='" + colName + "']").val(rowData[colName]);
                         }
                         initRecordForm(false);
                         showPopupDialog('m_projectRecord');

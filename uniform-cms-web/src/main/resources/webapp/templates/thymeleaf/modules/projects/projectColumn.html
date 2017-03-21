@@ -63,6 +63,12 @@
                 {text: 'Column Remark', datafield: 'columnRemark', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Example', datafield: 'columnDataExample', cellsalign: 'left', align: 'center', filterable: true},
                 {text: 'Column Length', datafield: 'columnLength', cellsalign:'center', align: 'center', width: 130, filterable: true},
+                {text: 'Column Type', datafield: 'columnInputType', width: 190, columntype: 'custom', align: 'center', cellsalign: 'center',
+                    cellsrenderer: $.grid.dropdownlistCellsrenderer,
+                    createeditor: $.grid.dropdownlistEditor(['Text Box', 'Text Area']),
+                    initeditor: $.grid.dropdownlistInitEditor,
+                    geteditorvalue: $.grid.dropdownlistEditorValue
+                },
                 {text: 'Order', datafield: 'seq', cellsalign:'center', align: 'center', width: 80},
                 {text: 'Last Update Time', datafield: 'updateTime', cellsalign:'center', align: 'center', width: 160}
             ];
@@ -85,6 +91,7 @@
                 data.edit = '<div class="n-row-indicated" onclick="reviseColumn(\'update\');" title="Save"><span class="icon icon-edit"></span></div>';
                 data.delete = '<div class="n-row-indicated" onclick="reviseColumn(\'delete\');" title="Delete"><span class="icon icon-delete"></span></div>';
                 data.updateTime = reformatDate(data.updateTime);
+                data.columnInputType = data.columnInputType == 0 ? "Text Box" : "Text Area";
             }
 
             return data;
@@ -96,6 +103,7 @@
             dataInstructions += "<tr><td>Column Name</td><td><font>" + rowData.columnName + "</font></td></tr>";
             dataInstructions += "<tr><td>Column Remark</td><td><font>" + rowData.columnRemark + "</font></td></tr>";
             dataInstructions += "<tr><td>Column Example</td><td><font>" + rowData.columnDataExample + "</font></td></tr>";
+            dataInstructions += "<tr><td>Column Type</td><td><font>" + rowData.columnInputType + "</font></td></tr>";
             dataInstructions += "<tr><td>Column Length</td><td><font>" + rowData.columnLength + "</font></td></tr>";
             dataInstructions += "<tr><td>Column Order</td><td><font>" + rowData.seq + "</font></td></tr>";
             dataInstructions += "<tr><td>Column Visible</td><td><font>" + (rowData.visible == 1 ? "Yes" : "No") + "</font></td></tr>";
@@ -113,6 +121,7 @@
                             function() {
                                 // remove some unnecessary attribute from row data
                                 rowData = removeObjectAttribute(rowData, ['delete', 'edit', 'uid', 'undo', 'uniqueid', 'visibleindex', 'boundindex', 'projectId', 'updateTime']);
+                                rowData.columnInputType = rowData.columnInputType.indexOf("Area") > -1 ? 1 : 0;
                                 sendAjaxRequest("projects/" + projectId + "/columns/" + rowData.id, 'PATCH', JSON.stringify(rowData), function(data) {
                                     updateGridRowData("table-filter", rebuildSingleColumnData(data));
                                 }, "application/json; charset=utf-8");

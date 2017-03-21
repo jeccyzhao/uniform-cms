@@ -9758,7 +9758,7 @@ and dependencies (minified).
 					var perPageField = $( "<div class='n-table-paging-right'></div>" );
 					var perPageCombo = $( "<div id=\"" + gridId + "jqxPerPageCombo" + "\"></div>" );
 					var index = $grid.jqxGrid( 'pagesize' );
-					var pSource = [ 10, 20, 30 ];
+					var pSource = [ 10, 20, 30, 50, 100 ];
 					if ( pagesizeSource !== undefined ) {
 						pSource = pagesizeSource;
 					}

@@ -12,6 +12,7 @@
         <result property="columnDataExample" column="col_example"/>
         <result property="columnId" column="col_fieldid"/>
         <result property="columnLength" column="col_len"/>
+        <result property="columnInputType" column="col_type" />
         <result property="visible" column="col_visible"/>
         <result property="seq" column="col_seq"/>
         <result property="updateTime" column="col_updateTime"/>
@@ -34,8 +35,10 @@
     </select>
 
     <insert id="addProjectColumn" parameterType="ProjectColumn" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `t_project_column` (`p_id`, `col_name`, `col_remark`, `col_example`, `col_fieldid`, `col_len`, `col_visible`, `col_seq`, `col_updateTime`)
-            VALUES (#{projectId}, #{columnName}, #{columnRemark}, #{columnDataExample}, #{columnId}, #{columnLength}, #{visible}, #{seq}, #{updateTime})
+        INSERT INTO `t_project_column`
+            (`p_id`, `col_name`, `col_remark`, `col_example`, `col_fieldid`, `col_len`, `col_visible`, `col_seq`, `col_updateTime`, `col_type`)
+        VALUES
+            (#{projectId}, #{columnName}, #{columnRemark}, #{columnDataExample}, #{columnId}, #{columnLength}, #{visible}, #{seq}, #{updateTime}, #{columnInputType})
     </insert>
 
     <update id="updateProjectColumn" parameterType="ProjectColumn">
@@ -46,7 +49,8 @@
             `col_len` = #{columnLength},
             `col_seq` = #{seq},
             `col_visible` = #{visible},
-            `col_updateTime` = #{updateTime}
+            `col_updateTime` = #{updateTime},
+            `col_type` = #{columnInputType}
         WHERE `id` = #{id}
     </update>
 

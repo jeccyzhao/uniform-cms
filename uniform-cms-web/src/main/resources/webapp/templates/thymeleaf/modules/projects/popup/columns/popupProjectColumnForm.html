@@ -32,6 +32,15 @@
                         </div>
                     </div>
                     <div class="form-group n-login-textfields">
+                        <label class="col-sm-3 control-label">Column Type:</label>
+                        <div class="col-sm-9  has-feedback">
+                            <select id="exInputColType" style="margin: 5px 0">
+                                <option value="0">Text Box</option>
+                                <option value="1">Text Area</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group n-login-textfields">
                         <label class="col-sm-3 control-label">Column Order:</label>
                         <div class="col-sm-9  has-feedback">
                             <input type="text" class="form-control n-inputfield" id="exInputColOrder" placeholder="Default order (0) would be used if not given"/>
@@ -56,6 +65,9 @@
                             <input id="exInputColVisible" type="checkbox" checked="checked"/>
                             <label for="exInputColVisible" style="padding-left:0"></label>
                         </div>
+                    </div>
+                    <div class="form-group n-login-textfields">
+                        <label class="col-sm-12 control-label" style="color: #999">Note:</label>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -86,6 +98,7 @@
             "columnRemark" : $("#exInputColRemark").val(),
             "columnDataExample" : $("#exInputColExample").val(),
             "columnLength" : $("#exInputColLength").val(),
+            "columnInputType": $("#exInputColType").val(),
             "visible": $("#exInputColVisible").is(':checked') ? 1 : 0,
             "seq": $("#exInputColOrder").val() ? $("#exInputColOrder").val() : null
         };
