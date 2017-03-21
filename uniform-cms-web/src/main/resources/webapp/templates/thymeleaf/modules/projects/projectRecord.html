@@ -72,7 +72,7 @@
             var uri = "projects/" + projectId + "/records" + (categoryId != null ? ("?categoryId=" + categoryId) : "");
             sendAjaxRequest(uri, 'GET', {}, function(data) {
                 var tableDataAndColumns = constructTableColumnsAndData(data);
-                initJqxTable(container_id, tableDataAndColumns.columns, rebuildData(tableDataAndColumns.data), false, true);
+                initJqxTable(container_id, tableDataAndColumns.columns, rebuildData(tableDataAndColumns.data), false);
             });
         }
 

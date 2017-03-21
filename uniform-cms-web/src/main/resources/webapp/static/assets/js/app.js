@@ -84,17 +84,28 @@ function initJqxTable (container_id, columns, data, editable, autoheight, autoro
         scrollBarSize: 8,
         pagerheight: 40,
         pagesize: pagesize != undefined ? pagesize : 15,
-        pagesizeoptions: ['10', '20', '50', '100'],
+        pagesizeoptions: ['10', '15', '20', '30', '50', '100'],
+        //pagesizechanged: function(event) {alert event;},
         rowsheight: 26,
         columnsheight: 26,
         editable: editable ? editable : false,
-        pagerrenderer: $.grid.pagerrenderer.bind(null, "#" + container_id, true),
+        //pagerrenderer: $.grid.pagerrenderer.bind(null, "#" + container_id, true),
         handlekeyboardnavigation: function (e) {
            return $.grid.handlekeyboardnavigation(e);
         },
         ready: function() {
             disableAjaxLoading();
         }
+    });
+
+    $("#" + container_id).bind("pagesizechanged", function (event) {
+         var pageSize = event.args.pagesize;
+         var numRows = $("#" + container_id).jqxGrid('getrows').length;
+         if (numRows >= 15 && pageSize >= 15) {
+            $('#' + container_id).jqxGrid({ autoheight: true});
+         } else {
+            $('#' + container_id).jqxGrid({ autoheight: false});
+         }
     });
 }
 
