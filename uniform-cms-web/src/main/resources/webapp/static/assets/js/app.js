@@ -54,7 +54,7 @@ Date.prototype.Format = function(fmt)
   return fmt;   
 }
 
-function initJqxTable (container_id, columns, data, editable, autoheight, autorowheight, pagesize, height, width)
+function initJqxTable (container_id, columns, data, editable, showtoolbar, autoheight, autorowheight, pagesize, height, width)
 {
     var source = { localdata: data, datatype: "array"};
     var dataAdapter = new $.jqx.dataAdapter(source);
@@ -67,7 +67,6 @@ function initJqxTable (container_id, columns, data, editable, autoheight, autoro
         source: dataAdapter,
         columnsResize: true,
         enabletooltips: true,
-        showtoolbar: false,
         groupable: false,
         columnsreorder: true,
         pageable: true,
@@ -80,16 +79,17 @@ function initJqxTable (container_id, columns, data, editable, autoheight, autoro
         altRows: true,
         enableBrowserSelection: true,
         autoshowcolumnsmenubutton: true,
+        showtoolbar: showtoolbar != undefined ? showtoolbar : false,
         altRows: true,
         scrollBarSize: 8,
         pagerheight: 40,
         pagesize: pagesize != undefined ? pagesize : 15,
         pagesizeoptions: ['10', '15', '20', '30', '50', '100'],
-        //pagesizechanged: function(event) {alert event;},
         rowsheight: 26,
         columnsheight: 26,
+        //columnsresize: true,
+        autosavestate: true,
         editable: editable ? editable : false,
-        //pagerrenderer: $.grid.pagerrenderer.bind(null, "#" + container_id, true),
         handlekeyboardnavigation: function (e) {
            return $.grid.handlekeyboardnavigation(e);
         },

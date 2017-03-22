@@ -30,7 +30,7 @@
 
         function loadData(container_id) {
             sendAjaxRequest("projects/" + projectId + "/traces", 'GET', {}, function(data) {
-                initJqxTable(container_id, tableColumns, rebuildColumnData(data), false, 20, 515);
+                initJqxTable(container_id, tableColumns, rebuildColumnData(data), false);
             });
         }
 

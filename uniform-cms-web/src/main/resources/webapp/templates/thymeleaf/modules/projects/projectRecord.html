@@ -1,7 +1,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layout/default/layout" th:with="subTitle=${project.name}, menu='data'">
-	
+<style>
+    .jqx-listitem-element .jqx-listitem-state-normal {font-size: 9pt;}
+</style>
 <th:block layout:fragment="content">
     <div class="col-md-2">
         <th:block layout:include="modules/projects/menu/projectMenu"/>
@@ -46,9 +48,10 @@
         var projectName = /*[[${project.name}]]*/;
         var categoryId = /*[[${category != null ? category.id : null}]]*/
         var categoryName = /*[[${category != null ? category.name : null}]]*/
-        var excludedColumns = ["id", "edit", "delete", "undo", "seq", "Update Time", "Creation Time", "columnLength", "visible"];
+        var excludedColumns = ["id", "edit", "delete", "undo", "seq", "columnLength", "visible"];
         var exportFileName = projectName + "+" + categoryName;
         var dataColumns = [];
+        var cookieName = projectId + "_customColumns";
         $(function () {
             loadData("table-filter");
             $("#excelExport").click(function(){
@@ -72,7 +75,59 @@
             var uri = "projects/" + projectId + "/records" + (categoryId != null ? ("?categoryId=" + categoryId) : "");
             sendAjaxRequest(uri, 'GET', {}, function(data) {
                 var tableDataAndColumns = constructTableColumnsAndData(data);
-                initJqxTable(container_id, tableDataAndColumns.columns, rebuildData(tableDataAndColumns.data), false);
+                initJqxTable(container_id, tableDataAndColumns.columns, rebuildData(tableDataAndColumns.data), false, true);
+                $("#" + container_id).jqxGrid('showtoolbar', true);
+                $("#" + container_id).jqxGrid('rendertoolbar', function(toolbar) {
+                    var container = $("<div id='chartID' style='margin: 0 5px;line-height: 33px'>Custom Hidden Columns:</div>");
+                    var columns = $("<span id='jqxDropdown' style='display: inline-block; position: relative; top: 5px; margin: 0 5px;'></span>");
+                    var button = $("<span style='display: inline-block; position: relative; top: -2px;'><input type='button' value='Apply' id='jqxApplyButton' style='margin-right: 5px;' /><input type='button' value='Reset' id='jqxRestButton' /></span>");
+                    toolbar.append(container);
+                    container.append(columns);
+                    container.append(button);
+
+                    var source = [];
+                    for (var i in tableDataAndColumns.columns) {
+                        var field = tableDataAndColumns.columns[i].datafield
+                        if (!excludedColumns.inArray(field) && field != "") {
+                            source.push(field);
+                        }
+                    }
+
+                    $("#jqxDropdown").jqxDropDownList({placeHolder:"Please select columns to hide", checkboxes: true, source: source, height: '33px'});
+                    $("#jqxApplyButton").jqxButton({});
+
+                    if (Cookies.get(cookieName) != undefined) {
+                        var items = $("#jqxDropdown").jqxDropDownList('getItems');
+                        var checkedItems = eval('(' + Cookies.get(cookieName) + ')');
+                        for (var i in checkedItems) {
+                             $.each(items, function (index) {
+                                if (this.label == checkedItems[i].label) {
+                                    $("#" + container_id).jqxGrid('hidecolumn', this.label);
+                                }
+                            });
+                            $("#jqxDropdown").jqxDropDownList('checkItem', checkedItems[i].label);
+                        }
+                    }
+
+                    $("#jqxApplyButton").on('click', function () {
+                        var items = $("#jqxDropdown").jqxDropDownList('getItems');
+                        Cookies.set(cookieName, $("#jqxDropdown").jqxDropDownList('getCheckedItems'))
+                        $.each(items, function (index) {
+                            $("#" + container_id).jqxGrid(this.checked ? 'hidecolumn' : 'showcolumn', this.label);
+                        });
+                    });
+                    $("#jqxRestButton").jqxButton({});
+                    $("#jqxRestButton").on('click', function () {
+                        var items = $("#jqxDropdown").jqxDropDownList('getItems');
+                        $.each(items, function (index) {
+                            if (this.checked) {
+                                $("#" + container_id).jqxGrid('showcolumn', this.label);
+                            }
+                        });
+                        $("#jqxDropdown").jqxDropDownList('uncheckAll');
+                        Cookies.remove(cookieName);
+                    });
+                });
             });
         }
 
