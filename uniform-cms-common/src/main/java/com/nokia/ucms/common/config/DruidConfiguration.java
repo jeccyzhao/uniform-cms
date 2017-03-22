@@ -37,6 +37,7 @@ public class DruidConfiguration
         try
         {
             druidDataSource.setFilters("stat, wall");
+            druidDataSource.setResetStatEnable(false);
         }
         catch (SQLException e)
         {
