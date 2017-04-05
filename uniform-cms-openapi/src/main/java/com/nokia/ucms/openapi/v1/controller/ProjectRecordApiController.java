@@ -54,12 +54,16 @@ public class ProjectRecordApiController extends BaseController
     @RequestMapping(path="", method= RequestMethod.GET)
     public @ResponseBody ApiQueryResult<ProjectRecordDataDTO> getProjectRecords(
             @PathVariable Integer projectId,
-            @RequestParam(required = false) Integer categoryId)
+            @RequestParam(required = false) String categoryName,
+            @RequestParam(required = false) String[] paramNames,
+            @RequestParam(required = false) String[] paramValues)
     {
         if (LOGGER.isDebugEnabled())
-            LOGGER.debug(String.format("Enter getProjectRecords - [projectId : %d]", projectId));
+            LOGGER.debug(String.format("Enter getProjectRecords - [projectId: %d, categoryName: %s, paramNames: %s, paramValues: %s]",
+                    projectId, categoryName, paramNames, paramValues));
 
-        return new ApiQueryResult<ProjectRecordDataDTO>(projectRecordService.getProjectRecordsByCategory(projectId, categoryId));
+        return new ApiQueryResult<ProjectRecordDataDTO>(projectRecordService.getProjectRecordsByCategory(
+                projectId, categoryName, paramNames, paramValues));
     }
 
     @RequestMapping(path="/{recordId}", method= RequestMethod.GET)

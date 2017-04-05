@@ -50,9 +50,9 @@ public class ProjectColumnService extends BaseService
         throw new ServiceException("Failed to get project column by project name: " + projectName);
     }
 
-    public List<ProjectColumn> getProjectColumnsByName (Integer projectId, String columnName) throws ServiceException
+    public ProjectColumn getProjectColumnByName (Integer projectId, String columnName) throws ServiceException
     {
-        return null;
+        return projectColumnRepository.getColumnsByColumnName(columnName, projectId);
     }
 
     public ProjectColumn getProjectColumnById (Integer projectColumnId) throws ServiceException

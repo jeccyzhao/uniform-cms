@@ -1,5 +1,6 @@
 package com.nokia.ucms.biz.repository;
 
+import com.nokia.ucms.common.utils.Pair;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -58,7 +59,8 @@ public interface DatabaseAdminRepository
 
     List<Map<String, Object>> getRecordByCategory(
             @Param("tableName") String tableName,
-            @Param("categoryId") Integer categoryId);
+            @Param("categoryId") Integer categoryId,
+            @Param("conditionParams") List<Pair<String, String>> conditionParams);
 
     Map<String, Object> getRecordById(
             @Param("tableName") String tableName,

@@ -40,7 +40,7 @@ public class GlobalDefaultExceptionHandler extends BaseController
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    @ResponseStatus( HttpStatus.UNAUTHORIZED)
+    @ResponseStatus( HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiQueryResult<Map<String, Object>> handleUnexpectedException(Exception ex)
     {
         LOGGER.error("Unexpected exception caught: " + ex);

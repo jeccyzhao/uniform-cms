@@ -17,6 +17,7 @@ import com.nokia.ucms.common.entity.ApiQueryResult;
 import com.nokia.ucms.common.exception.ServiceException;
 import com.nokia.ucms.common.service.BaseService;
 import com.nokia.ucms.common.utils.ExcelParser;
+import com.nokia.ucms.common.utils.Pair;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -54,17 +55,19 @@ public class ProjectRecordService extends BaseService
     private ProjectTraceService projectTraceService;
 
 
-    public ProjectRecordDataDTO getProjectRecordsByCategory (Integer projectId, Integer categoryId)
+    public ProjectRecordDataDTO getProjectRecordsByCategory (Integer projectId, String categoryName,
+                                                             String[] paramNames, String[] paramValues)
     {
         ProjectRecordDataDTO projectRecordData = null;
         ProjectInfo projectInfo = projectInfoService.getProjectById(projectId);
+        ProjectCategory projectCategory = null;
 
-        if (categoryId != null && categoryId > 0)
+        if (categoryName != null && !"".equals(categoryName))
         {
-            ProjectCategory projectCategory = projectCategoryService.getProjectCategoryById(categoryId);
+            projectCategory = projectCategoryService.getProjectCategoryByName(projectId, categoryName);
             if (projectCategory == null)
             {
-                throw new ServiceException(String.format("Project category (id: %d) does not exist", categoryId));
+                throw new ServiceException(String.format("Project category (name: %s) does not exist", categoryName));
             }
         }
 
@@ -76,7 +79,11 @@ public class ProjectRecordService extends BaseService
             projectRecordData.setColumns(projectColumns);
 
             String dataTableName = projectInfo.getTableName();
-            List<Map<String, Object>> rows = databaseAdminRepository.getRecordByCategory(dataTableName, categoryId);
+
+            List<Map<String, Object>> rows = databaseAdminRepository.getRecordByCategory(dataTableName,
+                    projectCategory != null ? projectCategory.getId() : null,
+                    buildConditionParameters(projectId, paramNames, paramValues));
+
             for (Map<String, Object> row : rows)
             {
                 projectRecordData.addRowData(constructRowData(row, projectColumns));
@@ -88,6 +95,39 @@ public class ProjectRecordService extends BaseService
         }
 
         return projectRecordData;
+    }
+
+    private List<Pair<String, String>> buildConditionParameters (Integer projectId, String[] paramNames, String[] paramValues)
+    {
+        List<Pair<String, String>> pairedParameters = null;
+        if (paramNames != null && paramValues != null && paramNames.length * paramValues.length > 0)
+        {
+            if (paramNames.length == paramValues.length)
+            {
+                pairedParameters = new ArrayList<Pair<String, String>>();
+                for (int i = 0; i < paramNames.length; i++)
+                {
+                    String paramName = paramNames[i];
+                    String paramValue = paramValues[i];
+
+                    ProjectColumn projectColumn = projectColumnService.getProjectColumnByName(projectId, paramName);
+                    if (projectColumn != null)
+                    {
+                        pairedParameters.add(new Pair<String, String>(projectColumn.getColumnId(), paramValue.replaceAll("'", "\\'")));
+                    }
+                    else
+                    {
+                        LOGGER.error(String.format("Project (id: %d) column does not exist with name '%s'", projectId, paramName));
+                    }
+                }
+            }
+            else
+            {
+                throw new ServiceException("Mismatched paired parameter of keys and values");
+            }
+        }
+
+        return pairedParameters;
     }
 
     public ProjectRecordDataDTO getProjectRecordById (Integer projectId, Integer recordId)
