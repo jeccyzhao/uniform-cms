@@ -14,8 +14,7 @@ public class ProcessUtil
 
     public static String executeCommand (String command)
     {
-        if (logger.isDebugEnabled())
-            logger.debug(String.format("exec: %s", command));
+        logger.info(String.format("exec started: %s", command));
 
         Process process = null;
         StringBuilder output = new StringBuilder();
@@ -23,13 +22,16 @@ public class ProcessUtil
         try
         {
             String line = null;
-            process = Runtime.getRuntime().exec(command);
+            String[] cmdArray = { "/bin/sh", "-c", command };
+            process = Runtime.getRuntime().exec(cmdArray);
             process.waitFor();
             bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             while ((line = bufferedReader.readLine()) != null)
             {
                 output.append(line);
             }
+
+            logger.info("exec completed: " + command);
         }
         catch (Exception e)
         {

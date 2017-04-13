@@ -120,29 +120,52 @@ public class AdminController extends BaseController
             FileInputStream fis = new FileInputStream(fos);
             if (fos.exists())
             {
+                response.setContentType("text/plain");
                 response.setHeader("Content-disposition", String.format("attachment;filename=%s", file));
                 response.setContentLength((int) fos.length());
                 OutputStream outputStream = response.getOutputStream();
+
+                InputStream in = null;
                 try
                 {
-                    byte[] buffer = new byte[BUFF_SIZE];
-                    int byteRead = 0;
-                    while ((byteRead = fis.read()) != -1)
+                    in = new BufferedInputStream(new FileInputStream(fos) );
+                    int ch;
+                    while ((ch = in.read()) !=-1)
                     {
-                        outputStream.write(buffer, 0, byteRead);
+                        outputStream.write((char)ch);
                     }
-                    outputStream.flush();
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
                     LOGGER.error("Failed to proceed file stream - " + file);
                     return;
                 }
                 finally
                 {
+                    if (in != null) in.close();  // very important
                     outputStream.close();
-                    fis.close();
                 }
+
+//                try
+//                {
+//                    byte[] buffer = new byte[BUFF_SIZE];
+//                    int byteRead = 0;
+//                    while ((byteRead = fis.read()) != -1)
+//                    {
+//                        outputStream.write(buffer, 0, byteRead);
+//                    }
+//                    outputStream.flush();
+//                }
+//                catch (Exception e)
+//                {
+//                    LOGGER.error("Failed to proceed file stream - " + file);
+//                    return;
+//                }
+//                finally
+//                {
+//                    outputStream.close();
+//                    fis.close();
+//                }
             }
         }
     }

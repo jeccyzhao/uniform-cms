@@ -1,5 +1,7 @@
 package com.nokia.ucms.common.utils;
 
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.util.Date;
 
@@ -8,6 +10,8 @@ import java.util.Date;
  */
 public class DatabaseUtil
 {
+    private static Logger LOGGER = Logger.getLogger(DatabaseUtil.class);
+
     private static String MYSQLDUMP_COMMAND_PATTERN = "mysqldump -h %s -u %s --databases %s > %s";
     private static String DEFAULT_HOST = "localhost";
     private static String DEFAULT_USER = "root";
@@ -21,8 +25,8 @@ public class DatabaseUtil
     {
         String dumpFile = getDumpFilePath(database, dumpFolder);
         String dumpCommandLine = getMysqlDumpCommand(host, user, database, dumpFile);
-        ProcessUtil.executeCommand(dumpCommandLine);
 
+        ProcessUtil.executeCommand(dumpCommandLine);
         File file = new File(dumpFile);
         if (file.exists())
         {
