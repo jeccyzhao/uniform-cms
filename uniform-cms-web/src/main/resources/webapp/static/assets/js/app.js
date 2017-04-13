@@ -66,7 +66,7 @@ function initJqxTable (container_id, columns, data, editable, showtoolbar, autoh
         autoheight: autoheight != undefined ? autoheight : false,
         source: dataAdapter,
         //columnsResize: false,
-        enabletooltips: true,
+        //enabletooltips: true,
         groupable: false,
         columnsreorder: true,
         pageable: true,
@@ -95,6 +95,16 @@ function initJqxTable (container_id, columns, data, editable, showtoolbar, autoh
         },
         ready: function() {
             disableAjaxLoading();
+            $(".jqx-grid-column-header").each(function () {
+                if ($(this).text() != "") {
+                    $(this).jqxTooltip({ position: 'mouse', content: $(this).text() });
+                }
+            });
+            $(".jqx-grid-cell").each(function () {
+                if ($(this).text() != "") {
+                    $(this).jqxTooltip({ position: 'mouse', content: $(this).text() });
+                }
+            });
         }
     });
 

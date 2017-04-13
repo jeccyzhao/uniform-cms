@@ -181,14 +181,26 @@
             });
 
             // result.columns.push({text: 'No.', datafield: 'id', hidden: false, width: 40, editable: false, align: 'center', cellsalign: 'center'});
-            result.columns.push({text: 'Category', datafield: 'Category Name', align: 'center', cellsalign: 'left', filterable: true, width: 120, editable: false, enabletooltips: false});
+            result.columns.push({text: 'Category', datafield: 'Category Name', rendered: tooltiprenderer, align: 'center', cellsalign: 'left', filterable: true, width: 120, editable: false, enabletooltips: false});
+
+            var tooltiprenderer = function (element) {
+                $(element).jqxTooltip({ position: 'mouse', content: $(element).text() });
+            }
 
             dataColumns = [];
             for (var columnIndex in columns) {
                 var column = columns[columnIndex];
                 if (column.columnId != undefined) {
                     var editable = true;
-                    result.columns.push( { text: column.columnName, datafield: column.columnName, cellsalign: 'left', align: 'center', hidden: column.visible == 0, editable: editable} );
+                    result.columns.push( {
+                        text: column.columnName,
+                        enabletooltips: true,
+                        datafield: column.columnName,
+                        cellsalign: 'left',
+                        align: 'center',
+                        hidden: column.visible == 0,
+                        editable: editable
+                    } );
                     dataColumns.push(column.columnName);
                 }
             }
