@@ -22,6 +22,17 @@ public class SystemConfigService
         return sysConfigRepository.getConfigByName(propName);
     }
 
+    public String getPropertyValueByName (String propName, String defaultValue)
+    {
+        SystemConfig systemConfig = findByPropertyName(propName);
+        if (systemConfig != null && systemConfig.getPropertyValue() != null && !"".equals(systemConfig.getPropertyValue()))
+        {
+            return systemConfig.getPropertyValue();
+        }
+
+        return defaultValue;
+    }
+
     public SystemConfig findById (int id)
     {
         return sysConfigRepository.getConfigById(id);
@@ -51,7 +62,7 @@ public class SystemConfigService
 
     private SystemConfig addConfig (SystemConfig sysConfig)
     {
-        if (sysConfig != null && sysConfig.getPropertyName() == null)
+        if (sysConfig != null && sysConfig.getPropertyName() != null)
         {
             Integer result = this.sysConfigRepository.insertConfig(sysConfig);
             if (result > 0)

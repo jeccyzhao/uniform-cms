@@ -16,9 +16,13 @@ public final class Constants
     public static final String PROP_LDAP_SERVER             = "prop.ldap.server";
     public static final String PROP_LDAP_BASE               = "prop.ldap.searchBase";
     public static final String PROP_TEMP_PATH               = "prop.tmp.filePath";
+    public static final String PROP_BACKUP_PATH             = "prop.backup.filePath";
 
     public static final String ROLE_DEFAULT                 = "ROLE_DEFAULT";
     public static final String ROLE_ADMIN                   = "ROLE_ADMIN";
 
     public static final String REDIRECT_URL_PARAMETER       = "redirect";
+    public static final String DATABASE_NAME                = "ucms";
+    public static final String DEFAULT_BACKUP_FOLDER        = "/usr/local/share/applications/ucms";
+    public static final Integer BUFF_SIZE                   = 1024;
 }
