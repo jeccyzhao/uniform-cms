@@ -5,9 +5,12 @@
 <th:block layout:fragment="content">
     <div style="margin: 50px 0 0 300px;">
         <div th:style="'background: url(' + @{/assets/img/500.png} + ') no-repeat; height: 300px;'">
-            <div style="padding-left: 340px;">
-                <h3>Internal Server Error</h3>
-                <p th:text="${message}"></p>
+            <div style="padding-left: 350px; padding-top: 10px; font-family: sans-serif">
+                <h3 style="font-size: 28px;">Internal Server Error</h3>
+                <div style="margin-top: 20px">
+                    <p>Error Code: <span th:text="${statusCode}"></span></p>
+                    <p>Error Message: <span th:text="${message}"></span></p>
+                </div>
             </div>
         </div>
     </div>

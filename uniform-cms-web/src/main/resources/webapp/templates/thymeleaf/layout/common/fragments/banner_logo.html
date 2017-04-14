@@ -11,11 +11,15 @@
         </div>
 
         <ul class="nav n-banner-right n-banner-nav n-banner-controls" sec:authorize="isAuthenticated()">
-            <li id="wulf_logout" >
+            <li id="wulf_user" >
                 <a href="javascript:void(0);" style="cursor:default">
                     <i class="icon icon-profile"></i>
                     <span th:text="${#authentication.principal.userDisplayName}">Username</span>
                 </a>
+            </li>
+            <li class="hidden-xs"><p>|</p></li>
+            <li>
+                <a href="#" th:href="@{/swagger-ui.html}" data-toggle="modal" title="Restful API">API Doc</a>
             </li>
             <li class="hidden-xs"><p>|</p></li>
             <li id="wulf_logout" >
@@ -28,6 +32,10 @@
                 <a href="login" th:href="@{/login}">
                     <i class="icon icon-profile"></i>Login
                 </a>
+            </li>
+            <li class="hidden-xs"><p>|</p></li>
+            <li>
+                <a href="#" th:href="@{/swagger-ui.html}" data-toggle="modal" title="Restful API">API Doc</a>
             </li>
         </ul>
 

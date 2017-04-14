@@ -2,6 +2,7 @@ package com.nokia.ucms.portal.controller;
 
 import com.nokia.ucms.biz.constants.Constants;
 import com.nokia.ucms.common.controller.BaseController;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -27,6 +28,8 @@ public class AppController extends BaseController implements ErrorController
 {
     private static final String ERROR_PATH = "/error";
 
+    private static final Logger LOGGER = Logger.getLogger(AppController.class);
+
     @Autowired
     private ErrorAttributes errorAttributes;
 
@@ -48,16 +51,11 @@ public class AppController extends BaseController implements ErrorController
     public String showErrorPage(HttpServletRequest request, Model model)
     {
         Map<String, Object> errorBody = getErrorAttributes(request, true);
-        Integer status = (Integer) errorBody.get("status");
-        if(status == 404)
-        {
-            model.addAttribute("message", "[" + status + "] Page not found!");
-        }
-        else
-        {
-            model.addAttribute("message", "[" + status + "] " + (String) errorBody.get("error"));
-        }
-
+        String errorMessage = (String) errorBody.get("error");
+        Integer statusCode = (Integer) errorBody.get("status");
+        model.addAttribute("message", errorMessage);
+        model.addAttribute("statusCode", statusCode);
+        LOGGER.error("Error occurred when access page '" + request.getRequestURI() + "'  due to '" + errorMessage + "'");
         return PAGE_ERROR;
     }
 
