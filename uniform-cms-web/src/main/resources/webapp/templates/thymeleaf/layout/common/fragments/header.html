@@ -2,7 +2,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title th:text="'Nokia Content Management System' + (${subTitle != null} ? ' - ' + ${subTitle} : '')">Nokia Content Management System</title>
+    <title th:text="'Nokia™ Uniformed Content Management System' + (${subTitle != null} ? ' - ' + ${subTitle} : '')">Nokia Content Management System</title>
     <link th:href="@{/plugins/wulfdist/css/wulf.min.css}" rel="stylesheet"/>
     <link th:href="@{/plugins/wulfdist/css/fuelux.css}" rel="stylesheet"/>
     <link th:href="@{/plugins/wulfdist/css/wulf.basic.min.css}" rel="stylesheet"/>
@@ -16,6 +16,8 @@
     <link th:href="@{/plugins/wulfdist/css/wulf.table-jqWidget.min.css}" rel="stylesheet"/>
     <link th:href="@{/plugins/wulfdist/css/jqx.base.css}" rel="stylesheet"/>
     <link th:href="@{/assets/css/style.css}" rel="stylesheet" />
+    <link th:href="@{/assets/css/easy-autocomplete.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/easy-autocomplete.themes.css}" rel="stylesheet"/>
     <link th:href="@{/assets/favicon.ico}" rel="shortcut icon" />
     
     <script type="text/javascript" th:inline="javascript">
@@ -23,8 +25,8 @@
 		var ctxPath = [[${#httpServletRequest.contextPath}]];
 		var openApiVersion = "v1";
 		var openApiContextPath = ctxPath + "/openapi/" + openApiVersion;
-		var principal = /*[[${#authentication.principal != 'anonymousUser' ? #authentication.principal.userName : null}]]*/;
-		var displayName = /*[[${#authentication.principal != 'anonymousUser' ? #authentication.principal.userDisplayName : null}]]*/;
+		var principal = /*[[${#authentication != null && #authentication.principal != 'anonymousUser' ? #authentication.principal.userName : null}]]*/;
+		var displayName = /*[[${#authentication != null && #authentication.principal != 'anonymousUser' ? #authentication.principal.userDisplayName : null}]]*/;
 		/*]]>*/
 	</script>
     
@@ -72,4 +74,5 @@
     <script th:src="@{/plugins/wulfdist/js/dependencies/jqxgrid.export.js}" />
     <script th:src="@{/assets/js/app.js}" />
     <script th:src="@{/assets/js/js.cookie.js}" />
+    <script th:src="@{/assets/js/jquery.easy-autocomplete.js}" />
 </head>

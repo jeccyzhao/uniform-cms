@@ -1,34 +1,28 @@
 package com.nokia.ucms.portal.controller;
 
-import static com.nokia.ucms.biz.dto.ProjectRecordDataDTO.*;
+import static com.nokia.ucms.common.constants.Constants.PAGE_ERROR;
 
-import com.nokia.ucms.biz.constants.Constants;
 import com.nokia.ucms.biz.entity.ProjectCategory;
-import com.nokia.ucms.biz.entity.ProjectColumn;
 import com.nokia.ucms.biz.entity.ProjectInfo;
+import com.nokia.ucms.biz.entity.User;
 import com.nokia.ucms.biz.service.ProjectCategoryService;
 import com.nokia.ucms.biz.service.ProjectColumnService;
 import com.nokia.ucms.biz.service.ProjectInfoService;
 import com.nokia.ucms.biz.service.ProjectRecordService;
 import com.nokia.ucms.common.controller.BaseController;
-import com.nokia.ucms.common.dto.ExcelSheetDataDTO;
-import com.nokia.ucms.common.exception.ServiceException;
-import com.nokia.ucms.common.utils.ExcelParser;
+import com.nokia.ucms.common.exception.NoPermissionAccessPageException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -118,24 +112,42 @@ public class ProjectController extends BaseController
     }
 
     @RequestMapping("/{projectName}/columns")
+    @PreAuthorize("isAuthenticated()")
     public String showProjectColumns(@PathVariable String projectName, Model model)
     {
-        setBasicInfoInModel(projectName, model);
-        return getModulePage("projectColumn");
+        ProjectInfo projectInfo = setBasicInfoInModel(projectName, model);
+        if (isProjectOwner(projectInfo))
+        {
+            return getModulePage("projectColumn");
+        }
+
+        throw new NoPermissionAccessPageException("You're not permitted to access project columns page!");
     }
 
     @RequestMapping("/{projectName}/tags")
+    @PreAuthorize("isAuthenticated()")
     public String showProjectTags(@PathVariable String projectName, Model model)
     {
-        setBasicInfoInModel(projectName, model);
-        return getModulePage("projectTag");
+        ProjectInfo projectInfo = setBasicInfoInModel(projectName, model);
+        if (isProjectOwner(projectInfo))
+        {
+            return getModulePage("projectTag");
+        }
+
+        throw new NoPermissionAccessPageException("You're not permitted to access project tags page!");
     }
 
     @RequestMapping("/{projectName}/authorization")
+    @PreAuthorize("isAuthenticated()")
     public String showProjectAuthorization(@PathVariable String projectName, Model model)
     {
-        setBasicInfoInModel(projectName, model);
-        return getModulePage("projectAuthorization");
+        ProjectInfo projectInfo = setBasicInfoInModel(projectName, model);
+        if (isProjectOwner(projectInfo))
+        {
+            return getModulePage("projectAuthorization");
+        }
+
+        throw new NoPermissionAccessPageException("You're not permitted to access project authorization page!");
     }
 
     @RequestMapping("/{projectName}/categories/{categoryId}/export")
@@ -156,7 +168,17 @@ public class ProjectController extends BaseController
         printWriter.close();
     }
 
+    protected boolean isProjectOwner (final ProjectInfo projectInfo)
+    {
+        User authenticatedPrinciple = (User) getAuthenticatedPrinciple();
+        if (authenticatedPrinciple != null && projectInfo != null &&
+                authenticatedPrinciple.getUserName().equals(projectInfo.getOwner().getUserName()))
+        {
+            return true;
+        }
 
+        return false;
+    }
 
     protected String getModulePath ()
     {

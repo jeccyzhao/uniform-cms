@@ -1,6 +1,8 @@
 package com.nokia.ucms.common.controller;
 
+import com.nokia.ucms.common.constants.Constants;
 import com.nokia.ucms.common.entity.ApiQueryResult;
+import com.nokia.ucms.common.exception.NoPermissionAccessPageException;
 import com.nokia.ucms.common.exception.ServiceException;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -32,10 +35,17 @@ public class GlobalDefaultExceptionHandler extends BaseController
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseBody
     @ResponseStatus( HttpStatus.UNAUTHORIZED)
-    public ApiQueryResult<Map<String, Object>> handleUnauthorizedException(Exception ex)
+    public ApiQueryResult<Map<String, Object>> handleUnauthorizedException(HttpServletRequest req, Exception ex)
     {
-        LOGGER.error("Access is denied: " + ex);
+        LOGGER.error("Access defined when requesting API - " + req.getRequestURI());
         return createErrorQueryResult(ex);
+    }
+
+    @ExceptionHandler(NoPermissionAccessPageException.class)
+    public String handleNoPermissionAccessPageException(HttpServletRequest req, Exception ex)
+    {
+        LOGGER.error("No permission when accessing page - " + req.getRequestURI());
+        return Constants.PAGE_UNAUTHORIZED;
     }
 
     @ExceptionHandler(Exception.class)

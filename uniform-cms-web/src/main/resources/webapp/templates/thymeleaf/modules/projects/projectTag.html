@@ -14,7 +14,7 @@
             </div>
             <div class="panel-body" style="padding: 0 10px 20px 10px;">
                 <div class="pannel-toolbar" style="overflow: hidden">
-                    <div style="float: left;">
+                    <div style="float: left;" sec:authorize="isAuthenticated()" th:if="${#authentication.principal.userName == project.owner.userName}">
                         <a href="#" class="btn btn-icon-button"
                            data-backdrop="true" data-toggle="modal" id="op_add">
                             <span class="icon icon-add"></span><span>Add</span>

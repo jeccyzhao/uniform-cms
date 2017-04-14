@@ -25,4 +25,5 @@ public final class Constants
     public static final String DATABASE_NAME                = "ucms";
     public static final String DEFAULT_BACKUP_FOLDER        = "/usr/local/share/applications/ucms";
     public static final Integer BUFF_SIZE                   = 1024;
+
 }
